@@ -1,0 +1,345 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Pusatkan konten */
+#root {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: first baseline     /* vertical center */
+}
+
+.login-container {
+  margin-top: 100px;
+  background-color: #ccc;
+  padding: 50px;
+  border-radius: 50px;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 30px 43px 30px 30px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fafafa;
+  justify-content: center;
+}
+
+.form-container div {
+  margin-bottom: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+}
+
+label {
+  font-weight: 700;
+  padding-left: 10px;
+}
+
+button {
+  padding: 10px 16px;
+  background-color: #031529;
+  width: 100px;
+  background-size: 50px;
+  border: none;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 5px;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.button_InputDetailPackage {
+  display: flex;
+  justify-content: center;
+  gap: 45px;
+  padding-top: 20px;
+}
+
+.shipping-code_InputDetailPackage {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  width: 400px;
+}
+
+option {
+  display: flex;
+  flex-direction: column;
+  color: #ccc;
+  background-color: #031529;
+  justify-content: center;
+  text-align: center;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+select {
+  border: none;
+}
+
+.cancel-btn_InputDetailPackage {
+  background: #ccc;
+  color: #031529;
+}
+
+button:hover {
+  background: #ccc;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.password-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-group {
+  padding: 20px;
+}
+
+.submit-btn {
+  margin-left: 20px;
+  width: 400px;
+}
+
+.routing {
+  margin-left: 20px;
+}
+
+
+/* Display Detail Package & Detail Package Modal*/
+.ddp-container {
+  margin: 20px 20px 500px 20px;
+}
+
+.ddp-controls {
+  display: flex;
+  gap: 10px;
+  width: 850px;
+  margin-bottom: 10px;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.package-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.package-card h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.package-card h3 {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.package-card p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-container {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.modal-subtitle {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+.modal-text {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.modal-button {
+  margin-top: 16px;
+  padding: 10px 16px;
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modal-button:hover {
+  background-color: #1e40af;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 12px 24px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-left img {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+}
+
+.navbar-left span {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #031529; /* biru */
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.user-info p {
+  margin: 0;
+}
+
+.user-info .name {
+  font-weight: 500;
+}
+
+.user-info .role {
+  font-size: 0.85rem;
+  color: gray;
+}
+
+.logout-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background-color: #1e293b; /* abu tua */
+  color: white;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-list li {
+  margin-bottom: 15px;
+}
+
+.sidebar-list li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.2s ease-in-out;
+}
+
+.sidebar-list li a:hover {
+  background-color: #334155;
+}
+
+.sidebar-list li.active a {
+  background-color: #0ea5e9;
+}
+
+.with-sidebar {
+  margin-left: 280px; /* lebar sidebar */
+}
+
+
+
