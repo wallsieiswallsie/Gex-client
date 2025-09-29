@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { loginApi } from "../utils/api";
+import { getRedirectPathByRole } from "../utils/routes";
+import { useAuth } from "../context/AuthContext";
 
-function LoginPage({ setUser }) {
+function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth(); // ✅ ambil login dari context
 
   const validate = () => {
     const newErrors = {};
@@ -38,37 +42,17 @@ function LoginPage({ setUser }) {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-}),
-
+      const data = await loginApi({
+        email: formData.email,
+        password: formData.password,
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Login gagal");
+      // ✅ simpan user ke context + localStorage
+      login(data.user);
 
-      // simpan token ke localStorage
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-
-      // simpan user ke localStorage
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      setUser(data.user);
-
-      // arahkan sesuai role
-      if (data.user.role === "main_warehouse_staff") {
-        navigate("/input");
-      } else if (data.user.role === "manager_destination_shipping") {
-        navigate("/packages");
-      } else {
-        navigate("/"); // default kalau role lain
-      }
-
+      // ✅ arahkan sesuai role
+      const redirectPath = getRedirectPathByRole(data.user.role);
+      navigate(redirectPath);
     } catch (err) {
       alert(err.message);
     }

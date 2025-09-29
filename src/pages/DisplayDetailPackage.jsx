@@ -1,91 +1,100 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { usePackages } from "../hooks/usePackages";
+import { createInvoiceApi } from "../utils/api";
+
+import PackageControls from "../components/PackageControls";
+import PackageCard from "../components/PackageCard";
+import InvoiceActions from "../components/InvoiceActions";
 import DetailPackageModal from "../components/DetailPackageModal";
-import { calculatePackageDetails } from "../utils/calculations";
 
 function DisplayDetailPackage() {
-  const [packages, setPackages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const [filter, setFilter] = useState(""); 
-  const [sortBy, setSortBy] = useState("created_at"); 
-  const [sortOrder, setSortOrder] = useState("desc"); 
+  const [filter, setFilter] = useState("");
+  const [sortBy, setSortBy] = useState("created_at");
+  const [sortOrder, setSortOrder] = useState("desc");
 
   const [selectedPackage, setSelectedPackage] = useState(null);
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedPackages, setSelectedPackages] = useState([]);
 
-  const fetchPackages = async (query = {}) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const params = new URLSearchParams(query);
-      const res = await fetch(`http://localhost:5000/packages?${params.toString()}`);
-      if (!res.ok) throw new Error("Gagal fetch data");
-      const data = await res.json();
-      setPackages(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchPackages();
-  }, []);
+  const { packages, loading, error, fetchPackages } = usePackages();
 
   const handleApplyFilterSort = () => {
     fetchPackages({ filter, sortBy, sortOrder });
+  };
+
+  const toggleSelect = (pkg) => {
+    if (selectedPackages.find((p) => p.id === pkg.id)) {
+      setSelectedPackages(selectedPackages.filter((p) => p.id !== pkg.id));
+    } else {
+      setSelectedPackages([...selectedPackages, pkg]);
+    }
+  };
+
+  const handleCardRightClick = (e, pkg) => {
+    e.preventDefault();
+    if (!selectMode) setSelectMode(true);
+    toggleSelect(pkg);
+  };
+
+  const handleCreateInvoice = async () => {
+    if (selectedPackages.length === 0) return;
+    try {
+      await createInvoiceApi(selectedPackages.map((p) => p.id));
+      alert("Invoice berhasil dibuat!");
+      setSelectedPackages([]);
+      setSelectMode(false);
+      fetchPackages({ filter, sortBy, sortOrder });
+    } catch (err) {
+      alert(`Gagal buat invoice: ${err.message}`);
+    }
   };
 
   return (
     <div className="ddp-container">
       <h2>Daftar Detail Paket</h2>
 
-      <div className="ddp-controls">
-        <input
-          type="text"
-          placeholder="Cari nama atau resi..."
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="created_at">Tanggal Input</option>
-          <option value="nama">Nama Paket</option>
-          <option value="resi">Resi</option>
-          <option value="berat">Berat</option>
-        </select>
-        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-          <option value="asc">Terkecil - Terbesar</option>
-          <option value="desc">Terbesar - Terkecil</option>
-        </select>
-        <button onClick={handleApplyFilterSort}>Terapkan</button>
-      </div>
+      <PackageControls
+        filter={filter}
+        setFilter={setFilter}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+        onApply={handleApplyFilterSort}
+      />
 
       {loading && <p>Loading data paket...</p>}
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
       <div className="cards-container">
         {packages.map((pkg) => {
-          const details = calculatePackageDetails(pkg);
+          const isSelected = selectedPackages.some((p) => p.id === pkg.id);
+          const isDisabled = pkg.invoiced;
+
           return (
-            <div
-              className="package-card"
+            <PackageCard
               key={pkg.id}
-              onClick={() => setSelectedPackage(pkg)}
-            >
-              <h2>{pkg.nama.toUpperCase()}</h2>
-              <h3>{pkg.resi}</h3>
-              <p>
-                {pkg.panjang} × {pkg.lebar} × {pkg.tinggi} |{" "}
-                {details.weightUsed} kg
-              </p>
-              <h3>Rp {details.price.toLocaleString("id-ID")}</h3>
-            </div>
+              pkg={pkg}
+              isSelected={isSelected}
+              isDisabled={isDisabled}
+              onClick={() =>
+                selectMode
+                  ? !isDisabled && toggleSelect(pkg)
+                  : setSelectedPackage(pkg)
+              }
+              onRightClick={(e) => handleCardRightClick(e, pkg)}
+            />
           );
         })}
       </div>
 
-      {/* Modal tampil jika ada paket terpilih */}
+      {selectMode && selectedPackages.length > 0 && (
+        <InvoiceActions onCreate={handleCreateInvoice} />
+      )}
+
       {selectedPackage && (
         <DetailPackageModal
           pkg={selectedPackage}

@@ -16,7 +16,7 @@ function Navbar({ user, onLogout }) {
       {/* Kanan */}
       <div className="navbar-right">
         <div className="user-info">
-          <p className="name">{user?.name || "Guest"}</p>
+          <p className="name">{user?.name.toUpperCase() || "Guest"}</p>
           <p className="role">{user?.role || "User"}</p>
         </div>
         <button className="logout-btn" onClick={onLogout}>

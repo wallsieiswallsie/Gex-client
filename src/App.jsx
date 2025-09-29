@@ -1,32 +1,18 @@
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
+import InvoicesPage from "./pages/ManageInvoice";
+import InvoiceDetailPage from "./pages/invoiceDetail";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import { useAuth } from "./context/AuthContext";
 import "./App.css";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const location = useLocation();
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("user");
-    setUser(null);
-    navigate("/login");
-  };
 
   // sembunyikan navbar di login & register
   const hideNavbar =
@@ -37,14 +23,16 @@ function App() {
       {!hideNavbar && user && <Sidebar />}
       
       <div className={`flex-1 flex flex-col ${!hideNavbar && user ? "with-sidebar" : ""}`}>
-  {!hideNavbar && user && <Navbar user={user} onLogout={handleLogout} />}
+        {!hideNavbar && user && <Navbar user={user} onLogout={logout} />}
         <main className="flex-1 p-4">
           <Routes>
-            <Route path="/" element={<LoginPage setUser={setUser} />} />
-            <Route path="/login" element={<LoginPage setUser={setUser} />} />
-            <Route path="/register" element={<RegisterPage setUser={setUser} />} />
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/input" element={<InputDetailPackage />} />
             <Route path="/packages" element={<DisplayDetailPackage />} />
+            <Route path="/invoices" element={<InvoicesPage />} />
+            <Route path="/invoices/:id" element={<InvoiceDetailPage />} />
           </Routes>
         </main>
       </div>
