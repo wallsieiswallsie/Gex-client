@@ -4,7 +4,7 @@ import RegisterPage from "./pages/Register";
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
 import InvoicesPage from "./pages/ManageInvoice";
-import InvoiceDetailPage from "./pages/invoiceDetail";
+import InvoiceDetailPage from "./pages/InvoiceDetail";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { useAuth } from "./context/AuthContext";
