@@ -42,13 +42,14 @@ function LoginPage() {
     }
 
     try {
-      const data = await loginApi({
-        email: formData.email,
-        password: formData.password,
-      });
+      const data = await loginApi({ email: formData.email, password: formData.password });
 
-      // ✅ simpan user ke context + localStorage
-      login(data.user);
+        // simpan lewat AuthContext (single source)
+        login({
+          userData: data.user,
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+        });
 
       // ✅ arahkan sesuai role
       const redirectPath = getRedirectPathByRole(data.user.role);

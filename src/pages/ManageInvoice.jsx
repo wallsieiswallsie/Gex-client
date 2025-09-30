@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useInvoices } from "../hooks/useInvoices";
 
 function InvoicesPage() {
-  const { invoices, loading, error } = useInvoices();
+  const { invoices, loading } = useInvoices(); // ⬅️ hapus error
   const navigate = useNavigate();
 
   if (loading) return <p>Loading daftar invoice...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
+
   if (invoices.length === 0) return <p>Belum ada invoice.</p>;
 
   return (
@@ -18,6 +18,7 @@ function InvoicesPage() {
             key={inv.invoice_id}
             className="package-card"
             onClick={() => navigate(`/invoices/${inv.invoice_id}`)}
+            style={{ cursor: "pointer" }}
           >
             <h3>{inv.invoice_id}</h3>
             <p>Total: Rp {Number(inv.total_price).toLocaleString("id-ID")}</p>

@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react";
-import { fetchInvoicesApi } from "../utils/api";
+import { useApi } from "../utils/api";
 
 export const useInvoices = () => {
+  const { request } = useApi();
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
     const getInvoices = async () => {
       try {
-        const data = await fetchInvoicesApi();
+        const data = await request("/invoices");
+        if (!mounted) return;
         setInvoices(data.data || []);
-      } catch (err) {
-        setError(err.message);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
-
     getInvoices();
-  }, []);
+    return () => (mounted = false);
+  }, [request]);
 
-  return { invoices, loading, error };
+  return { invoices, loading };
 };

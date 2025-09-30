@@ -1,93 +1,66 @@
-const API_URL = import.meta.env.VITE_API_URL;
-const ACCESS_TOKEN_KEY = "ACCESS_TOKEN_KEY";
-const REFRESH_TOKEN_KEY = "REFRESH_TOKEN_KEY";
+// src/utils/api.js
+import { useCallback } from "react";
+import { useErrors } from "../context/ErrorsContext";
+import { API_URL, ACCESS_TOKEN_KEY } from "./constants";
 
-export const registerApi = async (payload) => {
-  const res = await fetch(`${API_URL}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Gagal register");
+/** low-level fetch wrapper */
+export const apiFetch = async (path, options = {}) => {
+  const url = path.startsWith("http") ? path : `${API_URL}${path}`;
+  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
 
-  localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
-  localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
-  localStorage.setItem("USER", JSON.stringify(data.user));
-
+  const res = await fetch(url, { ...options, headers });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(data.error || data.message || "Terjadi kesalahan");
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
   return data;
 };
 
-export const loginApi = async (payload) => {
-  const res = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Gagal login");
+/** endpoints (pure, tidak menulis localStorage) */
+export const loginApi = async (payload) => apiFetch("/auth/login", {
+  method: "POST",
+  body: JSON.stringify(payload),
+});
 
-  localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
-  localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
-  localStorage.setItem("USER", JSON.stringify(data.user));
+export const registerApi = async (payload) => apiFetch("/auth/register", {
+  method: "POST",
+  body: JSON.stringify(payload),
+});
 
-  return data;
-};
+export const fetchPackagesApi = async () => apiFetch("/invoices");
 
-export const refreshTokenApi = async () => {
-  const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
-  const res = await fetch(`${API_URL}/auth/refresh`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refreshToken }),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Gagal refresh token");
+export const fetchInvoicesApi = async () => apiFetch("/invoices");
 
-  localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
-  return data.accessToken;
-};
+export const fetchInvoiceDetailApi = async (invoiceId) => apiFetch(`/invoices/${invoiceId}`);
 
-export const createPackageApi = async (payload) => {
-  const res = await fetch(`${API_URL}/packages`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+/** useApi hook: memetakan error ke ErrorsContext dan memoize request */
+export const useApi = () => {
+  const { setError } = useErrors();
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Gagal simpan paket");
-  return data;
-};
+  const request = useCallback(
+    async (pathOrFetcher, options) => {
+      try {
+        if (typeof pathOrFetcher === "function") {
+          // jika kamu ingin melewatkan fungsi fetcher custom
+          return await pathOrFetcher();
+        }
+        return await apiFetch(pathOrFetcher, options);
+      } catch (err) {
+        const status = err.status || 500;
+        setError(status, err.message || "Terjadi kesalahan");
+        throw err;
+      }
+    },
+    [setError]
+  );
 
-export const fetchPackagesApi = async (query = {}) => {
-  const params = new URLSearchParams(query);
-  const res = await fetch(`${API_URL}/packages?${params.toString()}`);
-  if (!res.ok) throw new Error("Gagal fetch data");
-  return res.json();
-};
-
-export const createInvoiceApi = async (packageIds) => {
-  const res = await fetch(`${API_URL}/invoices`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ packageIds }),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Gagal buat invoice");
-  return data;
-};
-
-export const fetchInvoicesApi = async () => {
-  const res = await fetch(`${API_URL}/invoices`);
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Gagal ambil invoice");
-  return data;
-};
-
-export const fetchInvoiceDetailApi = async (invoiceId) => {
-  const res = await fetch(`${API_URL}/invoices/${invoiceId}`);
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Gagal ambil detail invoice");
-  return data;
+  return { request };
 };

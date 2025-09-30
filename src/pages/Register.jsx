@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { registerApi } from "../utils/api"; // ✅ pakai API utility
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    role: "", // tidak ada default, harus dipilih
+    role: "",
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -50,24 +51,15 @@ function RegisterPage() {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const data = await registerApi(formData); // ✅ pakai registerApi
 
-      const result = await response.json();
-
-      if (response.ok) {
-        alert("Registrasi berhasil, silakan login!");
-        setFormData({ name: "", email: "", password: "", role: "" });
-        setErrors({});
-        navigate("/login");
-      } else {
-        alert(result.message || "Registrasi gagal");
-      }
+      alert("Registrasi berhasil, silakan login!");
+      setFormData({ name: "", email: "", password: "", role: "" });
+      setErrors({});
+      navigate("/login");
     } catch (err) {
-      alert("Terjadi kesalahan koneksi ke server");
+      // registerApi akan throw error jika !res.ok
+      alert(err.message || "Registrasi gagal");
     } finally {
       setLoading(false);
     }
@@ -144,8 +136,7 @@ function RegisterPage() {
       </form>
 
       <p className="routing">
-        Sudah punya akun?{" "}
-        <Link to="/login">Login di sini</Link>
+        Sudah punya akun? <Link to="/login">Login di sini</Link>
       </p>
     </div>
   );
