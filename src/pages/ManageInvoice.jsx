@@ -1,12 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import { useInvoices } from "../hooks/useInvoices";
+import { createInvoiceApi } from "../utils/api";
 
 function InvoicesPage() {
-  const { invoices, loading } = useInvoices(); // ⬅️ hapus error
+  const { invoices, loading } = useInvoices();
   const navigate = useNavigate();
 
-  if (loading) return <p>Loading daftar invoice...</p>;
+  const handleCreate = async () => {
+    try {
+      const res = await createInvoiceApi({ packageIds: [1, 2, 3] });
+      console.log("Invoice created:", res);
+      navigate(`/invoices/${res.data.invoice_id}`);
+    } catch (err) {
+      console.error("Gagal buat invoice:", err);
+    }
+  };
 
+  if (loading) return <p>Loading daftar invoice...</p>;
   if (invoices.length === 0) return <p>Belum ada invoice.</p>;
 
   return (

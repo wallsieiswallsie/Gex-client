@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { validateField } from "../utils/validations";
-import { fetchPackagesApi } from "../utils/api";
+import { createPackageApi } from "../utils/api";
 
 export const useInputDetailPackage = () => {
   const [formData, setFormData] = useState({
@@ -61,7 +61,7 @@ const handleSave = async (e) => {
         invoiced: Boolean(formData.invoiced),
       };
 
-      const data = await fetchPackagesApi(payload);
+      const data = await createPackageApi(payload);
       alert("Data berhasil disimpan! Resi: " + data.resi);
       handleCancel();
     } catch (err) {

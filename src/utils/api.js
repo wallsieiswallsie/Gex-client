@@ -35,7 +35,20 @@ export const registerApi = async (payload) => apiFetch("/auth/register", {
   body: JSON.stringify(payload),
 });
 
-export const fetchPackagesApi = async () => apiFetch("/invoices");
+export const createPackageApi = async (payload) =>
+  apiFetch("/packages", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+
+export const fetchPackagesApi = async () =>
+  apiFetch("/packages");
+
+export const createInvoiceApi = async (payload) => 
+  apiFetch("/invoices", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 
 export const fetchInvoicesApi = async () => apiFetch("/invoices");
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePackages } from "../hooks/usePackages";
+import { createInvoiceApi } from "../utils/api";
 import { fetchPackagesApi } from "../utils/api";
 
 import PackageControls from "../components/PackageControls";
@@ -42,7 +43,9 @@ function DisplayDetailPackage() {
   const handleCreateInvoice = async () => {
     if (selectedPackages.length === 0) return;
     try {
-      await fetchPackagesApi(selectedPackages.map((p) => p.id));
+      const res = await createInvoiceApi({
+        packageIds: selectedPackages.map((p) => p.id),
+      });
       alert("Invoice berhasil dibuat!");
       setSelectedPackages([]);
       setSelectMode(false);
