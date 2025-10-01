@@ -5,12 +5,12 @@ import { useAuth } from "../context/AuthContext";
 
 // Menu config untuk fleksibilitas
 const MENU_ITEMS = [
-  { path: "/packages", label: "📦 Database Paket", roles: ["manager_destination_shipping"] },
-  { path: "#", label: "🚚 Batches Pengiriman", roles: ["manager_destination_shipping"] },
-  { path: "#", label: "👥 Database Customer", roles: ["manager_destination_shipping"] },
-  { path: "/invoices", label: "🧾 Manage Invoice", roles: ["manager_destination_shipping"] },
-  { path: "#", label: "📮 Request Pengantaran", roles: ["manager_destination_shipping"] },
-  { path: "#", label: "✅ Update Status", roles: ["manager_destination_shipping"] },
+  { path: "/packages", label: "📦 Database Paket", roles: ["Manager Destination Warehouse"] },
+  { path: "#", label: "🚚 Batches Pengiriman", roles: ["Manager Destination Warehouse"] },
+  { path: "#", label: "👥 Database Customer", roles: ["Manager Destination Warehouse"] },
+  { path: "/invoices", label: "🧾 Manage Invoice", roles: ["Manager Destination Warehouse"] },
+  { path: "#", label: "📮 Request Pengantaran", roles: ["Manager Destination Warehouse"] },
+  { path: "#", label: "✅ Update Status", roles: ["Manager Destination Warehouse"] },
 ];
 
 function Sidebar() {

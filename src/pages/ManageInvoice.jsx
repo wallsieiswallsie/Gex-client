@@ -10,7 +10,7 @@ function InvoicesPage() {
     try {
       const res = await createInvoiceApi({ packageIds: [1, 2, 3] });
       console.log("Invoice created:", res);
-      navigate(`/invoices/${res.data.invoice_id}`);
+      navigate(`/invoices/${res.data.id}`);
     } catch (err) {
       console.error("Gagal buat invoice:", err);
     }
@@ -25,12 +25,12 @@ function InvoicesPage() {
       <div className="cards-container">
         {invoices.map((inv) => (
           <div
-            key={inv.invoice_id}
+            key={inv.id}
             className="package-card"
-            onClick={() => navigate(`/invoices/${inv.invoice_id}`)}
+            onClick={() => navigate(`/invoices/${inv.id}`)}
             style={{ cursor: "pointer" }}
           >
-            <h3>{inv.invoice_id}</h3>
+            <h3>{inv.id}</h3>
             <p>Total: Rp {Number(inv.total_price).toLocaleString("id-ID")}</p>
             <p>{new Date(inv.created_at).toLocaleString("id-ID")}</p>
           </div>

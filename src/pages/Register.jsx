@@ -115,17 +115,17 @@ function RegisterPage() {
           <label>Role</label>
           <select name="role" value={formData.role} onChange={handleChange}>
             <option value="">-- Pilih Role --</option>
-            <option value="manager">Manager</option>
-            <option value="manager_destination_shipping">
-              Manager Destination Shipping
+            <option value="manager">Manager Main Warehouse</option>
+            <option value="Manager Destination Warehouse">
+              Manager Destination Warehouse
             </option>
-            <option value="main_warehouse_staff">
-              Main Warehouse Staff
+            <option value="Staff Main Warehouse">
+              Staff Main Warehouse
             </option>
-            <option value="destination_warehouse_staff">
-              Destination Warehouse Staff
+            <option value="Staff Destination Warehouse">
+              Staff Destination Warehouse
             </option>
-            <option value="courier">Courier</option>
+            <option value="Courier">Courier</option>
           </select>
           {errors.role && <p className="error">{errors.role}</p>}
         </div>

@@ -52,7 +52,13 @@ export const createInvoiceApi = async (payload) =>
 
 export const fetchInvoicesApi = async () => apiFetch("/invoices");
 
-export const fetchInvoiceDetailApi = async (invoiceId) => apiFetch(`/invoices/${invoiceId}`);
+export const fetchInvoiceDetailApi = async (id) => apiFetch(`/invoices/${id}`);
+
+export const removePackageFromInvoiceApi = async (invoiceId, packageId) =>
+  apiFetch(`/invoices/${invoiceId}/packages/${Number(packageId)}`, {
+    method: "DELETE",
+  });
+
 
 /** useApi hook: memetakan error ke ErrorsContext dan memoize request */
 export const useApi = () => {

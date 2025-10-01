@@ -51,7 +51,7 @@ function App() {
             <Route
               path="/input"
               element={
-                <ProtectedRoute allowedRoles={["main_warehouse_staff"]}>
+                <ProtectedRoute allowedRoles={["Staff Main Warehouse"]}>
                   <InputDetailPackage />
                 </ProtectedRoute>
               }
@@ -59,7 +59,7 @@ function App() {
             <Route
               path="/packages"
               element={
-                <ProtectedRoute allowedRoles={["manager_destination_shipping"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
                   <DisplayDetailPackage />
                 </ProtectedRoute>
               }
@@ -67,7 +67,7 @@ function App() {
             <Route
               path="/invoices"
               element={
-                <ProtectedRoute allowedRoles={["manager_destination_shipping"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
                   <InvoicesPage />
                 </ProtectedRoute>
               }
@@ -75,7 +75,7 @@ function App() {
             <Route
               path="/invoices/:id"
               element={
-                <ProtectedRoute allowedRoles={["manager_destination_shipping"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
                   <InvoiceDetailPage />
                 </ProtectedRoute>
               }

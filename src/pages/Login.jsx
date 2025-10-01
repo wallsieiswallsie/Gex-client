@@ -10,7 +10,7 @@ function LoginPage() {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth(); // ✅ ambil login dari context
+  const { login } = useAuth();
 
   const validate = () => {
     const newErrors = {};
@@ -51,7 +51,6 @@ function LoginPage() {
           refreshToken: data.refreshToken,
         });
 
-      // ✅ arahkan sesuai role
       const redirectPath = getRedirectPathByRole(data.user.role);
       navigate(redirectPath);
     } catch (err) {
