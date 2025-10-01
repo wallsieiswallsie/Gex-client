@@ -50,12 +50,16 @@ function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
           <button className="modal-button" onClick={onClose}>
             Tutup
           </button>
-          <button
-            className="modal-button danger"
-            onClick={handleRemoveFromInvoice}
-          >
-            Hapus dari Invoice
-          </button>
+
+          {/* Tampilkan tombol hanya jika paket sudah memiliki invoice */}
+          {invoiceId && (
+            <button
+              className="modal-button danger"
+              onClick={handleRemoveFromInvoice}
+            >
+              Hapus dari Invoice
+            </button>
+          )}
         </div>
       </div>
     </div>

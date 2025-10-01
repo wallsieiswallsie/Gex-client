@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePackages } from "../hooks/usePackages";
 import { createInvoiceApi } from "../utils/api";
-import { fetchPackagesApi } from "../utils/api";
 
 import PackageControls from "../components/PackageControls";
 import PackageCard from "../components/PackageCard";
@@ -13,13 +12,14 @@ function DisplayDetailPackage() {
   const [filter, setFilter] = useState("");
   const [sortBy, setSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [invoicedFilter, setInvoicedFilter] = useState("all");
+  const [viaFilter, setViaFilter] = useState("all");
 
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [selectMode, setSelectMode] = useState(false);
   const [selectedPackages, setSelectedPackages] = useState([]);
 
   const navigate = useNavigate();
-
   const { packages, loading, error, fetchPackages } = usePackages();
 
   const handleApplyFilterSort = () => {
@@ -40,11 +40,12 @@ function DisplayDetailPackage() {
     toggleSelect(pkg);
   };
 
-  const handleCreateInvoice = async () => {
+  const handleCreateInvoice = async (namaInvoice) => {
     if (selectedPackages.length === 0) return;
     try {
-      const res = await createInvoiceApi({
+      await createInvoiceApi({
         packageIds: selectedPackages.map((p) => p.id),
+        nama_invoice: namaInvoice,
       });
       alert("Invoice berhasil dibuat!");
       setSelectedPackages([]);
@@ -54,6 +55,27 @@ function DisplayDetailPackage() {
       alert(`Gagal buat invoice: ${err.message}`);
     }
   };
+
+  // filter tambahan berdasarkan invoiced
+  const filteredPackages = packages
+    .filter((pkg) => {
+      if (!filter) return true;
+      const lowerFilter = filter.toLowerCase();
+      return (
+        pkg.nama.toLowerCase().includes(lowerFilter) ||
+        pkg.resi.toLowerCase().includes(lowerFilter)
+      );
+    })
+    .filter((pkg) => {
+      if (invoicedFilter === "all") return true;
+      if (invoicedFilter === "yes") return pkg.invoiced;
+      if (invoicedFilter === "no") return !pkg.invoiced;
+      return true;
+    })
+    .filter((pkg) => {
+      if (viaFilter === "all") return true;
+      return pkg.via === viaFilter;
+    });
 
   return (
     <div className="ddp-container">
@@ -66,6 +88,10 @@ function DisplayDetailPackage() {
         setSortBy={setSortBy}
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
+        invoicedFilter={invoicedFilter}
+        setInvoicedFilter={setInvoicedFilter}
+        viaFilter={viaFilter}
+        setViaFilter={setViaFilter}
         onApply={handleApplyFilterSort}
       />
 
@@ -73,7 +99,7 @@ function DisplayDetailPackage() {
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
       <div className="cards-container">
-        {packages.map((pkg) => {
+        {filteredPackages.map((pkg) => {
           const isSelected = selectedPackages.some((p) => p.id === pkg.id);
           const isDisabled = pkg.invoiced;
 
@@ -81,6 +107,7 @@ function DisplayDetailPackage() {
             <PackageCard
               key={pkg.id}
               pkg={pkg}
+              invoiceId={pkg.invoice_id || null}
               isSelected={isSelected}
               isDisabled={isDisabled}
               onClick={() =>
@@ -101,6 +128,7 @@ function DisplayDetailPackage() {
       {selectedPackage && (
         <DetailPackageModal
           pkg={selectedPackage}
+          invoiceId={selectedPackage.invoice_id || null}
           onClose={() => setSelectedPackage(null)}
         />
       )}

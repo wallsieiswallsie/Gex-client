@@ -30,7 +30,8 @@ function InvoicesPage() {
             onClick={() => navigate(`/invoices/${inv.id}`)}
             style={{ cursor: "pointer" }}
           >
-            <h3>{inv.id}</h3>
+            <h3>{inv.nama_invoice.toUpperCase()}</h3>
+            <h4>{inv.id}</h4>
             <p>Total: Rp {Number(inv.total_price).toLocaleString("id-ID")}</p>
             <p>{new Date(inv.created_at).toLocaleString("id-ID")}</p>
           </div>

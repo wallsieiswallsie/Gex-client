@@ -162,7 +162,7 @@ button:hover {
   width: 120px;
 }
 
-.package-card h4,h2 {
+.package-card h4, h3, h2 {
   width: 100%;    
   overflow: hidden;
   text-overflow: ellipsis;

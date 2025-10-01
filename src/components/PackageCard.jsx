@@ -1,4 +1,4 @@
-function PackageCard({ pkg, isSelected, isDisabled, onClick, onRightClick }) {
+function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightClick }) {
   return (
     <div
       className={`package-card ${isSelected ? "selected" : ""} ${
@@ -15,6 +15,9 @@ function PackageCard({ pkg, isSelected, isDisabled, onClick, onRightClick }) {
       <h3>Rp {Number(pkg.harga).toLocaleString("id-ID")}</h3>
 
       {isDisabled && <small className="disabled-note">Sudah invoiced</small>}
+      {invoiceId ? (
+        <p className="invoice-number">{invoiceId}</p>
+      ) : null}
     </div>
   );
 }
