@@ -3,8 +3,15 @@ import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
+import BatchSelectionPage from "./pages/batches/BatchSelectionPage";
+import DisplayBatchesKapal from "./pages/batches/DisplayBatchesKapal";
+import DisplayBatchesPesawat from "./pages/batches/DisplayBatchesPesawat";
+import BatchDetailKapal from "./pages/batches/BatchDetailKapal";
+import BatchDetailPesawat from "./pages/batches/BatchDetailPesawat";
 import InvoicesPage from "./pages/ManageInvoice";
 import InvoiceDetailPage from "./pages/InvoiceDetail";
+import DeliverySelectionPage from "./pages/deliveries/DeliverySelectionPage";
+import ManageDelivery from "./pages/deliveries/ManageDelivery";
 import ForbiddenPage from "./pages/errors/ForbiddenPage";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -51,7 +58,7 @@ function App() {
             <Route
               path="/input"
               element={
-                <ProtectedRoute allowedRoles={["Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Staff Main Warehouse", "Manager Main Warehouse"]}>
                   <InputDetailPackage />
                 </ProtectedRoute>
               }
@@ -59,11 +66,65 @@ function App() {
             <Route
               path="/packages"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <DisplayDetailPackage />
                 </ProtectedRoute>
               }
             />
+
+            {/* =================== BATCHES =================== */}
+            {/* Pilihan Kapal / Pesawat */}
+            <Route
+              path="/batches"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <BatchSelectionPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Semua batch Kapal */}
+            <Route
+              path="/batches/kapal"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <DisplayBatchesKapal />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Semua batch Pesawat */}
+            <Route
+              path="/batches/pesawat"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <DisplayBatchesPesawat />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Detail batch Kapal */}
+            <Route
+              path="/batches/kapal/:batchId"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <BatchDetailKapal />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Detail batch Pesawat */}
+            <Route
+              path="/batches/pesawat/:batchId"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <BatchDetailPesawat />
+                </ProtectedRoute>
+              }
+            />
+            {/* =================== END BATCHES =================== */}
+
+            {/* Invoices */}
             <Route
               path="/invoices"
               element={
@@ -77,6 +138,24 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
                   <InvoiceDetailPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/selection_pengantaran"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                  <DeliverySelectionPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/pengantaran"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                  <ManageDelivery />
                 </ProtectedRoute>
               }
             />

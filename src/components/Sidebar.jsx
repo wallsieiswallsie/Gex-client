@@ -5,12 +5,15 @@ import { useAuth } from "../context/AuthContext";
 
 // Menu config untuk fleksibilitas
 const MENU_ITEMS = [
-  { path: "/packages", label: "📦 Database Paket", roles: ["Manager Destination Warehouse"] },
-  { path: "#", label: "🚚 Batches Pengiriman", roles: ["Manager Destination Warehouse"] },
-  { path: "#", label: "👥 Database Customer", roles: ["Manager Destination Warehouse"] },
-  { path: "/invoices", label: "🧾 Manage Invoice", roles: ["Manager Destination Warehouse"] },
-  { path: "#", label: "📮 Request Pengantaran", roles: ["Manager Destination Warehouse"] },
-  { path: "#", label: "✅ Update Status", roles: ["Manager Destination Warehouse"] },
+  { path: "/packages", label: "Database Paket", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
+  { path: "/batches", label: "Batches Pengiriman", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
+  { path: "#", label: "Database Customer", roles: ["Manager Destination Warehouse"] },
+  { path: "/invoices", label: "Manage Invoice", roles: ["Manager Destination Warehouse"] },
+  { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse"] },
+  //{ path: "#", label: "Update Status", roles: ["Manager Destination Warehouse"] },
+  { path: "#", label: "Keuangan", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
+
+  { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse"] },
 ];
 
 function Sidebar() {

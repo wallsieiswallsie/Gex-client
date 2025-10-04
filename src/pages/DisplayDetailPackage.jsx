@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePackages } from "../hooks/usePackages";
 import { createInvoiceApi } from "../utils/api";
+import { usePackageStatus } from "../hooks/usePackageStatus";
+import { getStatusLabel } from "../utils/statusLabels";
 
 import PackageControls from "../components/PackageControls";
+import ErrorBoundary from "../components/ErrorBoundary";
 import PackageCard from "../components/PackageCard";
 import InvoiceActions from "../components/InvoiceActions";
-import DetailPackageModal from "../components/DetailPackageModal";
+import DetailPackageModal from "../components/modals/DetailPackageModal";
 
 function DisplayDetailPackage() {
   const [filter, setFilter] = useState("");
@@ -19,8 +22,37 @@ function DisplayDetailPackage() {
   const [selectMode, setSelectMode] = useState(false);
   const [selectedPackages, setSelectedPackages] = useState([]);
 
+  const [latestStatuses, setLatestStatuses] = useState({});
+
   const navigate = useNavigate();
   const { packages, loading, error, fetchPackages } = usePackages();
+  const { fetchLatest } = usePackageStatus();
+
+  // ambil latest status setiap kali packages berubah
+  useEffect(() => {
+    const fetchStatuses = async () => {
+      const statusesMap = {};
+      for (const pkg of packages) {
+        try {
+          const res = await fetchLatest(pkg.id);
+          if (res && res.latest) {
+            statusesMap[pkg.id] = Number(res.latest.status);
+          } else {
+            statusesMap[pkg.id] = null;
+          }
+        } catch (err) {
+          console.warn(`Gagal ambil status untuk paket ${pkg.id}:`, err);
+          statusesMap[pkg.id] = null;
+        }
+      }
+      setLatestStatuses(statusesMap);
+    };
+
+    if (packages.length > 0) {
+      fetchStatuses().catch((err) => console.error("Fatal fetchStatuses error:", err));
+    }
+  }, [packages, fetchLatest]);
+
 
   const handleApplyFilterSort = () => {
     fetchPackages({ filter, sortBy, sortOrder });
@@ -103,20 +135,24 @@ function DisplayDetailPackage() {
           const isSelected = selectedPackages.some((p) => p.id === pkg.id);
           const isDisabled = pkg.invoiced;
 
+          const latestStatus = latestStatuses[pkg.id];
+          const statusLabel = getStatusLabel(latestStatus);
+
           return (
+            <ErrorBoundary key={pkg.id}>
             <PackageCard
-              key={pkg.id}
               pkg={pkg}
               invoiceId={pkg.invoice_id || null}
               isSelected={isSelected}
               isDisabled={isDisabled}
+              statusLabel={statusLabel}
               onClick={() =>
                 selectMode
                   ? !isDisabled && toggleSelect(pkg)
                   : setSelectedPackage(pkg)
               }
               onRightClick={(e) => handleCardRightClick(e, pkg)}
-            />
+            /> </ErrorBoundary>
           );
         })}
       </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import DetailPackageModal from "../components/DetailPackageModal";
+import DetailPackageModal from "../components/modals/DetailPackageModal";
 import { useInvoiceDetail } from "../hooks/useInvoiceDetail";
 import { removePackageFromInvoiceApi } from "../utils/api";
 

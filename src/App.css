@@ -128,7 +128,14 @@ button:hover {
 
 
 /* Display Detail Package & Detail Package Modal*/
-.ddp-container, .invoice-container, .invoice-detail-container {
+.ddp-container,
+.invoice-container,
+.delivery-container,
+.invoice-detail-container,
+.batch_selection-container,
+.delivery_selection-container,
+.detail_batch_kapal-container,
+.ddp_batch_kapal-container {
   margin: 20px 20px 500px 20px;
 }
 
@@ -142,14 +149,14 @@ button:hover {
   justify-content: center;
 }
 
-.cards-container {
+.cards-container, .batch-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 16px;
 }
 
-.package-card {
+.package-card, .batch-card {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 16px;
@@ -159,7 +166,7 @@ button:hover {
   margin: 8px;
   cursor: pointer;
   transition: 0.2s;
-  width: 120px;
+  width: 170px;
 }
 
 .package-card h4, h3, h2 {
@@ -236,6 +243,7 @@ button:hover {
   margin-bottom: 8px;
   white-space: normal;
   word-break: break-word;
+  text-align: center;
 }
 
 .modal-subtitle {
@@ -258,6 +266,11 @@ button:hover {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.update_status_batch_modal-button {
+  display: block;
+  margin: 50px 150px 0px 150px;
 }
 
 .modal-button:hover {
@@ -394,8 +407,25 @@ button:hover {
   margin-left: 280px; /* lebar sidebar */
 }
 
-/* Invoice  */
+/* Batch Selection Page */
 
+.batch_selection-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
 
+.batch_selection-card, .delivery_selection-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 200px;
+}
 
 

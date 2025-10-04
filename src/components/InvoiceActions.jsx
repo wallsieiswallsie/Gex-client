@@ -8,7 +8,8 @@ function InvoiceActions({ onCreate }) {
       alert("Nama customer harus diisi!");
       return;
     }
-    onCreate(namaInvoice);
+    onCreate(namaInvoice); // kirim nama ke parent
+    setNamaInvoice(""); // reset input
   };
 
   return (

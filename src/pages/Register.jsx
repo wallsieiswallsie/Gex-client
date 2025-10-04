@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerApi } from "../utils/api"; // ✅ pakai API utility
+import { registerApi } from "../utils/api";
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -51,7 +51,7 @@ function RegisterPage() {
 
     setLoading(true);
     try {
-      const data = await registerApi(formData); // ✅ pakai registerApi
+      const data = await registerApi(formData);
 
       alert("Registrasi berhasil, silakan login!");
       setFormData({ name: "", email: "", password: "", role: "" });
@@ -115,7 +115,7 @@ function RegisterPage() {
           <label>Role</label>
           <select name="role" value={formData.role} onChange={handleChange}>
             <option value="">-- Pilih Role --</option>
-            <option value="manager">Manager Main Warehouse</option>
+            <option value="Manager Main Warehouse">Manager Main Warehouse</option>
             <option value="Manager Destination Warehouse">
               Manager Destination Warehouse
             </option>

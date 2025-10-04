@@ -4,6 +4,8 @@ export const getRedirectPathByRole = (role) => {
       return "/packages";
     case "Staff Main Warehouse":
       return "/input";
+    case "Manager Main Warehouse":
+      return "/input";
     default:
       return "/";
   }
