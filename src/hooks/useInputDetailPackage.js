@@ -12,6 +12,7 @@ export const useInputDetailPackage = () => {
     berat: "",
     kode: "",
     invoiced: false,
+    finished: false,
     via: "Kapal",
   });
 
@@ -59,10 +60,11 @@ const handleSave = async (e) => {
         tinggi: Number(formData.tinggi),
         berat: Number(formData.berat),
         invoiced: Boolean(formData.invoiced),
+        finished: Boolean(formData.finished),
       };
 
       const data = await createPackageApi(payload);
-      alert("Data berhasil disimpan! Resi: " + data.resi);
+      alert("Data berhasil disimpan!");
       handleCancel();
     } catch (err) {
       alert("Gagal simpan: " + err.message);

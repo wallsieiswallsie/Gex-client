@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-import { removePackageFromInvoiceApi } from "../../utils/api";
+import { 
+  removePackageFromInvoiceApi,
+  removeActivePackageApi } from "../../utils/api";
 
 function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
   if (!pkg) return null;
@@ -32,6 +34,17 @@ function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
     }
   };
 
+  const handleFinishPackage = async () => {
+    if (!window.confirm("Tandai paket ini sebagai selesai?")) return;
+
+    try {
+      await removeActivePackageApi(pkg.id);;
+      alert("Paket ditandai selesai");
+      onClose();
+    } catch (err) {
+      alert(`Gagal menyelesaikan paket: ${err.message}`);
+    }
+  };
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
@@ -61,6 +74,9 @@ function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
             </button>
           )}
         </div>
+        <button className="modal-button success" onClick={handleFinishPackage}>
+            Selesai
+          </button>
       </div>
     </div>
   );

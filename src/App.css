@@ -139,6 +139,11 @@ button:hover {
   margin: 20px 20px 500px 20px;
 }
 
+.delivery_selection-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .ddp-controls {
   display: flex;
   gap: 10px;
@@ -268,7 +273,9 @@ button:hover {
   cursor: pointer;
 }
 
-.update_status_batch_modal-button {
+.update_status_batch_modal-button,
+.update_active_pengantaran_modal-button,
+.update_archive_pengantaran_modal-button {
   display: block;
   margin: 50px 150px 0px 150px;
 }

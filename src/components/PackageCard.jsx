@@ -32,7 +32,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
       </p>
       <p>{pkg.via}</p>
       <h3>Rp {Number(pkg.harga).toLocaleString("id-ID")}</h3>
-      <p>Status: {statusLabel}</p>
+      <p>{statusLabel}</p>
 
       {isDisabled && <small className="disabled-note">Sudah invoiced</small>}
       {invoiceId && <p className="invoice-number">{invoiceId}</p>}

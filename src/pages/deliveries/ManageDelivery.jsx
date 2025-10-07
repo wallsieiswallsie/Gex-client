@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createPengantaranApi, fetchPengantaranApi } from "../../utils/api";
+import { 
+  createPengantaranApi, 
+  fetchPengantaranApi, 
+  activePengantaranApi 
+} from "../../utils/api";
+import UpdateActivePackageModal from "../../components/modals/UpdateActivePackageModal"; // path pastikan sesuai
 
 export default function ManageDelivery() {
   const [invoiceId, setInvoiceId] = useState("");
   const [deliveries, setDeliveries] = useState([]);
+  const [showModal, setShowModal] = useState(null); // null = tidak ada modal terbuka
   const navigate = useNavigate();
 
   const loadDeliveries = async () => {
@@ -51,18 +57,37 @@ export default function ManageDelivery() {
 
       <div className="delivery-container">
         <h2>Daftar Request</h2>
-        <div className="cards-container">
+        <div className="cards-container grid gap-4">
           {deliveries.map((inv) => (
             <div 
-            key={inv.id}
-            className="package-card"
-            onClick={() => navigate(`/invoices/${inv.id}`)}>
-              <h3 className="border px-2 py-1">{inv.nama_invoice.toUpperCase()}</h3>
-              <h4 className="border px-2 py-1">{inv.id}</h4>
-              <p className="border px-2 py-1">Rp {Number(inv.total_price).toLocaleString("id-ID")}</p>
-              <p className="border px-2 py-1">{inv.created_at}</p>
+              key={inv.id}
+              className="package-card border p-4 rounded shadow relative"
+            >
+              <div onClick={() => navigate(`/invoices/${inv.id}`)} className="cursor-pointer">
+                <h3 className="border px-2 py-1">{inv.nama_invoice.toUpperCase()}</h3>
+                <h4 className="border px-2 py-1">{inv.id}</h4>
+                <p className="border px-2 py-1">
+                  Rp {Number(inv.total_price).toLocaleString("id-ID")}
+                </p>
+                <p className="border px-2 py-1">{inv.created_at}</p>
+              </div>
+
+              {/* Tombol input resi pickup */}
+              <button
+                onClick={() => setShowModal(inv.id)}
+                className="mt-3 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+              >
+                Input Resi Pickup
+              </button>
+
+              {/* Modal khusus untuk card ini */}
+              {showModal === inv.id && (
+                <UpdateActivePackageModal
+                  onClose={() => setShowModal(null)}
+                  activePengantaranApi={activePengantaranApi}
+                />
+              )}
             </div>
-        
           ))}
         </div>
       </div>

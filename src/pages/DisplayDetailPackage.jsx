@@ -113,6 +113,13 @@ function DisplayDetailPackage() {
     <div className="ddp-container">
       <h2>Daftar Detail Paket</h2>
 
+      <button
+        className="archive-button"
+        onClick={() => navigate("/archive_packages")}
+      >
+        Arsip
+      </button>
+
       <PackageControls
         filter={filter}
         setFilter={setFilter}

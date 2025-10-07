@@ -47,6 +47,27 @@ export const fetchInvoiceDetailApi = async (id) =>
 export const removePackageFromInvoiceApi = async (invoiceId, packageId) =>
   apiFetch(`/invoices/${invoiceId}/packages/${Number(packageId)}`, { method: "DELETE" });
 
+export const removeActivePackageApi = async (packageId) =>
+  apiFetch(`/activePackages/${(packageId)}`, { method: "DELETE" });
+
+export const fetchArchivePackagesApi = async ({
+  filter = "",
+  sortBy = "created_at",
+  sortOrder = "desc",
+  page = 1,
+  limit = 50,
+} = {}) => {
+  const params = new URLSearchParams({
+    filter,
+    sortBy,
+    sortOrder,
+    page,
+    limit,
+  });
+
+  return apiFetch(`/archive_packages?${params.toString()}`);
+};
+
 export const createBatchesKapalApi = async (payload) =>
   apiFetch("/batches/kapal", { method: "POST", body: JSON.stringify(payload) });
 
@@ -78,9 +99,27 @@ export const createPengantaranApi = async (payload) =>
     body: JSON.stringify(payload),
   });
 
+export const activePengantaranApi = async (resi) =>
+  apiFetch("/pengantaran", {
+    method: "PATCH",
+    body: JSON.stringify({ resi }),
+  });
+
+export const archivePengantaranApi = async (resi) =>
+  apiFetch("/pengantaran_archive", {
+    method: "PATCH",
+    body: JSON.stringify({ resi }),
+  });
+
 // Ambil semua invoice yang sudah masuk ke deliveries
 export const fetchPengantaranApi = async () =>
   apiFetch("/pengantaran");
+
+export const fetchActivePengantaranApi = async () =>
+  apiFetch("/pengantaran_active");
+
+export const fetchArchivePengantaranApi = async () =>
+  apiFetch("/pengantaran_archive");
 
 // Ambil detail invoice tertentu dari deliveries
 export const fetchPengantaranDetailApi = async (id) =>

@@ -4,20 +4,41 @@ import { useNavigate } from "react-router-dom";
 const DeliverySelectionPage = () => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick1 = () => {
     navigate("/pengantaran");
+  };
+
+  const handleClick2 = () => {
+    navigate("/pengantaran_active");
+  };
+
+  const handleClick3 = () => {
+    navigate("/pengantaran_archive");
   };
 
   return (
     <div className="delivery_selection-container">
         <div
           className="delivery_selection-card"
-          onClick={() => handleClick()}
+          onClick={() => handleClick1()}
         >
           <h2 className="batch_selection-content">Daftar Request</h2>
           <p className="batch_selection-content">Buat request pengantaran</p>
         </div>
-        <h2>Card: Daftar Request, Dalam Pengantaran, Arsip Pengantaran</h2>
+        <div
+          className="delivery_selection-card"
+          onClick={() => handleClick2()}
+        >
+          <h2 className="batch_selection-content">Dalam Pengantaran</h2>
+          <p className="batch_selection-content">Pengantaran Aktif</p>
+        </div>
+        <div
+          className="delivery_selection-card"
+          onClick={() => handleClick3()}
+        >
+          <h2 className="batch_selection-content">Arsip</h2>
+          <p className="batch_selection-content">Arsip Pengantaran</p>
+        </div>
     </div>
   );
 };

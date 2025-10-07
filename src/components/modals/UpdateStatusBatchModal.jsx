@@ -80,7 +80,7 @@ const handleSubmit4 = async (e) => {
               type="submit"
               className="update_status_batch_modal-button"
             >
-              Sudah Berangkat
+              Sudah Sampai
             </button>
         </form>
       </div>

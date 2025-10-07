@@ -3,6 +3,7 @@ import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
+import ArchivePackages from "./pages/ArchivePackages";
 import BatchSelectionPage from "./pages/batches/BatchSelectionPage";
 import DisplayBatchesKapal from "./pages/batches/DisplayBatchesKapal";
 import DisplayBatchesPesawat from "./pages/batches/DisplayBatchesPesawat";
@@ -12,6 +13,8 @@ import InvoicesPage from "./pages/ManageInvoice";
 import InvoiceDetailPage from "./pages/InvoiceDetail";
 import DeliverySelectionPage from "./pages/deliveries/DeliverySelectionPage";
 import ManageDelivery from "./pages/deliveries/ManageDelivery";
+import ActiveDeliveries from "./pages/deliveries/ActiveDeliveries";
+import ArchiveDeliveries from "./pages/deliveries/ArchiveDeliveries";
 import ForbiddenPage from "./pages/errors/ForbiddenPage";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -68,6 +71,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <DisplayDetailPackage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/archive_packages"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <ArchivePackages />
                 </ProtectedRoute>
               }
             />
@@ -156,6 +168,24 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
                   <ManageDelivery />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/pengantaran_active"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                  <ActiveDeliveries />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/pengantaran_archive"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                  <ArchiveDeliveries />
                 </ProtectedRoute>
               }
             />

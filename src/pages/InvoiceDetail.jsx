@@ -7,7 +7,7 @@ import { removePackageFromInvoiceApi } from "../utils/api";
 function InvoiceDetailPage() {
   const { id } = useParams();
   const { invoice, loading, error } = useInvoiceDetail(id);
-  const [invoiceState, setInvoice] = useState(null);
+  const [invoiceData, setInvoiceData] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [selectMode, setSelectMode] = useState(false);
   const [selectedPackages, setSelectedPackages] = useState([]);
@@ -16,12 +16,12 @@ function InvoiceDetailPage() {
   const LONG_PRESS_THRESHOLD = 500; // ms
 
   useEffect(() => {
-    if (invoice) setInvoice(invoice);
+    if (invoice) setInvoiceData(invoice);
   }, [invoice]);
 
   if (loading) return <p>Loading detail invoice...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
-  if (!invoiceState) return <p>Invoice tidak ditemukan.</p>;
+  if (!invoiceData) return <p>Invoice tidak ditemukan.</p>;
 
   const toggleSelect = (pkg) => {
     if (selectedPackages.find((p) => p.id === pkg.id)) {
@@ -59,7 +59,7 @@ function InvoiceDetailPage() {
   const handleRemoveSelected = async () => {
     try {
       for (const pkg of selectedPackages) {
-        await removePackageFromInvoiceApi(invoiceState.id, pkg.id);
+        await removePackageFromInvoiceApi(invoiceData.id, pkg.id);
       }
       setInvoice((prev) => ({
         ...prev,
@@ -77,9 +77,9 @@ function InvoiceDetailPage() {
 
   return (
     <div className="invoice-detail-container">
-      <h2>{invoiceState.nama_invoice.toUpperCase()}</h2>
-      <h3>{invoiceState.id}</h3>
-      <p>Total: Rp {Number(invoiceState.total_price).toLocaleString("id-ID")}</p>
+      <h2>{invoiceData.nama_invoice.toUpperCase()}</h2>
+      <h3>{invoiceData.id}</h3>
+      <p>Total: Rp {Number(invoiceData.total_price).toLocaleString("id-ID")}</p>
 
       {selectMode && selectedPackages.length > 0 && (
         <div className="actions-container" style={{ margin: "10px 0" }}>
@@ -100,7 +100,7 @@ function InvoiceDetailPage() {
       )}
 
       <div className="cards-container" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-        {invoiceState.packages.map((pkg) => {
+        {invoiceData.packages.map((pkg) => {
           const isSelected = selectedPackages.some((p) => p.id === pkg.id);
           return (
             <div
@@ -133,10 +133,10 @@ function InvoiceDetailPage() {
 
       <DetailPackageModal
         pkg={selectedPackage}
-        invoiceId={invoiceState.id}
+        invoiceId={invoiceData.id}
         onClose={() => setSelectedPackage(null)}
         onRemoved={(id) =>
-          setInvoice((prev) => ({
+          setInvoiceData((prev) => ({
             ...prev,
             packages: prev.packages.filter((p) => p.id !== id),
             total_price:
