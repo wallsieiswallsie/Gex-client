@@ -9,6 +9,7 @@ function RegisterPage() {
     email: "",
     password: "",
     role: "",
+    cabang: "", // ✅ Tambahan
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +33,9 @@ function RegisterPage() {
     if (!formData.role) {
       newErrors.role = "Role wajib dipilih";
     }
+    if (!formData.cabang) {
+      newErrors.cabang = "Cabang wajib dipilih"; // ✅ Tambahan validasi
+    }
     return newErrors;
   };
 
@@ -54,11 +58,10 @@ function RegisterPage() {
       const data = await registerApi(formData);
 
       alert("Registrasi berhasil, silakan login!");
-      setFormData({ name: "", email: "", password: "", role: "" });
+      setFormData({ name: "", email: "", password: "", role: "", cabang: "" });
       setErrors({});
       navigate("/login");
     } catch (err) {
-      // registerApi akan throw error jika !res.ok
       alert(err.message || "Registrasi gagal");
     } finally {
       setLoading(false);
@@ -69,6 +72,7 @@ function RegisterPage() {
     <div className="login-container">
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
+        {/* Nama */}
         <div className="form-group">
           <label>Nama</label>
           <input
@@ -80,6 +84,7 @@ function RegisterPage() {
           {errors.name && <p className="error">{errors.name}</p>}
         </div>
 
+        {/* Email */}
         <div className="form-group">
           <label>Email</label>
           <input
@@ -91,6 +96,7 @@ function RegisterPage() {
           {errors.email && <p className="error">{errors.email}</p>}
         </div>
 
+        {/* Password */}
         <div className="form-group">
           <label>Password</label>
           <div className="password-wrapper">
@@ -111,6 +117,7 @@ function RegisterPage() {
           {errors.password && <p className="error">{errors.password}</p>}
         </div>
 
+        {/* Role */}
         <div className="form-group">
           <label>Role</label>
           <select name="role" value={formData.role} onChange={handleChange}>
@@ -119,15 +126,25 @@ function RegisterPage() {
             <option value="Manager Destination Warehouse">
               Manager Destination Warehouse
             </option>
-            <option value="Staff Main Warehouse">
-              Staff Main Warehouse
-            </option>
+            <option value="Staff Main Warehouse">Staff Main Warehouse</option>
             <option value="Staff Destination Warehouse">
               Staff Destination Warehouse
             </option>
             <option value="Courier">Courier</option>
           </select>
           {errors.role && <p className="error">{errors.role}</p>}
+        </div>
+
+        {/* ✅ Cabang */}
+        <div className="form-group">
+          <label>Cabang</label>
+          <select name="cabang" value={formData.cabang} onChange={handleChange}>
+            <option value="">-- Pilih Cabang --</option>
+            <option value="main">Main</option>
+            <option value="remu">Remu</option>
+            <option value="aimas">Aimas</option>
+          </select>
+          {errors.cabang && <p className="error">{errors.cabang}</p>}
         </div>
 
         <button type="submit" className="submit-btn" disabled={loading}>

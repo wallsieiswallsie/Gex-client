@@ -135,11 +135,12 @@ button:hover {
 .batch_selection-container,
 .delivery_selection-container,
 .detail_batch_kapal-container,
-.ddp_batch_kapal-container {
+.ddp_batch_kapal-container,
+.package_in_karung-container {
   margin: 20px 20px 500px 20px;
 }
 
-.delivery_selection-container {
+.delivery_selection-container, .header {
   display: flex;
   flex-direction: row;
 }
@@ -154,14 +155,14 @@ button:hover {
   justify-content: center;
 }
 
-.cards-container, .batch-container {
+.cards-container, .batch-container, .karung-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 16px;
 }
 
-.package-card, .batch-card {
+.package-card, .batch-card, .karung-card {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 16px;

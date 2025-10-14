@@ -22,7 +22,10 @@ export function usePackages(initialQuery = {}) {
     };
 
     try {
-      const data = await fetchPackagesApi(finalQuery);
+      // Ambil token dari localStorage atau context
+      const token = localStorage.getItem("accessToken");
+
+      const data = await fetchPackagesApi(finalQuery, token); // kirim token ke API
 
       setPackages(data.data.packages || []);
       setTotal(data.data.total || 0);

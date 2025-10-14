@@ -14,6 +14,7 @@ const MENU_ITEMS = [
   { path: "#", label: "Keuangan", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
 
   { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse"] },
+  { path: "/packing", label: "Packing", roles: ["Manager Main Warehouse", "Staff Main Warehouse"] },
 ];
 
 function Sidebar() {

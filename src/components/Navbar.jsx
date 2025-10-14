@@ -1,15 +1,27 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo_gex.png";
 
 function Navbar({ user, onLogout }) {
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1); // kembali ke halaman sebelumnya
+  };
+
   return (
     <nav className="navbar">
       {/* Kiri */}
       <div className="navbar-left">
-        <img
-          src={logo}
-          alt="Logo"
-        />
+        {/* Tombol kembali */}
+        <button
+          className="back-btn"
+          onClick={handleBack}
+          style={{ marginRight: "10px" }}
+        >
+          &lt;
+        </button>
+        <img src={logo} alt="Logo" />
         <span>#BahagianyaOngkirMurah</span>
       </div>
 

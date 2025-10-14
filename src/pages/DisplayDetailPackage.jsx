@@ -111,15 +111,16 @@ function DisplayDetailPackage() {
 
   return (
     <div className="ddp-container">
-      <h2>Daftar Detail Paket</h2>
+      <div className="header">
+        <h2>Daftar Detail Paket</h2>
 
-      <button
-        className="archive-button"
-        onClick={() => navigate("/archive_packages")}
-      >
-        Arsip
-      </button>
-
+        <button
+          className="archive-button"
+          onClick={() => navigate("/archive_packages")}
+        >
+          Arsip
+        </button>
+      </div>
       <PackageControls
         filter={filter}
         setFilter={setFilter}

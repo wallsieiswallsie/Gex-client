@@ -3,6 +3,7 @@ import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
+import PackagesByKarungPage from "./pages/PackagesByKarungPage";
 import ArchivePackages from "./pages/ArchivePackages";
 import BatchSelectionPage from "./pages/batches/BatchSelectionPage";
 import DisplayBatchesKapal from "./pages/batches/DisplayBatchesKapal";
@@ -11,6 +12,7 @@ import BatchDetailKapal from "./pages/batches/BatchDetailKapal";
 import BatchDetailPesawat from "./pages/batches/BatchDetailPesawat";
 import InvoicesPage from "./pages/ManageInvoice";
 import InvoiceDetailPage from "./pages/InvoiceDetail";
+import ArchivedInvoicesPage from "./pages/ArchivedInvoicesPage";
 import DeliverySelectionPage from "./pages/deliveries/DeliverySelectionPage";
 import ManageDelivery from "./pages/deliveries/ManageDelivery";
 import ActiveDeliveries from "./pages/deliveries/ActiveDeliveries";
@@ -125,6 +127,15 @@ function App() {
               }
             />
 
+            <Route
+              path="/batches/kapal/:batchId/karung/:noKarung"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <PackagesByKarungPage />
+                </ProtectedRoute>
+              }
+            />
+
             {/* Detail batch Pesawat */}
             <Route
               path="/batches/pesawat/:batchId"
@@ -142,6 +153,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
                   <InvoicesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/archived_invoices"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                  <ArchivedInvoicesPage />
                 </ProtectedRoute>
               }
             />

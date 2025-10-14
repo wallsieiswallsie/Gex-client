@@ -2,7 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import DetailPackageModal from "../components/modals/DetailPackageModal";
 import { useInvoiceDetail } from "../hooks/useInvoiceDetail";
-import { removePackageFromInvoiceApi } from "../utils/api";
+import { 
+  removePackageFromInvoiceApi,
+  addPackagesByResiToInvoiceApi 
+} from "../utils/api";
 
 function InvoiceDetailPage() {
   const { id } = useParams();
@@ -11,6 +14,8 @@ function InvoiceDetailPage() {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [selectMode, setSelectMode] = useState(false);
   const [selectedPackages, setSelectedPackages] = useState([]);
+  const [showAddResiModal, setShowAddResiModal] = useState(false);
+  const [resiList, setResiList] = useState("");
 
   const longPressTimer = useRef(null);
   const LONG_PRESS_THRESHOLD = 500; // ms
@@ -56,24 +61,60 @@ function InvoiceDetailPage() {
   };
   const handleTouchEnd = () => clearTimeout(longPressTimer.current);
 
+  // Hapus paket terpilih
   const handleRemoveSelected = async () => {
     try {
       for (const pkg of selectedPackages) {
         await removePackageFromInvoiceApi(invoiceData.id, pkg.id);
       }
-      setInvoice((prev) => ({
-        ...prev,
-        packages: prev.packages.filter((p) => !selectedPackages.some(sp => sp.id === p.id)),
-        total_price: prev.packages
-          .filter((p) => !selectedPackages.some(sp => sp.id === p.id))
-          .reduce((sum, p) => sum + p.harga, 0),
-      }));
+      setInvoiceData((prev) => {
+        const updatedPackages = (prev.packages || []).filter(
+          (p) => !selectedPackages.some((sp) => sp.id === p.id)
+        );
+        const updatedTotal = updatedPackages.reduce((sum, p) => sum + Number(p.harga), 0);
+        return { ...prev, packages: updatedPackages, total_price: updatedTotal };
+      });
       setSelectedPackages([]);
       setSelectMode(false);
     } catch (err) {
+      console.error(err);
       alert("Gagal menghapus paket: " + err.message);
     }
   };
+
+  // Tambah paket berdasarkan resi
+  const handleAddPackages = async () => {
+    if (!resiList.trim()) {
+      alert("Masukkan minimal satu nomor resi.");
+      return;
+    }
+
+    const resiArray = resiList
+      .split(/[\s,;]+/)
+      .map((r) => r.trim())
+      .filter(Boolean);
+
+    try {
+      const result = await addPackagesByResiToInvoiceApi(invoiceData.id, resiArray);
+
+      setInvoiceData((prev) => {
+        const existingPackages = prev.packages || [];
+        const addedPackages = result.data?.addedPackages || [];
+        const mergedPackages = [...existingPackages, ...addedPackages];
+        const updatedTotal = result.data?.total_price || mergedPackages.reduce((sum, p) => sum + Number(p.harga), 0);
+
+        return { ...prev, packages: mergedPackages, total_price: updatedTotal };
+      });
+
+      setResiList("");
+      setShowAddResiModal(false);
+    } catch (err) {
+      console.error(err);
+      alert("Gagal menambahkan paket: " + err.message);
+    }
+  };
+
+  const packages = invoiceData.packages || [];
 
   return (
     <div className="invoice-detail-container">
@@ -99,8 +140,26 @@ function InvoiceDetailPage() {
         </div>
       )}
 
+      <div style={{ marginBottom: "10px" }}>
+        <button
+          onClick={() => setShowAddResiModal(true)}
+          style={{
+            backgroundColor: "green",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            width: "32px",
+            height: "32px",
+            fontSize: "20px",
+            cursor: "pointer",
+          }}
+        >
+          +
+        </button>
+      </div>
+
       <div className="cards-container" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-        {invoiceData.packages.map((pkg) => {
+        {packages.map((pkg) => {
           const isSelected = selectedPackages.some((p) => p.id === pkg.id);
           return (
             <div
@@ -136,15 +195,57 @@ function InvoiceDetailPage() {
         invoiceId={invoiceData.id}
         onClose={() => setSelectedPackage(null)}
         onRemoved={(id) =>
-          setInvoiceData((prev) => ({
-            ...prev,
-            packages: prev.packages.filter((p) => p.id !== id),
-            total_price:
-              prev.total_price -
-              prev.packages.find((p) => p.id === id).harga,
-          }))
+          setInvoiceData((prev) => {
+            const updatedPackages = (prev.packages || []).filter((p) => p.id !== id);
+            const updatedTotal = updatedPackages.reduce((sum, p) => sum + Number(p.harga), 0);
+            return { ...prev, packages: updatedPackages, total_price: updatedTotal };
+          })
         }
       />
+
+      {showAddResiModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "20px",
+              borderRadius: "8px",
+              width: "300px",
+            }}
+          >
+            <h3>Tambah Paket ke Invoice</h3>
+            <p>Masukkan daftar resi (pisahkan dengan spasi, koma, atau enter):</p>
+            <textarea
+              value={resiList}
+              onChange={(e) => setResiList(e.target.value)}
+              rows="4"
+              style={{ width: "100%", marginBottom: "10px" }}
+            />
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+              <button onClick={() => setShowAddResiModal(false)}>Batal</button>
+              <button
+                onClick={handleAddPackages}
+                style={{ backgroundColor: "green", color: "white", border: "none", padding: "5px 10px" }}
+              >
+                Tambah
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

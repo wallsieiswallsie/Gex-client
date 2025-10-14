@@ -75,10 +75,6 @@ function ArchivePackages() {
     <div className="ddp-container">
       <h2>Arsip Paket</h2>
 
-      <button className="back-button" onClick={() => navigate("/packages")}>
-        Kembali
-      </button>
-
       <PackageControls
         filter={filter}
         setFilter={setFilter}

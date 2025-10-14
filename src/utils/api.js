@@ -34,18 +34,42 @@ export const registerApi = async (payload) =>
 export const createPackageApi = async (payload) =>
   apiFetch("/packages", { method: "POST", body: JSON.stringify(payload) });
 
-export const fetchPackagesApi = async () => apiFetch("/packages");
+export const fetchPackagesApi = async (query = {}) => {
+  const params = new URLSearchParams(query).toString();
+  return apiFetch(`/packages?${params}`);
+};
 
 export const createInvoiceApi = async (payload) =>
   apiFetch("/invoices", { method: "POST", body: JSON.stringify(payload) });
 
 export const fetchInvoicesApi = async () => apiFetch("/invoices");
 
+export const fetchArchivedInvoicesApi = async () => {
+  return apiFetch("/archived_invoices");
+};
+
 export const fetchInvoiceDetailApi = async (id) =>
   apiFetch(`/invoices/${id}`);
 
+export const addPackagesByResiToInvoiceApi = async (invoiceId, resiList) =>
+  apiFetch(`/invoices/${invoiceId}/packages`, {
+    method: "POST",
+    body: JSON.stringify({ resiList }),
+  });
+
 export const removePackageFromInvoiceApi = async (invoiceId, packageId) =>
   apiFetch(`/invoices/${invoiceId}/packages/${Number(packageId)}`, { method: "DELETE" });
+
+export const archivePackagesByInvoicesApi = async (invoiceIds) => {
+  if (!Array.isArray(invoiceIds) || invoiceIds.length === 0) {
+    throw new Error("invoiceIds harus berupa array yang tidak kosong");
+  }
+
+  return apiFetch("/invoices/archive-packages", {
+    method: "POST",
+    body: JSON.stringify({ invoiceIds }),
+  });
+};
 
 export const removeActivePackageApi = async (packageId) =>
   apiFetch(`/activePackages/${(packageId)}`, { method: "DELETE" });
@@ -89,6 +113,26 @@ export const addPackageToBatchKapalApi = async (batchId, resi) =>
 
 export const addPackageToBatchPesawatApi = async (batchId, resi) =>
   apiFetch(`/batches/pesawat/${batchId}/packages`, { method: "POST", body: JSON.stringify({ resi }) });
+
+export const addNoKarungToBatchKapalApi = async (batchId, noKarung) =>
+  apiFetch(`/batches/kapal/${batchId}/karung`, { 
+    method: "POST",
+    body: JSON.stringify({ noKarung }),
+  });
+  
+export const addPackageToKarungApi = async (batchId, resi, noKarung) =>
+  apiFetch(`/batches/kapal/${batchId}/karung/add-package`, {
+    method: "POST",
+    body: JSON.stringify({ resi, noKarung }),
+  }); 
+
+export const getBatchWithKarungApi = async (batchId) =>
+  apiFetch(`/batches/kapal/${batchId}/karung`, {
+    method: "GET",
+  });
+
+export const getPackagesByKarungApi = async (batchId, noKarung, search = "") =>
+  apiFetch(`/batches/kapal/${batchId}/karung/${noKarung}/packages?search=${search}`);
 
 /** PENGANTARAN API */
 
