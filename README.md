@@ -53,6 +53,3 @@ Versi pertama aplikasi manajemen paket dengan integrasi PostgreSQL.
 - Pastikan PostgreSQL sudah terinstall dan dijalankan.
 - Buat database sesuai konfigurasi .env.
 - Fitur perhitungan berat volumetrik dan harga sudah otomatis tampil di modul DisplayDetailPackage.
-
-Versi: v1.0.0
-Status: First release
