@@ -1,16 +1,21 @@
 function PackageControls({
   filter,
   setFilter,
-  sortBy,
-  setSortBy,
-  sortOrder,
-  setSortOrder,
   invoicedFilter,
   setInvoicedFilter,
   viaFilter,
   setViaFilter,
-  onApply,
+  cabangFilter,
+  setCabangFilter,
+  selectMode,
+  setSelectMode,
+  setSelectedPackages,
 }) {
+  const handleToggleSelect = () => {
+    setSelectMode(!selectMode);
+    setSelectedPackages([]);
+  };
+
   return (
     <div className="ddp-controls">
       <input
@@ -19,18 +24,6 @@ function PackageControls({
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
       />
-
-      <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-        <option value="created_at">Tanggal Input</option>
-        <option value="nama">Nama Paket</option>
-        <option value="resi">Resi</option>
-        <option value="berat">Berat</option>
-      </select>
-
-      <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-        <option value="asc">Terkecil - Terbesar</option>
-        <option value="desc">Terbesar - Terkecil</option>
-      </select>
 
       <select
         value={invoicedFilter}
@@ -50,7 +43,21 @@ function PackageControls({
         <option value="Pesawat">Pesawat</option>
       </select>
 
-      <button onClick={onApply}>Terapkan</button>
+      <select
+        value={cabangFilter}
+        onChange={(e) => setCabangFilter(e.target.value)}
+      >
+        <option value="all">Semua Cabang</option>
+        <option value="Remu">Remu</option>
+        <option value="Aimas">Aimas</option>
+      </select>
+
+      <button
+        className={`select-toggle-button ${selectMode ? "active" : ""}`}
+        onClick={handleToggleSelect}
+      >
+        {selectMode ? "Batal Pilih" : "Pilih"}
+      </button>
     </div>
   );
 }

@@ -30,7 +30,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
       <p>
         {pkg.panjang} × {pkg.lebar} × {pkg.tinggi} | {pkg.berat_dipakai} kg
       </p>
-      <p>{pkg.via}</p>
+      <p>{pkg.kode}</p>
       <h3>Rp {Number(pkg.harga).toLocaleString("id-ID")}</h3>
       <p>{statusLabel}</p>
 

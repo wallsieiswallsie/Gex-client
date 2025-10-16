@@ -13,33 +13,26 @@ import DetailPackageModal from "../components/modals/DetailPackageModal";
 
 function DisplayDetailPackage() {
   const [filter, setFilter] = useState("");
-  const [sortBy, setSortBy] = useState("created_at");
-  const [sortOrder, setSortOrder] = useState("desc");
   const [invoicedFilter, setInvoicedFilter] = useState("all");
   const [viaFilter, setViaFilter] = useState("all");
+  const [cabangFilter, setCabangFilter] = useState("all");
 
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [selectMode, setSelectMode] = useState(false);
   const [selectedPackages, setSelectedPackages] = useState([]);
-
   const [latestStatuses, setLatestStatuses] = useState({});
 
   const navigate = useNavigate();
   const { packages, loading, error, fetchPackages } = usePackages();
   const { fetchLatest } = usePackageStatus();
 
-  // ambil latest status setiap kali packages berubah
   useEffect(() => {
     const fetchStatuses = async () => {
       const statusesMap = {};
       for (const pkg of packages) {
         try {
           const res = await fetchLatest(pkg.id);
-          if (res && res.latest) {
-            statusesMap[pkg.id] = Number(res.latest.status);
-          } else {
-            statusesMap[pkg.id] = null;
-          }
+          statusesMap[pkg.id] = res?.latest ? Number(res.latest.status) : null;
         } catch (err) {
           console.warn(`Gagal ambil status untuk paket ${pkg.id}:`, err);
           statusesMap[pkg.id] = null;
@@ -49,14 +42,11 @@ function DisplayDetailPackage() {
     };
 
     if (packages.length > 0) {
-      fetchStatuses().catch((err) => console.error("Fatal fetchStatuses error:", err));
+      fetchStatuses().catch((err) =>
+        console.error("Fatal fetchStatuses error:", err)
+      );
     }
   }, [packages, fetchLatest]);
-
-
-  const handleApplyFilterSort = () => {
-    fetchPackages({ filter, sortBy, sortOrder });
-  };
 
   const toggleSelect = (pkg) => {
     if (selectedPackages.find((p) => p.id === pkg.id)) {
@@ -64,12 +54,6 @@ function DisplayDetailPackage() {
     } else {
       setSelectedPackages([...selectedPackages, pkg]);
     }
-  };
-
-  const handleCardRightClick = (e, pkg) => {
-    e.preventDefault();
-    if (!selectMode) setSelectMode(true);
-    toggleSelect(pkg);
   };
 
   const handleCreateInvoice = async (namaInvoice) => {
@@ -82,13 +66,12 @@ function DisplayDetailPackage() {
       alert("Invoice berhasil dibuat!");
       setSelectedPackages([]);
       setSelectMode(false);
-      fetchPackages({ filter, sortBy, sortOrder });
+      fetchPackages({});
     } catch (err) {
       alert(`Gagal buat invoice: ${err.message}`);
     }
   };
 
-  // filter tambahan berdasarkan invoiced
   const filteredPackages = packages
     .filter((pkg) => {
       if (!filter) return true;
@@ -107,12 +90,25 @@ function DisplayDetailPackage() {
     .filter((pkg) => {
       if (viaFilter === "all") return true;
       return pkg.via === viaFilter;
+    })
+    .filter((pkg) => {
+      if (cabangFilter === "all") return true;
+
+      const kode = pkg.kode?.toUpperCase();
+      const cabang =
+        kode === "JKSOQA" || kode === "JPSOQA"
+          ? "Remu"
+          : kode === "JKSOQB" || kode === "JPSOQB"
+          ? "Aimas"
+          : null;
+
+      return cabang === cabangFilter;
     });
 
   return (
     <div className="ddp-container">
       <div className="header">
-        <h2>Daftar Detail Paket</h2>
+        <h2>Paket Aktif</h2>
 
         <button
           className="archive-button"
@@ -121,18 +117,19 @@ function DisplayDetailPackage() {
           Arsip
         </button>
       </div>
+
       <PackageControls
         filter={filter}
         setFilter={setFilter}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
         invoicedFilter={invoicedFilter}
         setInvoicedFilter={setInvoicedFilter}
         viaFilter={viaFilter}
         setViaFilter={setViaFilter}
-        onApply={handleApplyFilterSort}
+        cabangFilter={cabangFilter}
+        setCabangFilter={setCabangFilter}
+        selectMode={selectMode}
+        setSelectMode={setSelectMode}
+        setSelectedPackages={setSelectedPackages}
       />
 
       {loading && <p>Loading data paket...</p>}
@@ -148,19 +145,19 @@ function DisplayDetailPackage() {
 
           return (
             <ErrorBoundary key={pkg.id}>
-            <PackageCard
-              pkg={pkg}
-              invoiceId={pkg.invoice_id || null}
-              isSelected={isSelected}
-              isDisabled={isDisabled}
-              statusLabel={statusLabel}
-              onClick={() =>
-                selectMode
-                  ? !isDisabled && toggleSelect(pkg)
-                  : setSelectedPackage(pkg)
-              }
-              onRightClick={(e) => handleCardRightClick(e, pkg)}
-            /> </ErrorBoundary>
+              <PackageCard
+                pkg={pkg}
+                invoiceId={pkg.invoice_id || null}
+                isSelected={isSelected}
+                isDisabled={isDisabled}
+                statusLabel={statusLabel}
+                onClick={() =>
+                  selectMode
+                    ? !isDisabled && toggleSelect(pkg)
+                    : setSelectedPackage(pkg)
+                }
+              />
+            </ErrorBoundary>
           );
         })}
       </div>
