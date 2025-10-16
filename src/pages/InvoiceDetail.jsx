@@ -119,10 +119,10 @@ function InvoiceDetailPage() {
   return (
     <div className="invoice-detail-container">
       <h2>{invoiceData.nama_invoice.toUpperCase()}</h2>
-      <h4>{invoiceData.id}</h4>
+      <p>{invoiceData.id}</p>
       <p>Jumlah Paket: {invoiceData.package_count || (invoiceData.packages?.length || 0)}</p>
       <p>Total: Rp {Number(invoiceData.total_price).toLocaleString("id-ID")}</p>
-      
+
       {selectMode && selectedPackages.length > 0 && (
         <div className="actions-container" style={{ margin: "10px 0" }}>
           <button
@@ -181,7 +181,7 @@ function InvoiceDetailPage() {
               onClick={() => selectMode ? toggleSelect(pkg) : setSelectedPackage(pkg)}
             >
               <h4>{pkg.nama.toUpperCase()}</h4>
-              <p>Resi: {pkg.resi}</p>
+              <p>Resi: {pkg.resi.toUpperCase()}</p>
               <p>
                 {pkg.panjang} × {pkg.lebar} × {pkg.tinggi}
               </p>

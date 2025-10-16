@@ -26,7 +26,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
       onContextMenu={onRightClick}
     >
       <h2>{pkg.nama.toUpperCase()}</h2>
-      <h3>{pkg.resi}</h3>
+      <h3>{pkg.resi.toUpperCase()}</h3>
       <p>
         {pkg.panjang} × {pkg.lebar} × {pkg.tinggi} | {pkg.berat_dipakai} kg
       </p>

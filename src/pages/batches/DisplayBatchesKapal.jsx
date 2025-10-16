@@ -1,4 +1,3 @@
-// src/pages/batches/DisplayBatchesKapal.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -16,7 +15,7 @@ export default function DisplayBatchesKapal() {
     tanggalBerangkat: "",
     namaVendor: "",
   });
-  const [selectedBatch, setSelectedBatch] = useState(null); // batch yang mau diupdate
+  const [selectedBatch, setSelectedBatch] = useState(null);
 
   const navigate = useNavigate();
 
@@ -77,9 +76,8 @@ export default function DisplayBatchesKapal() {
         <h1 className="text-2xl font-bold">Daftar Batch Kapal</h1>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
         >
-          + Add Batch
+          + 
         </button>
       </div>
 
@@ -155,8 +153,8 @@ export default function DisplayBatchesKapal() {
       <div className="batch-container">
         {batches.map((batch) => (
           <div className="batch-card" key={batch.id}>
-            <h2>{batch.id}</h2>
-            <h5>{batch.nama_kapal.toUpperCase()}</h5>
+            <h3>{batch.nama_kapal.toUpperCase()}</h3>
+            <p>{batch.id}</p>
             <p>{batch.tanggal_closing.split("T")[0]}</p>
             <div className="flex gap-2">
               <button
