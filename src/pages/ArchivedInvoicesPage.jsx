@@ -26,7 +26,6 @@ function ArchivedInvoicesPage() {
     loadArchivedInvoices();
   }, [request]);
 
-  // Filter invoice berdasarkan search
   const filteredInvoices = useMemo(() => {
     if (!search.trim()) return invoices;
     return invoices.filter((inv) =>
@@ -40,7 +39,6 @@ function ArchivedInvoicesPage() {
     <div className="invoice-container">
       <h2>Invoice Arsip</h2>
 
-      {/* Input pencarian */}
       <div style={{ marginBottom: "16px" }}>
         <input
           type="text"
@@ -69,8 +67,9 @@ function ArchivedInvoicesPage() {
               }
             >
               <h3>{inv.nama_invoice.toUpperCase()}</h3>
-              <h4>{inv.id}</h4>
-              <p>Rp {Number(inv.total_price).toLocaleString("id-ID")}</p>
+                <p>{inv.id}</p>
+                <p>Jumlah Paket: {inv.package_count}</p>
+                <h4>Rp {Number(inv.total_price).toLocaleString("id-ID")}</h4>
             </div>
           ))}
         </div>

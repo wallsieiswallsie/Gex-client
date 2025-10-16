@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInvoices } from "../hooks/useInvoices";
 import { archivePackagesByInvoicesApi } from "../utils/api";
@@ -10,16 +10,6 @@ function InvoicesPage() {
   const [selectMode, setSelectMode] = useState(false);
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [search, setSearch] = useState("");
-  const timerRef = useRef(null);
-
-  const handleLongPressStart = (invId) => {
-    timerRef.current = setTimeout(() => {
-      setSelectMode(true);
-      setSelectedInvoices([invId]);
-    }, 500);
-  };
-
-  const handleLongPressEnd = () => clearTimeout(timerRef.current);
 
   const toggleSelectInvoice = (invId) => {
     if (selectedInvoices.includes(invId)) {
@@ -43,7 +33,6 @@ function InvoicesPage() {
     }
   };
 
-  // Filter invoices berdasarkan search
   const filteredInvoices = useMemo(() => {
     if (!search.trim()) return invoices;
     return invoices.filter((inv) =>
@@ -53,41 +42,63 @@ function InvoicesPage() {
 
   return (
     <div className="invoice-container">
-      {/* Header dan tombol Arsip */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-        <h2>Daftar Invoice</h2>
+      {/* Baris 1: Judul dan tombol Arsip */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "12px",
+        }}
+      >
+        <h2 style={{ margin: 0 }}>Daftar Invoice</h2>
         <button onClick={() => navigate("/archived_invoices")}>Arsip</button>
       </div>
 
-      {/* Input pencarian */}
-      <div style={{ marginBottom: "16px" }}>
+      {/* Baris 2: Pencarian + tombol aksi */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}
+      >
+        {/* Input pencarian */}
         <input
           type="text"
           placeholder="Cari invoice..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
+          style={{
+            flex: 1,
+            padding: "8px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
         />
-      </div>
 
-      {/* Tombol arsip batch saat selectMode aktif */}
-      {selectMode && (
-        <div style={{ marginBottom: "16px" }}>
-          <button onClick={handleArchive} className="btn btn-primary">
-            Arsipkan ({selectedInvoices.length})
-          </button>
-          <button
-            onClick={() => {
-              setSelectMode(false);
-              setSelectedInvoices([]);
-            }}
-            className="btn btn-secondary"
-            style={{ marginLeft: 8 }}
-          >
-            Batal
-          </button>
-        </div>
-      )}
+        {/* Tombol aksi */}
+        {!selectMode ? (
+          <button onClick={() => setSelectMode(true)}>Pilih</button>
+        ) : (
+          <>
+            <button onClick={handleArchive} className="btn btn-primary">
+              Arsipkan ({selectedInvoices.length})
+            </button>
+            <button
+              onClick={() => {
+                setSelectMode(false);
+                setSelectedInvoices([]);
+              }}
+              className="btn btn-secondary"
+            >
+              Batal
+            </button>
+          </>
+        )}
+      </div>
 
       {/* Daftar invoice */}
       {loading ? (
@@ -107,10 +118,6 @@ function InvoicesPage() {
                   border: isSelected ? "2px solid blue" : "1px solid #ccc",
                   backgroundColor: isSelected ? "#e0f0ff" : "#fff",
                 }}
-                onMouseDown={() => handleLongPressStart(inv.id)}
-                onMouseUp={handleLongPressEnd}
-                onTouchStart={() => handleLongPressStart(inv.id)}
-                onTouchEnd={handleLongPressEnd}
                 onClick={() => {
                   if (selectMode) {
                     toggleSelectInvoice(inv.id);
@@ -120,9 +127,9 @@ function InvoicesPage() {
                 }}
               >
                 <h3>{inv.nama_invoice.toUpperCase()}</h3>
-                <h4>{inv.id}</h4>
-                <p>Total: Rp {Number(inv.total_price).toLocaleString("id-ID")}</p>
-                <p>{new Date(inv.created_at).toLocaleString("id-ID")}</p>
+                <p>{inv.id}</p>
+                <p>Jumlah Paket: {inv.package_count}</p>
+                <h4>Rp {Number(inv.total_price).toLocaleString("id-ID")}</h4>
               </div>
             );
           })}
