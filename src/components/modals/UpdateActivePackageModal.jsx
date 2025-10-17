@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { addPackageStatus } from "../../utils/api";
 
-function UpdateActivePackageModal({ onClose, activePengantaranApi }) {
+function UpdateActivePackageModal({ onClose, activePengantaranApi}) {
   const [resi, setResi] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,10 +16,13 @@ function UpdateActivePackageModal({ onClose, activePengantaranApi }) {
     setError(null);
 
     try {
-      await activePengantaranApi(resi); 
-      onClose(); // Tutup modal setelah sukses
+      // 1️⃣ Jalankan aktivasi pengantaran (update resi)
+      await activePengantaranApi(resi);
+
+      // 3️⃣ Tutup modal setelah sukses
+      onClose();
     } catch (err) {
-      setError(err.message || "Terjadi kesalahan");
+      setError(err.message || "Terjadi kesalahan saat update status");
     } finally {
       setLoading(false);
     }
@@ -31,10 +35,7 @@ function UpdateActivePackageModal({ onClose, activePengantaranApi }) {
   };
 
   return (
-    <div
-      className="modal-overlay"
-      onClick={handleOverlayClick}
-    >
+    <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-container">
         <h2 className="modal-title">Aktifkan Pengantaran</h2>
 
@@ -51,14 +52,14 @@ function UpdateActivePackageModal({ onClose, activePengantaranApi }) {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="update_active_pengantaran_modal-button"
+          className="update_active_pengantaran_modal-button bg-green-600 text-white hover:bg-green-700"
         >
           {loading ? "Memproses..." : "Sudah di Pick Up"}
         </button>
 
         <button
           onClick={onClose}
-          className="update_active_pengantaran_modal-button"
+          className="update_active_pengantaran_modal-button bg-gray-400 text-white hover:bg-gray-500 mt-2"
         >
           Batal
         </button>

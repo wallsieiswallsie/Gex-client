@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // ✅ tambahkan useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import { 
   getBatchWithKarungApi,
   addNoKarungToBatchKapalApi,
@@ -9,7 +9,7 @@ import PackingPackageToKarung from "../../components/modals/PackingPackageToKaru
 
 export default function BatchDetailKapal() {
   const { batchId } = useParams();
-  const navigate = useNavigate(); // ✅ inisialisasi navigate
+  const navigate = useNavigate();
   const [batch, setBatch] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -109,7 +109,6 @@ export default function BatchDetailKapal() {
                   Packing Paket
                 </button>
 
-                {/* ✅ Tombol navigasi ke halaman daftar paket karung */}
                 <button
                   onClick={() =>
                     navigate(`/batches/kapal/${batchId}/karung/${karung.no_karung}`)

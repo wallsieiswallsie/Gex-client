@@ -1,4 +1,3 @@
-// src/pages/batches/UpdateStatusBatchModal.jsx
 import { useState } from "react";
 import { addPackageStatus, fetchBatchKapalDetailApi } from "../../utils/api";
 
@@ -14,7 +13,6 @@ export default function UpdateStatusBatchModal({ batch, onClose, onUpdated }) {
 const handleSubmit3 = async (e) => {
   e.preventDefault();
   try {
-    // Ambil detail batch + packages
     const resJson = await fetchBatchKapalDetailApi(batch.id);
     const batchData = resJson.data;
 
@@ -25,7 +23,6 @@ const handleSubmit3 = async (e) => {
       return;
     }
 
-    // Karena status 3 berlaku untuk seluruh batch
     await addPackageStatus(null, 3, batch.id);
 
     alert("Semua paket dalam batch berhasil diupdate ke status 3!");
@@ -40,7 +37,6 @@ const handleSubmit3 = async (e) => {
 const handleSubmit4 = async (e) => {
   e.preventDefault();
   try {
-    // Ambil detail batch + packages
     const resJson = await fetchBatchKapalDetailApi(batch.id);
     const batchData = resJson.data;
 
@@ -51,7 +47,6 @@ const handleSubmit4 = async (e) => {
       return;
     }
 
-    // Karena status 3 berlaku untuk seluruh batch
     await addPackageStatus(null, 4, batch.id);
 
     alert("Semua paket dalam batch berhasil diupdate ke status 4!");

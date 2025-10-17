@@ -16,7 +16,7 @@ function UpdateArchivePackageModal({ onClose, archivePengantaranApi }) {
 
     try {
       await archivePengantaranApi(resi); 
-      onClose(); // Tutup modal setelah sukses
+      onClose();
     } catch (err) {
       setError(err.message || "Terjadi kesalahan");
     } finally {

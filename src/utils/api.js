@@ -169,7 +169,6 @@ export const fetchArchivePengantaranApi = async () =>
 export const fetchPengantaranDetailApi = async (id) =>
   apiFetch(`/pengantaran/${id}`);
 
-
 /** STATUS API */
 // Tambah atau update status paket (status wajib, batchId opsional)
 // Tambah atau update status paket / batch

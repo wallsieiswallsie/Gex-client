@@ -53,9 +53,6 @@ function ActiveDeliveries() {
                     <p className="border px-2 py-1">
                       Rp {Number(inv.total_price)?.toLocaleString("id-ID")}
                     </p>
-                    <p className="border px-2 py-1">
-                      Jumlah Paket: {inv.total_packages}
-                    </p>
                   </div>
 
                   <button

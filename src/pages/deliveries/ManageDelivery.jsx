@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { 
   createPengantaranApi, 
   fetchPengantaranApi, 
-  activePengantaranApi 
+  activePengantaranApi,
+  addPackageStatus,
 } from "../../utils/api";
-import UpdateActivePackageModal from "../../components/modals/UpdateActivePackageModal"; // path pastikan sesuai
+import UpdateActivePackageModal from "../../components/modals/UpdateActivePackageModal";
 
 export default function ManageDelivery() {
   const [invoiceId, setInvoiceId] = useState("");
   const [deliveries, setDeliveries] = useState([]);
-  const [showModal, setShowModal] = useState(null); // null = tidak ada modal terbuka
+  const [showModal, setShowModal] = useState(null);
   const navigate = useNavigate();
 
   const loadDeliveries = async () => {
@@ -24,12 +25,30 @@ export default function ManageDelivery() {
 
   const handleAdd = async () => {
     try {
-      if (!invoiceId) return;
-      await createPengantaranApi({ invoice_id: invoiceId });
+      if (!invoiceId) {
+        alert("Masukkan Invoice ID terlebih dahulu");
+        return;
+      }
+
+      // 1️⃣ Buat pengantaran baru
+      const response = await createPengantaranApi({ invoice_id: invoiceId });
+
+      if (response.inserted?.length > 0) {
+        for (const pkgId of response.inserted) {
+          await addPackageStatus(pkgId, 6);
+          console.log(`Status 6 berhasil dikirim untuk paket ${pkgId}`);
+        }
+      } else {
+        console.warn("pkgId tidak ditemukan dalam response, status 6 tidak dikirim");
+      }
+
+      // 4️⃣ Bersihkan input dan refresh list
       setInvoiceId("");
-      await loadDeliveries(); // refresh list
+      await loadDeliveries();
+
     } catch (err) {
       alert(err.message);
+      console.error("Gagal menambah pengantaran:", err);
     }
   };
 
@@ -49,7 +68,7 @@ export default function ManageDelivery() {
         />
         <button
           onClick={handleAdd}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           +
         </button>
@@ -63,8 +82,11 @@ export default function ManageDelivery() {
               key={inv.id}
               className="package-card border p-4 rounded shadow relative"
             >
-              <div onClick={() => navigate(`/invoices/${inv.id}`)} className="cursor-pointer">
-                <h3 className="border px-2 py-1">{inv.nama_invoice.toUpperCase()}</h3>
+              <div 
+                onClick={() => navigate(`/invoices/${inv.id}`)} 
+                className="cursor-pointer"
+              >
+                <h3 className="border px-2 py-1">{inv.nama_invoice?.toUpperCase()}</h3>
                 <h4 className="border px-2 py-1">{inv.id}</h4>
                 <p className="border px-2 py-1">
                   Rp {Number(inv.total_price).toLocaleString("id-ID")}
@@ -72,7 +94,6 @@ export default function ManageDelivery() {
                 <p className="border px-2 py-1">{inv.created_at}</p>
               </div>
 
-              {/* Tombol input resi pickup */}
               <button
                 onClick={() => setShowModal(inv.id)}
                 className="mt-3 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
@@ -80,7 +101,6 @@ export default function ManageDelivery() {
                 Input Resi Pickup
               </button>
 
-              {/* Modal khusus untuk card ini */}
               {showModal === inv.id && (
                 <UpdateActivePackageModal
                   onClose={() => setShowModal(null)}

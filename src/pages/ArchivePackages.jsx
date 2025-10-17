@@ -14,6 +14,7 @@ function ArchivePackages() {
   const [sortBy, setSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState("desc");
   const [viaFilter, setViaFilter] = useState("all");
+  const [cabangFilter, setCabangFilter] = useState("all");
 
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [selectMode, setSelectMode] = useState(false);
@@ -24,7 +25,6 @@ function ArchivePackages() {
   const { packages, total, page, limit, loading, error, fetchPackages } = useArchivePackages();
   const { fetchLatest } = usePackageStatus();
 
-  // ambil status terbaru
   useEffect(() => {
     const fetchStatuses = async () => {
       const statusesMap = {};
@@ -42,13 +42,12 @@ function ArchivePackages() {
     if (packages.length > 0) fetchStatuses();
   }, [packages, fetchLatest]);
 
-  // fetch data setiap filter/sort/page berubah
   useEffect(() => {
     fetchPackages({ filter, sortBy, sortOrder, page, limit });
   }, [filter, sortBy, sortOrder, page, limit, fetchPackages]);
 
   const handleApplyFilterSort = () => {
-    fetchPackages({ filter, sortBy, sortOrder, page: 1, limit }); // reset ke page 1 saat filter/sort baru
+    fetchPackages({ filter, sortBy, sortOrder, page: 1, limit });
   };
 
   const toggleSelect = (pkg) => {
@@ -65,11 +64,24 @@ function ArchivePackages() {
     toggleSelect(pkg);
   };
 
-  // filter tambahan untuk via
-  const filteredPackages = packages.filter((pkg) => {
-    if (viaFilter === "all") return true;
-    return pkg.via === viaFilter;
-  });
+  const filteredPackages = packages
+    .filter((pkg) => {
+      if (viaFilter === "all") return true;
+      return pkg.via === viaFilter;
+    })
+    .filter((pkg) => {
+      if (cabangFilter === "all") return true;
+
+      const kode = pkg.kode?.toUpperCase();
+      const cabang =
+        kode === "JKSOQA" || kode === "JPSOQA"
+          ? "Remu"
+          : kode === "JKSOQB" || kode === "JPSOQB"
+          ? "Aimas"
+          : null;
+
+      return cabang === cabangFilter;
+    });
 
   return (
     <div className="ddp-container">
@@ -82,10 +94,12 @@ function ArchivePackages() {
         setSortBy={setSortBy}
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
-        invoicedFilter={null} // di arsip semua sudah invoiced, jadi tidak perlu
+        invoicedFilter={null}
         setInvoicedFilter={() => {}}
         viaFilter={viaFilter}
         setViaFilter={setViaFilter}
+        cabangFilter={cabangFilter}
+        setCabangFilter={setCabangFilter}
         onApply={handleApplyFilterSort}
       />
 
