@@ -129,10 +129,12 @@ button:hover {
 
 /* Display Detail Package & Detail Package Modal*/
 .ddp-container,
+.financial_statement-container,
 .invoice-container,
 .delivery-container,
 .invoice-detail-container,
 .batch_selection-container,
+.finance_selection-container,
 .delivery_selection-container,
 .detail_batch_kapal-container,
 .ddp_batch_kapal-container,
@@ -424,7 +426,9 @@ button:hover {
   gap: 16px;
 }
 
-.batch_selection-card, .delivery_selection-card {
+.batch_selection-card,
+.delivery_selection-card,
+.finance_selection-card {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 16px;

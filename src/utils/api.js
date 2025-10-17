@@ -238,3 +238,17 @@ export const useApi = () => {
 
   return { request };
 };
+
+/** FINANCE API */
+
+// Ambil total harga semua paket dalam batch berdasarkan kode
+export const fetchFinanceTotalApi = async (batchId, kode) =>
+  apiFetch(`/finance/${batchId}/${kode}/total`);
+
+// Ambil total harga paket yang finished = true
+export const fetchFinanceFinishedApi = async (batchId, kode) =>
+  apiFetch(`/finance/${batchId}/${kode}/finished`);
+
+// Ambil total harga paket yang finished = false
+export const fetchFinanceUnfinishedApi = async (batchId, kode) =>
+  apiFetch(`/finance/${batchId}/${kode}/unfinished`);

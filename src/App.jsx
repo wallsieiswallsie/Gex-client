@@ -17,6 +17,16 @@ import DeliverySelectionPage from "./pages/deliveries/DeliverySelectionPage";
 import ManageDelivery from "./pages/deliveries/ManageDelivery";
 import ActiveDeliveries from "./pages/deliveries/ActiveDeliveries";
 import ArchiveDeliveries from "./pages/deliveries/ArchiveDeliveries";
+import FinanceSelectionBranchPage from "./pages/finance/FinanceSelectionBranchPage";
+import RemuModaSelectionPage from "./pages/finance/remu/RemuModaSelectionPage";
+import RemuKapalBatchList from "./pages/finance/remu/RemuKapalBatchList";
+import RemuKapalFinancialStatements from "./pages/finance/remu/RemuKapalFinancialStatements";
+
+//import RemuPesawatFinancialStatements from "./pages/finance/remu/RemuPesawatFinancialStatements";
+//import AimasKapalFinancialStatements from "./pages/finance/aimas/AimasKapalFinancialStatements";
+//import AimasPesawatFinancialStatements from "./pages/finance/aimas/AimasPesawatFinancialStatements";
+
+import AimasModaSelectionPage from "./pages/finance/aimas/AimasModaSelectionPage";
 import ForbiddenPage from "./pages/errors/ForbiddenPage";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -208,6 +218,80 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* =================== FINANCE =================== */}
+
+            <Route
+              path="/finance"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <FinanceSelectionBranchPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/finance/remu"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <RemuModaSelectionPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/finance/remu/kapal"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <RemuKapalBatchList />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/remu-kapal/:batchId"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <RemuKapalFinancialStatements />
+                </ProtectedRoute>
+              }
+            />
+
+            {/*<Route
+              path="/finance/remu/pesawat"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <RemuPesawatFinancialStatements />
+                </ProtectedRoute>
+              }
+            /> */}
+
+            <Route
+              path="/finance/aimas"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <AimasModaSelectionPage />
+                </ProtectedRoute>
+              }
+            />
+
+          {/*  <Route
+              path="/finance/aimas/kapal"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <AimasKapalFinancialStatements />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/finance/aimas/pesawat"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <AimasPesawatFinancialStatements />
+                </ProtectedRoute>
+              }
+            /> */}
 
             {/* Halaman forbidden */}
             <Route path="/forbidden" element={<ForbiddenPage />} />

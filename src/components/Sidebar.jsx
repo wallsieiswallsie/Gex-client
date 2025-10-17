@@ -11,7 +11,7 @@ const MENU_ITEMS = [
   { path: "/invoices", label: "Manage Invoice", roles: ["Manager Destination Warehouse"] },
   { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse"] },
   //{ path: "#", label: "Update Status", roles: ["Manager Destination Warehouse"] },
-  { path: "#", label: "Keuangan", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
+  { path: "/finance", label: "Keuangan", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
 
   { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse"] },
   { path: "/packing", label: "Packing", roles: ["Manager Main Warehouse", "Staff Main Warehouse"] },
