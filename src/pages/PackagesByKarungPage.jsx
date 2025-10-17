@@ -55,10 +55,10 @@ const PackagesByKarungPage = () => {
               key={pkg.id}
               className="package-card"
             >
-              <p><strong>Nama:</strong> {pkg.nama}</p>
-              <p><strong>Resi:</strong> {pkg.resi}</p>
-              <p><strong>Berat:</strong> {pkg.berat_dipakai} kg</p>
-              <p><strong>Harga:</strong> Rp {Number(pkg.harga).toLocaleString("id-ID")}</p>
+              <p> {pkg.nama.toUpperCase()}</p>
+              <p>{pkg.resi.toUpperCase()}</p>
+              <p>{pkg.berat_dipakai} kg</p>
+              <p> Rp {Number(pkg.harga).toLocaleString("id-ID")}</p>
             </div>
           ))}
         </div>

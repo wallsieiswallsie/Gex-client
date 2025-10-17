@@ -55,7 +55,7 @@ export default function BatchDetailKapal() {
   if (!batch) return <p>Batch tidak ditemukan</p>;
 
   return (
-    <div className="detail_batch_kapal-container">
+    <div className="detail_batch-container">
       <h1 className="text-xl font-bold mb-4">{batch.id}</h1>
       <p><strong>{batch.nama_kapal.toUpperCase()}</strong></p>
       <p><strong>Tanggal Closing:</strong> {batch.tanggal_closing.split('T')[0]}</p>

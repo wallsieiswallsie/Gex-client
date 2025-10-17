@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchBatchPesawatDetailApi } from "../../utils/api";
+import AddPackageToBatchPesawatModal from "../../components/modals/AddPackageToBatchPesawatModal";
 
 export default function BatchDetailPesawat() {
   const { batchId } = useParams();
   const [batch, setBatch] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchBatchPesawatDetailApi(batchId);
+      if (data.success) setBatch(data.data);
+    } catch (err) {
+      console.error(err);
+      alert("Gagal mengambil detail batch pesawat");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchBatchPesawatDetailApi(batchId);
-        if (data.success) setBatch(data.data);
-      } catch (err) {
-        console.error(err);
-        alert("Gagal mengambil detail batch pesawat");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, [batchId]);
 
@@ -27,23 +30,42 @@ export default function BatchDetailPesawat() {
   if (!batch) return <p>Batch tidak ditemukan</p>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Detail Batch Pesawat {batch.id}</h1>
-      <p><strong>Nama Pesawat:</strong> {batch.nama_pesawat}</p>
-      <p><strong>Tanggal Closing:</strong> {batch.tanggal_closing}</p>
-      <p><strong>Tanggal Berangkat:</strong> {batch.tanggal_berangkat}</p>
+    <div className="detail_batch-container">
+      <h1>{batch.id}</h1>
+      <p><strong>Nama PIC:</strong> {batch.pic.toUpperCase()}</p>
+      <p><strong>Tanggal Kirim:</strong> {batch.tanggal_kirim.split("T")[0]}</p>
 
-      <h2 className="text-lg font-semibold mt-4 mb-2">Daftar Paket</h2>
+      <div className="mt-4 flex justify-between items-center">
+        <h2 className="text-lg font-semibold">Daftar Paket</h2>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+        >
+          + Tambah Paket
+        </button>
+      </div>
+
       {batch.packages && batch.packages.length > 0 ? (
-        <ul className="list-disc pl-6">
-          {batch.packages.map(pkg => (
-            <li key={pkg.id}>
-              {pkg.name} (Resi: {pkg.resi}, Berat: {pkg.berat_dipakai})
-            </li>
+        <div className="card-container">
+          {batch.packages.map((pkg) => (
+            <div key={pkg.id} className="package-card">
+              <p>{pkg.nama.toUpperCase()}</p> 
+              <p>{pkg.resi.toUpperCase()}</p>
+              <p>{pkg.berat_dipakai} kg</p>
+              <p>Rp {Number(pkg.harga).toLocaleString("id-ID")}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         <p className="text-gray-500">Belum ada paket di batch ini</p>
+      )}
+
+      {showAddModal && (
+        <AddPackageToBatchPesawatModal
+          batchId={batchId}
+          onClose={() => setShowAddModal(false)}
+          onSuccess={fetchData}
+        />
       )}
     </div>
   );

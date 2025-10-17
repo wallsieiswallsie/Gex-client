@@ -136,8 +136,8 @@ button:hover {
 .batch_selection-container,
 .finance_selection-container,
 .delivery_selection-container,
-.detail_batch_kapal-container,
-.ddp_batch_kapal-container,
+.detail_batch-container,
+.ddp_batch-container,
 .package_in_karung-container {
   margin: 20px 20px 500px 20px;
 }

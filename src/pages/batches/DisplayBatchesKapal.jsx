@@ -71,7 +71,7 @@ export default function DisplayBatchesKapal() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="ddp_batch_kapal-container">
+    <div className="ddp_batch-container">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Daftar Batch Kapal</h1>
         <button

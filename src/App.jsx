@@ -21,8 +21,8 @@ import FinanceSelectionBranchPage from "./pages/finance/FinanceSelectionBranchPa
 import RemuModaSelectionPage from "./pages/finance/remu/RemuModaSelectionPage";
 import RemuKapalBatchList from "./pages/finance/remu/RemuKapalBatchList";
 import RemuKapalFinancialStatements from "./pages/finance/remu/RemuKapalFinancialStatements";
-
-//import RemuPesawatFinancialStatements from "./pages/finance/remu/RemuPesawatFinancialStatements";
+import RemuPesawatBatchList from "./pages/finance/remu/RemuPesawatBatchList";
+import RemuPesawatFinancialStatements from "./pages/finance/remu/RemuPesawatFinancialStatements";
 //import AimasKapalFinancialStatements from "./pages/finance/aimas/AimasKapalFinancialStatements";
 //import AimasPesawatFinancialStatements from "./pages/finance/aimas/AimasPesawatFinancialStatements";
 
@@ -257,14 +257,23 @@ function App() {
               }
             />
 
-            {/*<Route
+            <Route
               path="/finance/remu/pesawat"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <RemuPesawatBatchList />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/remu-pesawat/:batchId"
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <RemuPesawatFinancialStatements />
                 </ProtectedRoute>
               }
-            /> */}
+            />
 
             <Route
               path="/finance/aimas"
