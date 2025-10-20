@@ -17,16 +17,21 @@ import DeliverySelectionPage from "./pages/deliveries/DeliverySelectionPage";
 import ManageDelivery from "./pages/deliveries/ManageDelivery";
 import ActiveDeliveries from "./pages/deliveries/ActiveDeliveries";
 import ArchiveDeliveries from "./pages/deliveries/ArchiveDeliveries";
+
 import FinanceSelectionBranchPage from "./pages/finance/FinanceSelectionBranchPage";
+
 import RemuModaSelectionPage from "./pages/finance/remu/RemuModaSelectionPage";
 import RemuKapalBatchList from "./pages/finance/remu/RemuKapalBatchList";
 import RemuKapalFinancialStatements from "./pages/finance/remu/RemuKapalFinancialStatements";
 import RemuPesawatBatchList from "./pages/finance/remu/RemuPesawatBatchList";
 import RemuPesawatFinancialStatements from "./pages/finance/remu/RemuPesawatFinancialStatements";
-//import AimasKapalFinancialStatements from "./pages/finance/aimas/AimasKapalFinancialStatements";
-//import AimasPesawatFinancialStatements from "./pages/finance/aimas/AimasPesawatFinancialStatements";
 
 import AimasModaSelectionPage from "./pages/finance/aimas/AimasModaSelectionPage";
+import AimasKapalBatchList from "./pages/finance/aimas/AimasKapalBatchList";
+import AimasKapalFinancialStatements from "./pages/finance/aimas/AimasKapalFinancialStatements";
+import AimasPesawatBatchList from "./pages/finance/aimas/AimasPesawatBatchList";
+import AimasPesawatFinancialStatements from "./pages/finance/aimas/AimasPesawatFinancialStatements";
+
 import ForbiddenPage from "./pages/errors/ForbiddenPage";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -284,8 +289,17 @@ function App() {
               }
             />
 
-          {/*  <Route
+            <Route
               path="/finance/aimas/kapal"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <AimasKapalBatchList />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/aimas-kapal/:batchId"
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <AimasKapalFinancialStatements />
@@ -297,10 +311,19 @@ function App() {
               path="/finance/aimas/pesawat"
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <AimasPesawatBatchList />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/aimas-pesawat/:batchId"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <AimasPesawatFinancialStatements />
                 </ProtectedRoute>
               }
-            /> */}
+            />
 
             {/* Halaman forbidden */}
             <Route path="/forbidden" element={<ForbiddenPage />} />

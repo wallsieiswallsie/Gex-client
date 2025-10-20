@@ -34,6 +34,8 @@ export default function BatchDetailPesawat() {
       <h1>{batch.id}</h1>
       <p><strong>Nama PIC:</strong> {batch.pic.toUpperCase()}</p>
       <p><strong>Tanggal Kirim:</strong> {batch.tanggal_kirim.split("T")[0]}</p>
+      <p><strong>Total Berat:</strong> {batch.total_berat} kg</p>
+      <p><strong>Total Nilai:</strong> Rp {Number(batch.total_value).toLocaleString("id-ID")}</p>
 
       <div className="mt-4 flex justify-between items-center">
         <h2 className="text-lg font-semibold">Daftar Paket</h2>
