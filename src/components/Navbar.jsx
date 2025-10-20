@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/images/logo_gex.png";
+import logo from "../../public/images/logo_gex.png";
 
 function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
