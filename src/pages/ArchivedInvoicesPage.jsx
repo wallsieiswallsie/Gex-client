@@ -9,6 +9,7 @@ function ArchivedInvoicesPage() {
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [branchFilter, setBranchFilter] = useState("semua");
 
   useEffect(() => {
     const loadArchivedInvoices = async () => {
@@ -27,11 +28,22 @@ function ArchivedInvoicesPage() {
   }, [request]);
 
   const filteredInvoices = useMemo(() => {
-    if (!search.trim()) return invoices;
-    return invoices.filter((inv) =>
-      inv.nama_invoice.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [invoices, search]);
+    return invoices.filter((inv) => {
+      const searchLower = search.toLowerCase();
+
+      // Cek apakah nama atau id mengandung kata pencarian
+      const matchesSearch =
+        inv.nama_invoice?.toLowerCase().includes(searchLower) ||
+        inv.id?.toString().toLowerCase().includes(searchLower);
+
+      const branch = inv.cabang?.toLowerCase() || "";
+      const matchesBranch =
+        branchFilter === "semua" ||
+        branch === branchFilter.toLowerCase();
+
+      return matchesSearch && matchesBranch;
+    });
+  }, [invoices, search, branchFilter]);
 
   if (loading) return <p>Loading invoice arsip...</p>;
 
@@ -39,20 +51,46 @@ function ArchivedInvoicesPage() {
     <div className="invoice-container">
       <h2>Invoice Arsip</h2>
 
-      <div style={{ marginBottom: "16px" }}>
-        <input
-          type="text"
-          placeholder="Cari berdasarkan nama invoice..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "8px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
-        />
-      </div>
+      {/* Input pencarian + Filter cabang */}
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    marginBottom: "20px",
+  }}
+>
+  {/* Input pencarian */}
+  <input
+    type="text"
+    placeholder="Cari berdasarkan nama atau id invoice"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    style={{
+      flex: 1,
+      padding: "8px",
+      borderRadius: "4px",
+      border: "1px solid #ccc",
+    }}
+  />
+
+  {/* Filter cabang */}
+  <select
+    id="branchFilter"
+    value={branchFilter}
+    onChange={(e) => setBranchFilter(e.target.value)}
+    style={{
+      padding: "8px",
+      borderRadius: "4px",
+      border: "1px solid #ccc",
+      minWidth: "120px",
+    }}
+  >
+    <option value="semua">Semua Cabang</option>
+    <option value="remu">Remu</option>
+    <option value="aimas">Aimas</option>
+  </select>
+</div>
 
       {filteredInvoices.length === 0 ? (
         <p>Invoice tidak ditemukan.</p>
@@ -70,6 +108,7 @@ function ArchivedInvoicesPage() {
                 <p>{inv.id}</p>
                 <p>Jumlah Paket: {inv.package_count}</p>
                 <h4>Rp {Number(inv.total_price).toLocaleString("id-ID")}</h4>
+                {inv.cabang && <h3>{inv.cabang.toUpperCase()}</h3>}
             </div>
           ))}
         </div>

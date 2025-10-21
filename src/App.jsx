@@ -33,6 +33,7 @@ import AimasPesawatBatchList from "./pages/finance/aimas/AimasPesawatBatchList";
 import AimasPesawatFinancialStatements from "./pages/finance/aimas/AimasPesawatFinancialStatements";
 
 import ForbiddenPage from "./pages/errors/ForbiddenPage";
+import ServerError from "./pages/errors/ServerErrorPage";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -327,6 +328,7 @@ function App() {
 
             {/* Halaman forbidden */}
             <Route path="/forbidden" element={<ForbiddenPage />} />
+            <Route path="/server-error" element={<ServerError />} />
           </Routes>
         </main>
       </div>

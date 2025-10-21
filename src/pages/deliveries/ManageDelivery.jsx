@@ -5,13 +5,16 @@ import {
   fetchPengantaranApi, 
   activePengantaranApi,
   addPackageStatus,
+  addPaymentMethodApi
 } from "../../utils/api";
 import UpdateActivePackageModal from "../../components/modals/UpdateActivePackageModal";
+import PaymentMethodModal from "../../components/modals/PaymentMethodModal";
 
 export default function ManageDelivery() {
   const [invoiceId, setInvoiceId] = useState("");
   const [deliveries, setDeliveries] = useState([]);
-  const [showModal, setShowModal] = useState(null);
+  const [showModal, setShowModal] = useState(null); // modal untuk Input Resi Pickup
+  const [showPaymentModal, setShowPaymentModal] = useState(false); // modal untuk metode pembayaran
   const navigate = useNavigate();
 
   const loadDeliveries = async () => {
@@ -23,21 +26,33 @@ export default function ManageDelivery() {
     }
   };
 
-  const handleAdd = async () => {
-    try {
-      if (!invoiceId) {
-        alert("Masukkan Invoice ID terlebih dahulu");
-        return;
-      }
+  const handleAdd = () => {
+    if (!invoiceId) {
+      alert("Masukkan Invoice ID terlebih dahulu");
+      return;
+    }
+    setShowPaymentModal(true); // buka modal pembayaran
+  };
 
+  const handlePaymentSubmit = async (paymentMethod) => {
+    try {
       // 1️⃣ Buat pengantaran baru
       const response = await createPengantaranApi({ invoice_id: invoiceId });
 
       if (response.inserted?.length > 0) {
+        // 2️⃣ Update status paket ke 6
         for (const pkgId of response.inserted) {
           await addPackageStatus(pkgId, 6);
           console.log(`Status 6 berhasil dikirim untuk paket ${pkgId}`);
         }
+
+        // 3️⃣ Tambahkan payment method
+        await addPaymentMethodApi({
+          invoiceIds: [invoiceId],
+          paymentMethod,
+        });
+        console.log(`Payment method "${paymentMethod}" berhasil ditambahkan`);
+
       } else {
         console.warn("pkgId tidak ditemukan dalam response, status 6 tidak dikirim");
       }
@@ -49,6 +64,8 @@ export default function ManageDelivery() {
     } catch (err) {
       alert(err.message);
       console.error("Gagal menambah pengantaran:", err);
+    } finally {
+      setShowPaymentModal(false); // tutup modal
     }
   };
 
@@ -58,6 +75,7 @@ export default function ManageDelivery() {
 
   return (
     <div className="p-4">
+      {/* Input invoice + tombol + */}
       <div className="flex gap-2 mb-4">
         <input
           type="text"
@@ -74,6 +92,7 @@ export default function ManageDelivery() {
         </button>
       </div>
 
+      {/* Daftar pengantaran */}
       <div className="delivery-container">
         <h2>Daftar Request</h2>
         <div className="cards-container grid gap-4">
@@ -111,6 +130,13 @@ export default function ManageDelivery() {
           ))}
         </div>
       </div>
+
+      {/* Modal Payment Method */}
+      <PaymentMethodModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        onSubmit={handlePaymentSubmit}
+      />
     </div>
   );
 }

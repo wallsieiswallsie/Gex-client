@@ -1,7 +1,11 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInvoices } from "../hooks/useInvoices";
-import { archivePackagesByInvoicesApi } from "../utils/api";
+import { 
+  archivePackagesByInvoicesApi,
+  addPaymentMethodApi, 
+} from "../utils/api";
+import PaymentMethodModal  from "../components/modals/PaymentMethodModal";
 
 function InvoicesPage() {
   const { invoices, loading } = useInvoices();
@@ -10,6 +14,8 @@ function InvoicesPage() {
   const [selectMode, setSelectMode] = useState(false);
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [search, setSearch] = useState("");
+  const [branchFilter, setBranchFilter] = useState("semua");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleSelectInvoice = (invId) => {
     if (selectedInvoices.includes(invId)) {
@@ -21,10 +27,27 @@ function InvoicesPage() {
 
   const handleArchive = async () => {
     if (selectedInvoices.length === 0) return;
+    setIsModalOpen(true); // buka modal
+  };
 
+  const handlePaymentSubmit = async (paymentMethod) => {
     try {
-      const { data } = await archivePackagesByInvoicesApi(selectedInvoices);
-      alert(`Berhasil diarsipkan: ${data.archivedPackageIds.length} paket`);
+      console.log("Payload:", {
+        invoiceIds: selectedInvoices,
+        paymentMethod,
+      });
+
+      const result = await archivePackagesByInvoicesApi({ 
+        invoiceIds: selectedInvoices, 
+        paymentMethod 
+      });
+
+      // pakai result.data, bukan data
+      alert(
+        `Metode pembayaran: ${paymentMethod}\nBerhasil diarsipkan: ${result.data.archivedPackageIds.length} paket`
+      );
+
+      setIsModalOpen(false);
       setSelectMode(false);
       setSelectedInvoices([]);
     } catch (err) {
@@ -34,11 +57,23 @@ function InvoicesPage() {
   };
 
   const filteredInvoices = useMemo(() => {
-    if (!search.trim()) return invoices;
-    return invoices.filter((inv) =>
-      inv.nama_invoice.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [invoices, search]);
+    return invoices.filter((inv) => {
+      const searchLower = search.toLowerCase();
+
+      // Cek apakah nama atau id mengandung kata pencarian
+      const matchesSearch =
+        inv.nama_invoice?.toLowerCase().includes(searchLower) ||
+        inv.id?.toString().toLowerCase().includes(searchLower);
+
+      const branch = inv.cabang?.toLowerCase() || "";
+      const matchesBranch =
+        branchFilter === "semua" ||
+        branch === branchFilter.toLowerCase();
+
+      return matchesSearch && matchesBranch;
+    });
+  }, [invoices, search, branchFilter]);
+
 
   return (
     <div className="invoice-container">
@@ -55,7 +90,7 @@ function InvoicesPage() {
         <button onClick={() => navigate("/archived_invoices")}>Arsip</button>
       </div>
 
-      {/* Baris 2: Pencarian + tombol aksi */}
+      {/* Baris 2: Pencarian + Filter + Tombol aksi */}
       <div
         style={{
           display: "flex",
@@ -68,7 +103,7 @@ function InvoicesPage() {
         {/* Input pencarian */}
         <input
           type="text"
-          placeholder="Cari invoice..."
+          placeholder="Cari berdasarkan nama atau id invoice"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={{
@@ -78,6 +113,23 @@ function InvoicesPage() {
             border: "1px solid #ccc",
           }}
         />
+
+        {/* Filter cabang */}
+        <select
+          id="branchFilter"
+          value={branchFilter}
+          onChange={(e) => setBranchFilter(e.target.value)}
+          style={{
+            padding: "8px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+            minWidth: "120px",
+          }}
+        >
+          <option value="semua">Semua Cabang</option>
+          <option value="remu">Remu</option>
+          <option value="aimas">Aimas</option>
+        </select>
 
         {/* Tombol aksi */}
         {!selectMode ? (
@@ -108,33 +160,42 @@ function InvoicesPage() {
       ) : (
         <div className="cards-container">
           {filteredInvoices.map((inv) => {
-            const isSelected = selectedInvoices.includes(inv.id);
-            return (
-              <div
-                key={inv.id}
-                className={`package-card ${isSelected ? "selected" : ""}`}
-                style={{
-                  cursor: "pointer",
-                  border: isSelected ? "2px solid blue" : "1px solid #ccc",
-                  backgroundColor: isSelected ? "#e0f0ff" : "#fff",
-                }}
-                onClick={() => {
-                  if (selectMode) {
-                    toggleSelectInvoice(inv.id);
-                  } else {
-                    navigate(`/invoices/${inv.id}`);
-                  }
-                }}
-              >
-                <h3>{inv.nama_invoice.toUpperCase()}</h3>
-                <p>{inv.id}</p>
-                <p>Jumlah Paket: {inv.package_count}</p>
-                <h4>Rp {Number(inv.total_price).toLocaleString("id-ID")}</h4>
-              </div>
-            );
-          })}
+          const isSelected = selectedInvoices.includes(inv.id);
+          return (
+            <div
+              key={inv.id}
+              className={`package-card ${isSelected ? "selected" : ""}`}
+              style={{
+                cursor: "pointer",
+                border: isSelected ? "2px solid blue" : "1px solid #ccc",
+                backgroundColor: isSelected ? "#e0f0ff" : "#fff",
+              }}
+              onClick={() => {
+                if (selectMode) {
+                  toggleSelectInvoice(inv.id);
+                } else {
+                  navigate(`/invoices/${inv.id}`);
+                }
+              }}
+            >
+              <h3>{inv.nama_invoice.toUpperCase()}</h3>
+              <h3>{inv.id}</h3>
+              <p>Jumlah Paket: {inv.package_count}</p>
+              <h4>Rp {Number(inv.total_price).toLocaleString("id-ID")}</h4>
+              {inv.cabang && <h3>{inv.cabang.toUpperCase()}</h3>}
+            </div>
+          );
+        })}
+
         </div>
       )}
+
+      {/* MODAL */}
+      <PaymentMethodModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handlePaymentSubmit}
+      />
     </div>
   );
 }

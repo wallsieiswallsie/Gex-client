@@ -60,14 +60,10 @@ export const addPackagesByResiToInvoiceApi = async (invoiceId, resiList) =>
 export const removePackageFromInvoiceApi = async (invoiceId, packageId) =>
   apiFetch(`/invoices/${invoiceId}/packages/${Number(packageId)}`, { method: "DELETE" });
 
-export const archivePackagesByInvoicesApi = async (invoiceIds) => {
-  if (!Array.isArray(invoiceIds) || invoiceIds.length === 0) {
-    throw new Error("invoiceIds harus berupa array yang tidak kosong");
-  }
-
+export const archivePackagesByInvoicesApi = async ({ invoiceIds, paymentMethod }) => {
   return apiFetch("/invoices/archive-packages", {
     method: "POST",
-    body: JSON.stringify({ invoiceIds }),
+    body: JSON.stringify({ invoiceIds, paymentMethod }),
   });
 };
 
@@ -252,3 +248,13 @@ export const fetchFinanceFinishedApi = async (batchId, kode) =>
 // Ambil total harga paket yang finished = false
 export const fetchFinanceUnfinishedApi = async (batchId, kode) =>
   apiFetch(`/finance/${batchId}/${kode}/unfinished`);
+
+export const addPaymentMethodApi = async (payload) => {
+  return apiFetch("/finance/payment_method", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+};
