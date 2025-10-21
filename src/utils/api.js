@@ -258,3 +258,6 @@ export const addPaymentMethodApi = async (payload) => {
     body: JSON.stringify(payload),
   });
 };
+
+export const fetchFinanceFinishedGroupedApi = async (batchId, kode) =>
+  apiFetch(`/finance/${batchId}/${kode}/finished/grouped`);

@@ -4,7 +4,10 @@ import {
   fetchFinanceTotalApi,
   fetchFinanceFinishedApi,
   fetchFinanceUnfinishedApi,
+  fetchFinanceFinishedGroupedApi, // ← import API baru
 } from "../../../utils/api";
+
+const PAYMENT_METHODS = ["Qris", "Transfer Bank", "Tunai"];
 
 const RemuPesawatFinancialStatements = () => {
   const { batchId } = useParams();
@@ -13,6 +16,7 @@ const RemuPesawatFinancialStatements = () => {
     finished: 0,
     unfinished: 0,
   });
+  const [finishedGrouped, setFinishedGrouped] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,17 +27,21 @@ const RemuPesawatFinancialStatements = () => {
       try {
         setLoading(true);
 
-        const [totalRes, finishedRes, unfinishedRes] = await Promise.all([
-          fetchFinanceTotalApi(batchId, kode),
-          fetchFinanceFinishedApi(batchId, kode),
-          fetchFinanceUnfinishedApi(batchId, kode),
-        ]);
+        const [totalRes, finishedRes, unfinishedRes, finishedGroupedRes] =
+          await Promise.all([
+            fetchFinanceTotalApi(batchId, kode),
+            fetchFinanceFinishedApi(batchId, kode),
+            fetchFinanceUnfinishedApi(batchId, kode),
+            fetchFinanceFinishedGroupedApi(batchId, kode), // ← panggil API baru
+          ]);
 
         setData({
           total: Number(totalRes.data?.total) || 0,
           finished: Number(finishedRes.data?.total) || 0,
           unfinished: Number(unfinishedRes.data?.total) || 0,
         });
+
+        setFinishedGrouped(finishedGroupedRes.data?.grouped || []);
       } catch (err) {
         console.error("Gagal ambil data finance:", err);
         setError(err.message || "Terjadi kesalahan saat memuat data.");
@@ -51,26 +59,40 @@ const RemuPesawatFinancialStatements = () => {
   return (
     <div className="financial_statement-container">
       <h2>{batchId}</h2>
-        <div className="cards-container">
-          <div className="package-card">
-            <h4>Selesai</h4>
-            <p>
-             Rp {data.finished.toLocaleString("id-ID")}
-            </p>
-          </div>
-          <div className="package-card">
-            <h4>Tertahan</h4>
-            <p>
-              {data.unfinished.toLocaleString("id-ID")}
-            </p>
-          </div>
-          <div className="package-card">
-            <h4>Total Keseluruhan</h4>
-            <p>
-              {data.total.toLocaleString("id-ID")}
-            </p>
+
+      {/* Summary cards */}
+      <div className="cards-container">
+        <div className="package-card">
+          <h4>Selesai</h4>
+          <p>Rp {data.finished.toLocaleString("id-ID")}</p>
+        </div>
+        <div className="package-card">
+          <h4>Tertahan</h4>
+          <p>{data.unfinished.toLocaleString("id-ID")}</p>
+        </div>
+        <div className="package-card">
+          <h4>Total Keseluruhan</h4>
+          <p>Rp {data.total.toLocaleString("id-ID")}</p>
+        </div>
+      </div>
+
+      {/* Grouped payment method cards */}
+      {finishedGrouped.length > 0 && (
+        <div className="grouped-payment-method mt-6">
+          <h4>Total per Payment Method</h4>
+          <div className="cards-container">
+            {PAYMENT_METHODS.map((method) => {
+              const item = finishedGrouped.find((d) => d.payment_method === method);
+              return (
+                <div key={method} className="package-card">
+                  <h5>{method}</h5>
+                  <p>Rp {Number(item?.total_harga || 0).toLocaleString("id-ID")}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
+      )}
     </div>
   );
 };
