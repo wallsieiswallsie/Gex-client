@@ -12,7 +12,7 @@ function Navbar({ user, onLogout, onToggleSidebar }) {
   };
 
   return (
-    <nav className="navbar w-full">
+    <nav className="navbar">
       {/* === KIRI === */}
       <div className="navbar-left">
         {/* Tombol burger (mobile) */}
