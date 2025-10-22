@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .login-container {
   margin-top: 100px;
   background-color: #ccc;
@@ -35,19 +31,21 @@ label {
   padding-left: 10px;
 }
 
-button {
-  padding: 10px 16px;
+.button {
+  padding: 8px 16px;
   background-color: #031529;
-  width: 100px;
-  background-size: 50px;
-  border: none;
   color: white;
-  border-radius: 25px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  margin: 5px;
-  justify-content: center;
-  display: flex;
-  flex-direction: row;
+  margin: 4px;
+  width: auto;            
+  display: inline-block;  
+  text-align: center;
+}
+
+button:hover {
+  background-color: #05223f;
 }
 
 .button_InputDetailPackage {
@@ -86,10 +84,6 @@ select {
 .cancel-btn_InputDetailPackage {
   background: #ccc;
   color: #031529;
-}
-
-button:hover {
-  background: #ccc;
 }
 
 .error {
@@ -139,13 +133,25 @@ button:hover {
 
 .ddp-controls {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
-  width: 850px;
-  margin-bottom: 10px;
-  align-items: flex-start;
-  position: relative;
-  justify-content: left;
+  align-items: center;
+}
+
+.select-toggle-button {
+  display: inline-block;
+  background-color: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: auto;
+  text-align: center;
+}
+
+.select-toggle-button.active {
+  background-color: #1e40af;
 }
 
 .cards-container {
