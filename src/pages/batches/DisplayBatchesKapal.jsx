@@ -150,9 +150,9 @@ export default function DisplayBatchesKapal() {
         </form>
       )}
 
-      <div className="batch-container">
+      <div className="cards-container">
         {batches.map((batch) => (
-          <div className="batch-card" key={batch.id}>
+          <div className="card" key={batch.id}>
             <h3>{batch.nama_kapal.toUpperCase()}</h3>
             <p>{batch.id}</p>
             <p>{batch.tanggal_closing.split("T")[0]}</p>

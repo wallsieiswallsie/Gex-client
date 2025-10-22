@@ -62,15 +62,15 @@ const RemuPesawatFinancialStatements = () => {
 
       {/* Summary cards */}
       <div className="cards-container">
-        <div className="package-card">
+        <div className="card">
           <h4>Selesai</h4>
           <p>Rp {data.finished.toLocaleString("id-ID")}</p>
         </div>
-        <div className="package-card">
+        <div className="card">
           <h4>Tertahan</h4>
           <p>{data.unfinished.toLocaleString("id-ID")}</p>
         </div>
-        <div className="package-card">
+        <div className="card">
           <h4>Total Keseluruhan</h4>
           <p>Rp {data.total.toLocaleString("id-ID")}</p>
         </div>
@@ -84,7 +84,7 @@ const RemuPesawatFinancialStatements = () => {
             {PAYMENT_METHODS.map((method) => {
               const item = finishedGrouped.find((d) => d.payment_method === method);
               return (
-                <div key={method} className="package-card">
+                <div key={method} className="card">
                   <h5>{method}</h5>
                   <p>Rp {Number(item?.total_harga || 0).toLocaleString("id-ID")}</p>
                 </div>

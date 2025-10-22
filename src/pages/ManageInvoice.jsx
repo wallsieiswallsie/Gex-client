@@ -164,7 +164,7 @@ function InvoicesPage() {
           return (
             <div
               key={inv.id}
-              className={`package-card ${isSelected ? "selected" : ""}`}
+              className={`card ${isSelected ? "selected" : ""}`}
               style={{
                 cursor: "pointer",
                 border: isSelected ? "2px solid blue" : "1px solid #ccc",

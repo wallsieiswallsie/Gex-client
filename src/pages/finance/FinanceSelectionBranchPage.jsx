@@ -9,9 +9,9 @@ const FinanceSelectionBranchPage = () => {
   };
 
   return (
-    <div className="finance_selection-container">
+    <div className="cards-container">
         <div
-          className="finance_selection-card"
+          className="card"
           onClick={() => handleClick("Remu")}
         >
           <h2 className="finance_selection-content">Remu</h2>
@@ -19,7 +19,7 @@ const FinanceSelectionBranchPage = () => {
         </div>
 
         <div
-          className="finance_selection-card"
+          className="card"
           onClick={() => handleClick("Aimas")}
         >
           <h2 className="finance_selection-content">Aimas</h2>

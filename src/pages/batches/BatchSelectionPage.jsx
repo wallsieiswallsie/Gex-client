@@ -9,10 +9,10 @@ const BatchSelectionPage = () => {
   };
 
   return (
-    <div className="batch_selection-container">
+    <div className="cards-container">
         {/* Card Kapal */}
         <div
-          className="batch_selection-card"
+          className="card"
           onClick={() => handleClick("Kapal")}
         >
           <h2 className="batch_selection-content">Kapal</h2>
@@ -21,7 +21,7 @@ const BatchSelectionPage = () => {
 
         {/* Card Pesawat */}
         <div
-          className="batch_selection-card"
+          className="card"
           onClick={() => handleClick("Pesawat")}
         >
           <h2 className="batch_selection-content">Pesawat</h2>

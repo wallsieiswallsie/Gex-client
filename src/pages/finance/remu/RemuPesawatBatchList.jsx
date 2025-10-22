@@ -37,7 +37,7 @@ const RemuPesawatBatchList = () => {
           <div
             key={batch.id}
             onClick={() => navigate(`/remu-pesawat/${batch.id}`)}
-            className="batch-card"
+            className="card"
           >
             <h3 className="text-lg font-semibold mb-2">{batch.id}</h3>
             <h4 className="text-lg font-semibold mb-2">{(batch.tanggal_kirim).split('T')[0]}</h4>

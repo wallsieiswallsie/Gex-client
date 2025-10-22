@@ -1,16 +1,3 @@
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* Pusatkan konten */
-#root {
-  display: block;
-  justify-content: center; /* horizontal center */
-  align-items: flex-start    /* vertical center */
-}
-
 .login-container {
   margin-top: 100px;
   background-color: #ccc;
@@ -33,7 +20,6 @@ html, body, #root {
 }
 
 input {
-  width: 100%;
   padding: 8px;
   margin-top: 4px;
   border-radius: 15px;
@@ -149,22 +135,38 @@ button:hover {
 
 .ddp-controls {
   display: flex;
+  flex-direction: column;
   gap: 10px;
   width: 850px;
   margin-bottom: 10px;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
-  justify-content: center;
+  justify-content: left;
 }
 
-.cards-container, .batch-container, .karung-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 16px;
+.cards-container {
+  @apply
+  flex
+  flex-row
+  flex-wrap
+  gap-2
 }
 
-.package-card, .batch-card, .karung-card {
+.card {
+  @apply 
+    border
+    rounded-xl
+    p-16
+    bg-white
+    shadow-sm
+    text-left
+    m-8
+    cursor-pointer
+    duration-1000
+    max-w-52
+}
+
+.card {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 16px;
@@ -189,7 +191,7 @@ button:hover {
   background: #f9f9f9;
 }
 
-.package-card.selected {
+.card.selected {
   border: 2px solid darkblue;
   background: #e0e7ff;
 }
@@ -299,18 +301,6 @@ button:hover {
   color: green;
 }
 
-
-/* Navbar */
-.navbar {
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 12px 24px;
-}
-
 .navbar-left {
   display: flex;
   align-items: center;
@@ -352,71 +342,6 @@ button:hover {
   color: gray;
 }
 
-.logout-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.logout-btn:hover {
-  background: #dc2626;
-}
-
-
-/* Sidebar */
-.sidebar {
-  width: 240px;
-  background-color: #1e293b; /* abu tua */
-  color: white;
-  padding: 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
-.sidebar-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.sidebar-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar-list li {
-  margin-bottom: 15px;
-}
-
-.sidebar-list li a {
-  color: white;
-  text-decoration: none;
-  display: flex;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: background 0.2s ease-in-out;
-}
-
-.sidebar-list li a:hover {
-  background-color: #334155;
-}
-
-.sidebar-list li.active a {
-  background-color: #0ea5e9;
-}
-
-.with-sidebar {
-  margin-left: 280px; /* lebar sidebar */
-}
-
 /* Batch Selection Page */
 
 .batch_selection-container {
@@ -426,18 +351,124 @@ button:hover {
   gap: 16px;
 }
 
-.batch_selection-card,
-.delivery_selection-card,
-.finance_selection-card {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 16px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-  width: 200px;
+html, body, #root {
+  @apply h-full w-full;
 }
 
+/* ===== Root Layout ===== */
+.app-root {
+  @apply flex w-full min-h-screen bg-gray-50 overflow-hidden;
+}
 
+/* ===== Sidebar Styling ===== */
+.sidebar {
+  @apply fixed md:static top-0 left-0 h-screen w-60 bg-slate-800 text-white z-50 
+         transform transition-transform duration-300 ease-in-out;
+}
+
+/* Mobile: sembunyi / tampil */
+.sidebar--open {
+  @apply translate-x-0;
+}
+
+.sidebar--closed {
+  @apply -translate-x-full md:translate-x-0;
+}
+
+/* Bagian header */
+.sidebar__header {
+  @apply flex justify-between items-center p-5 border-b border-slate-700;
+}
+
+.sidebar__title {
+  @apply text-lg font-bold text-center w-full;
+}
+
+.sidebar__close-btn {
+  @apply md:hidden p-1 bg-slate-700 rounded;
+}
+
+/* Menu list */
+.sidebar__menu {
+  @apply mt-5 list-none p-0 m-0;
+}
+
+.sidebar__item {
+  @apply mb-3;
+}
+
+.sidebar__link {
+  @apply flex py-2 px-3 rounded transition-colors duration-200;
+}
+
+.sidebar__link--active {
+  @apply bg-sky-500;
+}
+
+.sidebar__link--inactive {
+  @apply hover:bg-slate-700;
+}
+
+/* ===== Mobile Overlay ===== */
+.sidebar-overlay {
+  @apply fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300;
+}
+
+.sidebar-overlay--visible {
+  @apply opacity-100 visible;
+}
+
+.sidebar-overlay--hidden {
+  @apply opacity-0 invisible;
+}
+
+/* === NAVBAR STYLING === */
+.navbar {
+  @apply  
+  w-full
+  flex 
+  justify-between 
+  items-center 
+  px-4 py-3 
+  border-b 
+  border-gray-200 
+  bg-transparent;
+}
+
+.navbar-left {
+  @apply flex items-center gap-3;
+}
+
+.back-btn {
+  @apply hidden md:inline-block text-xl font-bold text-gray-700 hover:text-black transition;
+}
+
+.burger-btn {
+  @apply p-2 text-black hover:text-gray-700 transition md:hidden w-full;
+}
+
+.navbar-right {
+  @apply flex items-center gap-5;
+}
+
+.user-info {
+  @apply text-right;
+}
+
+/* Tombol logout ikon */
+.logout-icon-btn {
+  @apply text-black rounded-none transition size-6 p-0;
+}
+
+.logout-icon-btn svg {
+  @apply w-6 h-6;
+}
+
+.main-content {
+  @apply flex-1 flex flex-col min-h-screen w-full 
+          transition-all duration-300;
+}
+
+main {
+  @apply flex-1 w-full p-4;
+}

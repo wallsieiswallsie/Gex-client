@@ -92,10 +92,10 @@ export default function BatchDetailKapal() {
       )}
 
       {batch.karung && batch.karung.length > 0 ? (
-        <div className="karung-container">
+        <div className="cards-container">
           {batch.karung.map((karung) => (
             <div
-              className="karung-card"
+              className="card"
               key={karung.id}
             >
               <h2 className="font-bold text-lg mb-2">Karung: {karung.no_karung}</h2>

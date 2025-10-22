@@ -136,9 +136,9 @@ export default function DisplayBatchesPesawat() {
         </form>
       )}
 
-      <div className="batch-container">
+      <div className="cards-container">
         {batches.map((batch) => (
-          <div className="batch-card" key={batch.id}>
+          <div className="card" key={batch.id}>
             <h3>{batch.id}</h3>
             <p>{batch.tanggal_kirim.split("T")[0]}</p>
             <div className="flex gap-2">

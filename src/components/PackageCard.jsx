@@ -21,7 +21,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
 
   return (
     <div
-      className={`package-card ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""}`}
+      className={`card ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""}`}
       onClick={onClick}
       onContextMenu={onRightClick}
     >

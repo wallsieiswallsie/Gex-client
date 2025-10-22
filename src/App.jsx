@@ -1,4 +1,5 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate, Outlet } from "react-router-dom";
+import React, { useState } from "react";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import InputDetailPackage from "./pages/InputDetailPackage";
@@ -34,8 +35,8 @@ import AimasPesawatFinancialStatements from "./pages/finance/aimas/AimasPesawatF
 
 import ForbiddenPage from "./pages/errors/ForbiddenPage";
 import ServerError from "./pages/errors/ServerErrorPage";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Navbar from "./components/layout/Navbar";
+import Sidebar from "./components/layout/Sidebar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 import { getRedirectPathByRole } from "./utils/routes";
@@ -44,33 +45,39 @@ import "./App.css";
 function App() {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const hideNavbar =
     location.pathname === "/login" || location.pathname === "/register";
 
   return (
-    <div className="min-h-screen flex">
-      {!hideNavbar && user && <Sidebar />}
+    <div className="app-root">
+  {/* Sidebar */}
+  {!hideNavbar && user && <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />}
 
-      <div
-        className={`flex-1 flex flex-col ${
-          !hideNavbar && user ? "with-sidebar" : ""
-        }`}
-      >
-        {!hideNavbar && user && <Navbar user={user} onLogout={logout} />}
-        <main className="flex-1 p-4">
-          <Routes>
-            {/* Redirect root "/" sesuai role */}
-            <Route
-              path="/"
-              element={
-                user ? (
-                  <Navigate to={getRedirectPathByRole(user.role)} replace />
-                ) : (
-                  <LoginPage />
-                )
-              }
-            />
+  {/* Konten utama */}
+  <div className="main-content">
+    {!hideNavbar && user && 
+      <Navbar
+        user={user}
+        onLogout={logout}
+        onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+      />
+    }
+    <main>
+        <Routes>
+          {/* ========== Semua route kamu tetap sama ========== */}
+          {/* saya singkat untuk fokus pada layout */}
+          <Route
+            path="/"
+            element={
+              user ? (
+                <Navigate to={getRedirectPathByRole(user.role)} replace />
+              ) : (
+                <LoginPage />
+              )
+            }
+          />
 
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

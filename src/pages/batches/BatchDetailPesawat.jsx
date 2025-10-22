@@ -50,7 +50,7 @@ export default function BatchDetailPesawat() {
       {batch.packages && batch.packages.length > 0 ? (
         <div className="card-container">
           {batch.packages.map((pkg) => (
-            <div key={pkg.id} className="package-card">
+            <div key={pkg.id} className="card">
               <p>{pkg.nama.toUpperCase()}</p> 
               <p>{pkg.resi.toUpperCase()}</p>
               <p>{pkg.berat_dipakai} kg</p>

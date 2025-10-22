@@ -29,7 +29,7 @@ const PackagesByKarungPage = () => {
   }, [search]);
 
   return (
-    <div className="package_in_karung-container">
+    <div className="cards-container">
       <h2>
         Karung {noKarung} | {batchId}
       </h2>
@@ -53,7 +53,7 @@ const PackagesByKarungPage = () => {
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className="package-card"
+              className="card"
             >
               <p> {pkg.nama.toUpperCase()}</p>
               <p>{pkg.resi.toUpperCase()}</p>

@@ -17,23 +17,23 @@ const DeliverySelectionPage = () => {
   };
 
   return (
-    <div className="delivery_selection-container">
+    <div className="cards-container">
         <div
-          className="delivery_selection-card"
+          className="card"
           onClick={() => handleClick1()}
         >
           <h2 className="batch_selection-content">Daftar Request</h2>
           <p className="batch_selection-content">Buat request pengantaran</p>
         </div>
         <div
-          className="delivery_selection-card"
+          className="card"
           onClick={() => handleClick2()}
         >
           <h2 className="batch_selection-content">Dalam Pengantaran</h2>
           <p className="batch_selection-content">Pengantaran Aktif</p>
         </div>
         <div
-          className="delivery_selection-card"
+          className="card"
           onClick={() => handleClick3()}
         >
           <h2 className="batch_selection-content">Arsip</h2>

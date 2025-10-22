@@ -37,7 +37,7 @@ const RemuKapalBatchList = () => {
           <div
             key={batch.id}
             onClick={() => navigate(`/remu-kapal/${batch.id}`)}
-            className="batch-card"
+            className="card"
           >
             <h2 className="text-lg font-semibold mb-2">{batch.id}</h2>
             <p className="text-gray-600 text-sm mb-1">

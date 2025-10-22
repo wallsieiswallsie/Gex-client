@@ -41,7 +41,7 @@ function ActiveDeliveries() {
             {deliveries.map((inv) => (
                 <div
                   key={inv.invoice_id}
-                  className="package-card border p-4 rounded shadow relative"
+                  className="card"
                 >
                   <div 
                     onClick={() => navigate(`/invoices/${inv.invoice_id}`)} 

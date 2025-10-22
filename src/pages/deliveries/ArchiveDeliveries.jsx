@@ -69,7 +69,7 @@ function ArchiveDeliveries() {
       ) : (
         <div className="cards-container">
           {filteredDeliveries.map((inv) => (
-            <div key={inv.invoice_id} className="package-card">
+            <div key={inv.invoice_id} className="card">
               <div
                 onClick={() => navigate(`/invoices/${inv.invoice_id}`)}
                 className="cursor-pointer"

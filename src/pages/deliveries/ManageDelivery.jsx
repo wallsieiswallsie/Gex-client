@@ -99,7 +99,7 @@ export default function ManageDelivery() {
           {deliveries.map((inv) => (
             <div 
               key={inv.id}
-              className="package-card border p-4 rounded shadow relative"
+              className="card"
             >
               <div 
                 onClick={() => navigate(`/invoices/${inv.id}`)} 

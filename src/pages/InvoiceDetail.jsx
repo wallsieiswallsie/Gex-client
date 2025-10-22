@@ -165,7 +165,7 @@ function InvoiceDetailPage() {
           return (
             <div
               key={pkg.id}
-              className={`package-card ${isSelected ? "selected" : ""}`}
+              className={`card ${isSelected ? "selected" : ""}`}
               style={{
                 cursor: "pointer",
                 padding: "10px",

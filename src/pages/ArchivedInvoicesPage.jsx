@@ -99,7 +99,7 @@ function ArchivedInvoicesPage() {
           {filteredInvoices.map((inv) => (
             <div
               key={inv.id}
-              className="package-card"
+              className="card"
               onClick={() =>
                 navigate(`/invoices/${inv.id}`, { state: { archived: true } })
               }

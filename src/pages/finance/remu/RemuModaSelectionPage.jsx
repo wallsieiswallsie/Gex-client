@@ -9,10 +9,10 @@ const RemuModaSelectionPage = () => {
   };
 
   return (
-    <div className="finance_selection-container">
+    <div className="cards-container">
         {/* Card Kapal */}
         <div
-          className="finance_selection-card"
+          className="card"
           onClick={() => handleClick("Kapal")}
         >
           <h2 className="finance_selection-content">Kapal</h2>
@@ -21,7 +21,7 @@ const RemuModaSelectionPage = () => {
 
         {/* Card Pesawat */}
         <div
-          className="finance_selection-card"
+          className="card"
           onClick={() => handleClick("Pesawat")}
         >
           <h2 className="finance_selection-content">Pesawat</h2>
