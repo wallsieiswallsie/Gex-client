@@ -2,7 +2,7 @@ import { useInputDetailPackage } from "../hooks/useInputDetailPackage";
 import InputDetailPackageForm from "../components/InputDetailPackageForm";
 
 function InputDetailPackage() {
-  const { formData, errors, handleChange, handleSave, handleCancel } = useInputDetailPackage();
+  const { formData, errors, handleChange, handleSave, handleCancel, handleFileChange } = useInputDetailPackage();
 
   return (
     <InputDetailPackageForm
@@ -11,6 +11,7 @@ function InputDetailPackage() {
       handleChange={handleChange}
       handleSave={handleSave}
       handleCancel={handleCancel}
+      handleFileChange={handleFileChange}
     />
   );
 }
