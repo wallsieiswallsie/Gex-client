@@ -31,8 +31,28 @@ export const loginApi = async (payload) =>
 export const registerApi = async (payload) =>
   apiFetch("/auth/register", { method: "POST", body: JSON.stringify(payload) });
 
-export const createPackageApi = async (payload) =>
-  apiFetch("/packages", { method: "POST", body: JSON.stringify(payload) });
+/** Membuat paket baru (dengan foto) */
+export const createPackageApi = async (formData) => {
+  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+
+  const res = await fetch(`${API_URL}/packages`, {
+    method: "POST",
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      // ❗Jangan set Content-Type manual (biarkan browser buat boundary)
+    },
+    body: formData,
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(data.message || "Gagal menyimpan data paket");
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
+  return data;
+};
 
 export const fetchPackagesApi = async (query = {}) => {
   const params = new URLSearchParams(query).toString();
@@ -261,3 +281,33 @@ export const addPaymentMethodApi = async (payload) => {
 
 export const fetchFinanceFinishedGroupedApi = async (batchId, kode) =>
   apiFetch(`/finance/${batchId}/${kode}/finished/grouped`);
+
+/** Upload foto paket ke GCS */
+export const uploadPackagePhotoApi = async (packageId, file) => {
+  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+
+  // gunakan FormData agar bisa kirim file (bukan JSON)
+  const formData = new FormData();
+  formData.append("photo", file);
+
+  const res = await fetch(`${API_URL}/packages/${packageId}/photo`, {
+    method: "POST",
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      // ⚠️ jangan set Content-Type manual
+      // biarkan browser otomatis menentukan boundary multipart/form-data
+    },
+    body: formData,
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    const err = new Error(data.error || data.message || "Gagal upload foto");
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
+
+  return data;
+};

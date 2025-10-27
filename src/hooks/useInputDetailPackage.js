@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { validateField } from "../utils/validations";
 import { createPackageApi } from "../utils/api";
+import imageCompression from "browser-image-compression";
 
 export const useInputDetailPackage = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export const useInputDetailPackage = () => {
     tinggi: "",
     berat: "",
     kode: "",
+    foto: null,
+    preview: null,
     invoiced: false,
     finished: false,
     via: "Kapal",
@@ -26,6 +29,21 @@ export const useInputDetailPackage = () => {
     setErrors((prev) => ({ ...prev, [name]: errorMessage }));
   };
 
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // kompres foto sebelum disimpan di state
+    const compressedFile = await imageCompression(file, {
+      maxSizeMB: 1, // target maksimum 1MB
+      maxWidthOrHeight: 1280, // ubah ukuran agar lebih kecil
+      useWebWorker: true,
+    });
+
+    const preview = URL.createObjectURL(compressedFile);
+    setFormData((prev) => ({ ...prev, foto: compressedFile, preview }));
+  };
+
   const handleCancel = () => {
     setFormData({
       nama: "",
@@ -35,43 +53,50 @@ export const useInputDetailPackage = () => {
       tinggi: "",
       berat: "",
       kode: "",
-      via: "",
+      foto: null,
+      preview: null,
+      invoiced: false,
+      finished: false,
+      via: "Kapal",
     });
     setErrors({});
   };
 
-const handleSave = async (e) => {
-  e.preventDefault();
+  const handleSave = async (e) => {
+    e.preventDefault();
 
-  const newErrors = {};
-  Object.keys(formData).forEach((key) => {
-    const errorMsg = validateField(key, formData[key]);
-    if (errorMsg) newErrors[key] = errorMsg;
-  });
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      if (key !== "foto" && key !== "preview") {
+        const errorMsg = validateField(key, formData[key]);
+        if (errorMsg) newErrors[key] = errorMsg;
+      }
+    });
 
-  setErrors(newErrors);
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
 
-  if (Object.keys(newErrors).length === 0) {
     try {
-      const payload = {
-        ...formData,
-        panjang: Number(formData.panjang),
-        lebar: Number(formData.lebar),
-        tinggi: Number(formData.tinggi),
-        berat: Number(formData.berat),
-        invoiced: Boolean(formData.invoiced),
-        finished: Boolean(formData.finished),
-      };
+      const data = new FormData();
+      data.append("nama", formData.nama);
+      data.append("resi", formData.resi);
+      data.append("panjang", Number(formData.panjang));
+      data.append("lebar", Number(formData.lebar));
+      data.append("tinggi", Number(formData.tinggi));
+      data.append("berat", Number(formData.berat));
+      data.append("kode", formData.kode);
+      data.append("via", formData.via);
+      data.append("invoiced", formData.invoiced);
+      data.append("finished", formData.finished);
+      if (formData.foto) data.append("photo", formData.foto);
 
-      const data = await createPackageApi(payload);
+      await createPackageApi(data); // kirim sebagai multipart form-data
       alert("Data berhasil disimpan!");
       handleCancel();
     } catch (err) {
       alert("Gagal simpan: " + err.message);
     }
-  }
-};
-
+  };
 
   return {
     formData,
@@ -79,5 +104,6 @@ const handleSave = async (e) => {
     handleChange,
     handleSave,
     handleCancel,
+    handleFileChange,
   };
 };
