@@ -51,6 +51,21 @@ function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
       <div className="modal-container">
         <h1 className="modal-title">{pkg.nama.toUpperCase()}</h1>
         <h2 className="modal-subtitle">{pkg.resi}</h2>
+        {/* Foto paket */}
+        {pkg.photo_url && (
+          <div style={{ textAlign: "center", margin: "1rem 0" }}>
+            <img
+              src={pkg.photo_url}
+              alt={`Foto ${pkg.nama}`}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "300px",
+                objectFit: "contain",
+                borderRadius: "8px",
+              }}
+            />
+          </div>
+        )}
         <p className="modal-text">
           Dimensi: {pkg.panjang} × {pkg.lebar} × {pkg.tinggi}
         </p>
