@@ -1,3 +1,5 @@
+import React, { useRef } from "react";
+
 function InputDetailPackageForm({
   formData,
   errors,
@@ -6,8 +8,20 @@ function InputDetailPackageForm({
   handleCancel,
   handleFileChange,
 }) {
+  const fileInputRef = useRef(null); // ✅ ref untuk reset file
+
+  const onSave = async (e) => {
+    e.preventDefault();
+    await handleSave(e);
+
+    // Reset input file dan preview setelah berhasil save
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null;
+    }
+  };
+
   return (
-    <form onSubmit={handleSave} className="form-container">
+    <form onSubmit={onSave} className="form-container">
       <div>
         <label>Nama</label>
         <input type="text" name="nama" value={formData.nama} onChange={handleChange} />
@@ -45,6 +59,7 @@ function InputDetailPackageForm({
           accept="image/*"
           capture="environment"
           onChange={handleFileChange}
+          ref={fileInputRef} // ✅ tambahkan ref
         />
         {formData.preview && (
           <img
