@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import DetailPackageModal from "../components/modals/DetailPackageModal";
+import AddPackageToInvoiceModal from "../components/modals/AddPackageToInvoiceModal";
 import { useInvoiceDetail } from "../hooks/useInvoiceDetail";
-import { 
+import {
   removePackageFromInvoiceApi,
-  addPackagesByResiToInvoiceApi 
+  addPackagesByResiToInvoiceApi,
 } from "../utils/api";
 
 function InvoiceDetailPage() {
@@ -18,7 +19,7 @@ function InvoiceDetailPage() {
   const [resiList, setResiList] = useState("");
 
   const longPressTimer = useRef(null);
-  const LONG_PRESS_THRESHOLD = 500; // ms
+  const LONG_PRESS_THRESHOLD = 500;
 
   useEffect(() => {
     if (invoice) setInvoiceData(invoice);
@@ -44,7 +45,6 @@ function InvoiceDetailPage() {
     }
   };
 
-  // Desktop
   const handleMouseDown = (pkg) => {
     if (!selectMode) {
       longPressTimer.current = setTimeout(() => handleLongPress(pkg), LONG_PRESS_THRESHOLD);
@@ -52,8 +52,6 @@ function InvoiceDetailPage() {
   };
   const handleMouseUp = () => clearTimeout(longPressTimer.current);
   const handleMouseLeave = () => clearTimeout(longPressTimer.current);
-
-  // Mobile
   const handleTouchStart = (pkg) => {
     if (!selectMode) {
       longPressTimer.current = setTimeout(() => handleLongPress(pkg), LONG_PRESS_THRESHOLD);
@@ -61,7 +59,6 @@ function InvoiceDetailPage() {
   };
   const handleTouchEnd = () => clearTimeout(longPressTimer.current);
 
-  // Hapus paket terpilih
   const handleRemoveSelected = async () => {
     try {
       for (const pkg of selectedPackages) {
@@ -82,37 +79,64 @@ function InvoiceDetailPage() {
     }
   };
 
-  // Tambah paket berdasarkan resi
   const handleAddPackages = async () => {
-    if (!resiList.trim()) {
-      alert("Masukkan minimal satu nomor resi.");
-      return;
-    }
+  if (!resiList.trim()) {
+    alert("Masukkan minimal satu nomor resi.");
+    return;
+  }
 
-    const resiArray = resiList
-      .split(/[\s,;]+/)
-      .map((r) => r.trim())
-      .filter(Boolean);
+  const resiArray = resiList
+    .split(/[\s,;]+/)
+    .map((r) => r.trim())
+    .filter(Boolean);
 
-    try {
-      const result = await addPackagesByResiToInvoiceApi(invoiceData.id, resiArray);
+  try {
+    const result = await addPackagesByResiToInvoiceApi(invoiceData.id, resiArray);
 
+    const addedPackages = result.data?.data?.addedPackages || [];
+    const totalPrice = result.data?.data?.total_price;
+
+    if (addedPackages.length > 0) {
       setInvoiceData((prev) => {
-        const existingPackages = prev.packages || [];
-        const addedPackages = result.data?.addedPackages || [];
-        const mergedPackages = [...existingPackages, ...addedPackages];
-        const updatedTotal = result.data?.total_price || mergedPackages.reduce((sum, p) => sum + Number(p.harga), 0);
-
-        return { ...prev, packages: mergedPackages, total_price: updatedTotal };
+        const merged = [...(prev.packages || []), ...addedPackages];
+        return { ...prev, packages: merged, total_price: totalPrice };
       });
 
-      setResiList("");
-      setShowAddResiModal(false);
-    } catch (err) {
-      console.error(err);
-      alert("Gagal menambahkan paket: " + err.message);
+      alert(`✅ Berhasil menambahkan ${addedPackages.length} paket ke invoice.`);
     }
-  };
+
+    setResiList("");
+    setShowAddResiModal(false);
+  } catch (err) {
+    console.error("Gagal menambahkan paket:", err);
+
+    const message =
+      err?.response?.data?.message ||
+      err?.message ||
+      "Terjadi kesalahan saat menambahkan paket.";
+
+    let alertMessage = "⚠️ Terjadi kesalahan saat menambahkan paket.\n\n";
+
+    // 🔹 Deteksi kasus error berdasarkan isi pesan
+    if (message.includes("Tidak ada paket ditemukan")) {
+      // Semua resi tidak ditemukan
+      alertMessage += "Nomor resi berikut tidak ditemukan di database:\n";
+      alertMessage += resiArray.join(", ");
+    } else if (message.includes("sudah masuk invoice")) {
+      // Ambil daftar resi dari pesan error server
+      const match = message.match(/:(.*)/);
+      const resiSudahMasuk = match ? match[1].split(",").map(r => r.trim()) : [];
+      alertMessage += "Nomor resi berikut sudah di-invoice:\n";
+      alertMessage += resiSudahMasuk.join(", ");
+    } else if (message.includes("Remu") || message.includes("Aimas")) {
+      alertMessage = "❌ Paket dari cabang Remu (QA) dan Aimas (QB) tidak boleh digabung dalam satu invoice.";
+    } else {
+      alertMessage = message;
+    }
+
+    alert(alertMessage);
+  }
+};
 
   const packages = invoiceData.packages || [];
 
@@ -120,7 +144,9 @@ function InvoiceDetailPage() {
     <div className="invoice-detail-container">
       <h2>{invoiceData.nama_invoice.toUpperCase()}</h2>
       <p>{invoiceData.id}</p>
-      <p>Jumlah Paket: {invoiceData.package_count || (invoiceData.packages?.length || 0)}</p>
+      <p>
+        Jumlah Paket: {invoiceData.package_count || (invoiceData.packages?.length || 0)}
+      </p>
       <p>Total: Rp {Number(invoiceData.total_price).toLocaleString("id-ID")}</p>
 
       {selectMode && selectedPackages.length > 0 && (
@@ -159,7 +185,10 @@ function InvoiceDetailPage() {
         </button>
       </div>
 
-      <div className="cards-container" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+      <div
+        className="cards-container"
+        style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+      >
         {packages.map((pkg) => {
           const isSelected = selectedPackages.some((p) => p.id === pkg.id);
           return (
@@ -178,7 +207,9 @@ function InvoiceDetailPage() {
               onMouseLeave={handleMouseLeave}
               onTouchStart={() => handleTouchStart(pkg)}
               onTouchEnd={handleTouchEnd}
-              onClick={() => selectMode ? toggleSelect(pkg) : setSelectedPackage(pkg)}
+              onClick={() =>
+                selectMode ? toggleSelect(pkg) : setSelectedPackage(pkg)
+              }
             >
               <h4>{pkg.nama.toUpperCase()}</h4>
               <p>Resi: {pkg.resi.toUpperCase()}</p>
@@ -198,54 +229,22 @@ function InvoiceDetailPage() {
         onRemoved={(id) =>
           setInvoiceData((prev) => {
             const updatedPackages = (prev.packages || []).filter((p) => p.id !== id);
-            const updatedTotal = updatedPackages.reduce((sum, p) => sum + Number(p.harga), 0);
+            const updatedTotal = updatedPackages.reduce(
+              (sum, p) => sum + Number(p.harga),
+              0
+            );
             return { ...prev, packages: updatedPackages, total_price: updatedTotal };
           })
         }
       />
 
       {showAddResiModal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0,0,0,0.4)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "20px",
-              borderRadius: "8px",
-              width: "300px",
-            }}
-          >
-            <h3>Tambah Paket ke Invoice</h3>
-            <p>Masukkan daftar resi (pisahkan dengan spasi, koma, atau enter):</p>
-            <textarea
-              value={resiList}
-              onChange={(e) => setResiList(e.target.value)}
-              rows="4"
-              style={{ width: "100%", marginBottom: "10px" }}
-            />
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-              <button onClick={() => setShowAddResiModal(false)}>Batal</button>
-              <button
-                onClick={handleAddPackages}
-                style={{ backgroundColor: "green", color: "white", border: "none", padding: "5px 10px" }}
-              >
-                Tambah
-              </button>
-            </div>
-          </div>
-        </div>
+        <AddPackageToInvoiceModal
+          resiList={resiList}
+          setResiList={setResiList}
+          onClose={() => setShowAddResiModal(false)}
+          onAdd={handleAddPackages}
+        />
       )}
     </div>
   );
