@@ -7,25 +7,39 @@ export default function AddPackageToBatchPesawatModal({ batchId, onClose, onSucc
 
   const handleTambah = async (e) => {
     e.preventDefault();
+
     if (!resi.trim()) {
-      alert("Resi tidak boleh kosong");
+      alert("⚠️ Resi tidak boleh kosong");
       return;
     }
 
     setLoading(true);
     try {
       const res = await addPackageToBatchPesawatApi(batchId, resi);
+
       if (res.success || res.status === "success") {
         alert("Paket berhasil ditambahkan ke batch pesawat!");
         setResi("");
-        onSuccess?.(); // refresh data batch
-        onClose?.();   // tutup modal
-      } else {
+        onSuccess?.();
+      }
+      else if (res.message?.includes("sudah ada di batch")) {
+        alert(`Paket dengan resi ${resi} sudah ada di batch ini.`);
+      }
+      else if (res.message?.includes("tidak ditemukan")) {
+        alert(`Paket dengan resi ${resi} tidak ditemukan.`);
+      }
+      else {
         alert("Gagal menambahkan paket: " + (res.message || "Unknown error"));
       }
+
     } catch (err) {
-      console.error(err);
-      alert("Terjadi kesalahan saat menambahkan paket ke batch");
+      if (err.response?.data?.message) {
+        alert(err.response.data.message);
+      } else if (err.message) {
+        alert(err.message);
+      } else {
+        alert("Terjadi kesalahan yang tidak diketahui.");
+      }
     } finally {
       setLoading(false);
     }
