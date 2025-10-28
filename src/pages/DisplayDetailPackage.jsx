@@ -135,6 +135,10 @@
         {loading && <p>Loading data paket...</p>}
         {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
+        {selectMode && selectedPackages.length > 0 && (
+          <InvoiceActions onCreate={handleCreateInvoice} />
+        )}
+
         <div className="cards-container">
           {filteredPackages.map((pkg) => {
             const isSelected = selectedPackages.some((p) => p.id === pkg.id);
@@ -161,10 +165,6 @@
             );
           })}
         </div>
-
-        {selectMode && selectedPackages.length > 0 && (
-          <InvoiceActions onCreate={handleCreateInvoice} />
-        )}
 
         {selectedPackage && (
           <DetailPackageModal
