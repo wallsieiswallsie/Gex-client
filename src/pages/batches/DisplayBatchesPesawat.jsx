@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { fetchBatchesPesawatApi, createBatchesPesawatApi } from "../../utils/api";
-import UpdateStatusBatchPesawatModal from "../../components/modals/UpdateStatusBatcPesawathModal";
+import UpdateStatusBatchPesawatModal from "../../components/modals/UpdateStatusBatchPesawatModal";
 
 export default function DisplayBatchesPesawat() {
   const { user } = useAuth();
