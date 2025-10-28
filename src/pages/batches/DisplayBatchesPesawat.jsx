@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { fetchBatchesPesawatApi, createBatchesPesawatApi } from "../../utils/api";
-import UpdateStatusBatchModal from "../../components/modals/UpdateStatusBatchModal";
+import UpdateStatusBatchPesawatModal from "../../components/modals/UpdateStatusBatcPesawathModal";
 
 export default function DisplayBatchesPesawat() {
   const { user } = useAuth();
@@ -161,7 +161,7 @@ export default function DisplayBatchesPesawat() {
 
       {/* Modal Update */}
       {selectedBatch && (
-        <UpdateStatusBatchModal
+        <UpdateStatusBatchPesawatModal
           batch={selectedBatch}
           onClose={() => setSelectedBatch(null)}
           onUpdated={fetchData}
