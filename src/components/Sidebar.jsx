@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 // Menu config untuk fleksibilitas
 const MENU_ITEMS = [
+  { path: "/lacak_paket_customer", label: "Lacak Paket", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "/packages", label: "Database Paket", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "/batches", label: "Batches Pengiriman", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "#", label: "Database Customer", roles: ["Manager Destination Warehouse"] },

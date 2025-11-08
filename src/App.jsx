@@ -2,6 +2,8 @@ import { Routes, Route, useLocation, Navigate, Outlet } from "react-router-dom";
 import React, { useState } from "react";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
+import LacakPaketCustomer from "./pages/LacakPaketCustomer";
+
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
 import PackagesByKarungPage from "./pages/PackagesByKarungPage";
@@ -81,6 +83,7 @@ function App() {
 
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/lacak_paket_customer" element={<LacakPaketCustomer />} />
 
             {/* Proteksi berbasis role */}
             <Route
