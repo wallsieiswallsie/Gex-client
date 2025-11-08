@@ -16,6 +16,7 @@
     const [invoicedFilter, setInvoicedFilter] = useState("all");
     const [viaFilter, setViaFilter] = useState("all");
     const [cabangFilter, setCabangFilter] = useState("all");
+    const [visibleCount, setVisibleCount] = useState(10);
 
     const [selectedPackage, setSelectedPackage] = useState(null);
     const [selectMode, setSelectMode] = useState(false);
@@ -47,6 +48,19 @@
         );
       }
     }, [packages, fetchLatest]);
+
+    useEffect(() => {
+      const handleScroll = () => {
+        if (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight - 200
+        ) {
+          setVisibleCount((prev) => prev + 10);
+        }
+      };
+
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const toggleSelect = (pkg) => {
       if (selectedPackages.find((p) => p.id === pkg.id)) {
@@ -140,7 +154,7 @@
         )}
 
         <div className="cards-container">
-          {filteredPackages.map((pkg) => {
+          {filteredPackages.slice(0, visibleCount).map((pkg) => {
             const isSelected = selectedPackages.some((p) => p.id === pkg.id);
             const isDisabled = pkg.invoiced;
 

@@ -56,7 +56,7 @@ function App() {
   ["/login-customer", "/register-customer", "/login", "/register"].includes(location.pathname);
 
   return (
-    <div className="app-root">
+   <div className={`app-root ${!hideNavbar && user ? "with-sidebar" : ""}`}>
   {/* Sidebar */}
   {!hideNavbar && user && <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />}
 

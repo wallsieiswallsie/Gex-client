@@ -9,7 +9,7 @@ const MENU_ITEMS = [
   { path: "/batches", label: "Batches Pengiriman", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "#", label: "Database Customer", roles: ["Manager Destination Warehouse"] },
   { path: "/invoices", label: "Manage Invoice", roles: ["Manager Destination Warehouse"] },
-  { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse"] }, 
+  { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse"] },
   { path: "/finance", label: "Keuangan", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse"] },
 ];
@@ -23,43 +23,85 @@ export default function Sidebar({ open, setOpen }) {
     return MENU_ITEMS.filter((item) => item.roles.includes(user.role));
   }, [user?.role]);
 
+  const accent = "#3e146d";
+
   return (
     <>
-      {/* Overlay hanya untuk mobile */}
+      {/* Overlay hanya tampil di mobile */}
       <div
-        className={`sidebar-overlay ${open ? "sidebar-overlay--visible" : "sidebar-overlay--hidden"}`}
+        className={`
+          fixed inset-0 bg-black/40 z-20 md:hidden
+          transition-opacity duration-300
+          ${open ? "opacity-100 visible" : "opacity-0 invisible"}
+        `}
         onClick={() => setOpen(false)}
       />
 
-      {/* Sidebar selalu terbuka di desktop */}
-      <aside className={`sidebar ${open ? "sidebar--open" : "sidebar--closed"}`}>
-        <div className="sidebar__header">
-          <h2 className="sidebar__title">Menu</h2>
-          {/* Tombol tutup hanya muncul di mobile */}
-          <button className="sidebar__close-btn md:hidden" onClick={() => setOpen(false)}>
-            <HiX size={20} />
-          </button>
-        </div>
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed top-0 left-0 h-screen bg-white z-30
+          w-64 transition-transform duration-300 overflow-auto
 
-        <ul className="sidebar__menu">
-          {visibleMenu.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <li key={item.path} className="sidebar__item">
-                <Link
-                  to={item.path}
-                  onClick={() => setOpen(false)}
-                  className={`sidebar__link ${
-                    isActive ? "sidebar__link--active" : "sidebar__link--inactive"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+          ${open ? "translate-x-0" : "-translate-x-full"}
+
+          /* Desktop: tetap terbuka */
+          md:translate-x-0 md:shadow-lg md:border-r
+        `}
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
+        {/* Left accent stripe (desktop only) */}
+        <div
+          className="hidden md:block absolute inset-y-0 left-0 w-1"
+          style={{ backgroundColor: accent }}
+          aria-hidden
+        />
+
+        <div className="relative">
+          <div
+            className="flex items-center justify-between p-4 border-b"
+            style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
+          >
+            <h2 className="font-semibold text-lg text-gray-800">Menu</h2>
+
+            {/* Tombol close hanya mobile */}
+            <button
+              className="md:hidden"
+              onClick={() => setOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <HiX size={20} />
+            </button>
+          </div>
+
+          <ul className="p-4 space-y-2">
+            {visibleMenu.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    onClick={() => setOpen(false)}
+                    className={`
+                      block px-3 py-2 rounded-lg text-sm
+                      ${isActive
+                        ? "text-white"
+                        : "text-gray-700 hover:bg-gray-100"}
+                    `}
+                    style={
+                      isActive
+                        ? { backgroundColor: accent }
+                        : undefined
+                    }
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </aside>
     </>
   );
-} 
+}
