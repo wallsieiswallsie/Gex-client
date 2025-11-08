@@ -8,7 +8,7 @@ function Navbar({ user, onLogout, onToggleSidebar }) {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate(-1);
+    navigate("/login-customer");
   };
 
   return (

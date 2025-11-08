@@ -5,25 +5,23 @@ import { loginApi } from "../utils/api";
 import { getRedirectPathByRole } from "../utils/routes";
 import { useAuth } from "../context/AuthContext";
 
-function LoginPage() {
+export default function LoginPageCustomer() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuth(); // ✅ Ambil function login dari context
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.email) {
-      newErrors.email = "Email wajib diisi";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    if (!formData.email) newErrors.email = "Email wajib diisi";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Format email tidak valid";
-    }
-    if (!formData.password) {
-      newErrors.password = "Password wajib diisi";
-    } else if (formData.password.length < 6) {
+
+    if (!formData.password) newErrors.password = "Password wajib diisi";
+    else if (formData.password.length < 6)
       newErrors.password = "Password minimal 6 karakter";
-    }
+
     return newErrors;
   };
 
@@ -34,16 +32,17 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validate();
 
+    const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
     try {
-      const data = await loginApi({ email: formData.email, password: formData.password });
+      const data = await loginApi(formData);
 
+      // ✅ Simpan user ke AuthContext & localStorage
       login({
         userData: data.user,
         accessToken: data.accessToken,
@@ -53,19 +52,24 @@ function LoginPage() {
       const redirectPath = getRedirectPathByRole(data.user.role);
       navigate(redirectPath);
     } catch (err) {
-      alert(err.message);
+      console.error(err);
+      alert(err.message || "Login gagal");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-[#f4e9ff] px-4">
       <div className="max-w-md w-full bg-white shadow-xl rounded-2xl p-8 border border-[#3e146d]/10">
-        <h2 className="text-3xl font-bold text-center mb-8 text-[#3e146d]">Login</h2>
+        <h2 className="text-3xl font-bold text-center mb-8 text-[#3e146d]">
+          Login
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
             <input
               type="text"
               name="email"
@@ -80,7 +84,9 @@ function LoginPage() {
 
           {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <div className="relative mt-1">
               <input
                 type={showPassword ? "text" : "password"}
@@ -91,8 +97,8 @@ function LoginPage() {
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-[#3e146d] transition-colors bg-transparent p-0 border-none\"
                 onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-[#3e146d] bg-transparent p-0"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -102,6 +108,7 @@ function LoginPage() {
             )}
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
             className="w-full py-2.5 bg-[#3e146d] text-white rounded-lg font-semibold shadow-md hover:opacity-90 transition"
@@ -111,8 +118,11 @@ function LoginPage() {
         </form>
 
         <p className="text-center text-sm mt-6 text-gray-700">
-          Belum punya akun? {" "}
-          <Link to="/register" className="text-[#3e146d] font-semibold hover:underline">
+          Belum punya akun?{" "}
+          <Link
+            to="/register-customer"
+            className="text-[#3e146d] font-semibold hover:underline"
+          >
             Daftar di sini
           </Link>
         </p>
@@ -120,5 +130,3 @@ function LoginPage() {
     </div>
   );
 }
-
-export default LoginPage;

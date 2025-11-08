@@ -2,10 +2,13 @@ import { Routes, Route, useLocation, Navigate, Outlet } from "react-router-dom";
 import React, { useState } from "react";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
-import LacakPaketCustomer from "./pages/LacakPaketCustomer";
+import LoginPageCustomer from "./pages/LoginPageCustomer";
+import RegisterPageCustomer from "./pages/RegisterPageCustomer";
 
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
+import LacakPaketCustomer from "././pages/customer_services/LacakPaketCustomer";
+
 import PackagesByKarungPage from "./pages/PackagesByKarungPage";
 import ArchivePackages from "./pages/ArchivePackages";
 import BatchSelectionPage from "./pages/batches/BatchSelectionPage";
@@ -50,7 +53,7 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const hideNavbar =
-    location.pathname === "/login" || location.pathname === "/register";
+  ["/login-customer", "/register-customer", "/login", "/register"].includes(location.pathname);
 
   return (
     <div className="app-root">
@@ -69,23 +72,16 @@ function App() {
     <main>
         <Routes>
           {/* ========== Semua route kamu tetap sama ========== */}
-          {/* saya singkat untuk fokus pada layout */}
-          <Route
-            path="/"
-            element={
-              user ? (
-                <Navigate to={getRedirectPathByRole(user.role)} replace />
-              ) : (
-                <LoginPage />
-              )
-            }
-          />
+          <Route path="/" element={<Navigate to="/login-customer" replace />} />
+
+            <Route path="/login-customer" element={<LoginPageCustomer />} />
+            <Route path="/register-customer" element={<RegisterPageCustomer />} />
+
+            {/* Proteksi berbasis role */}
 
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/lacak_paket_customer" element={<LacakPaketCustomer />} />
-
-            {/* Proteksi berbasis role */}
+            
             <Route
               path="/input"
               element={
@@ -99,6 +95,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <DisplayDetailPackage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/lacak_paket"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <LacakPaketCustomer />
                 </ProtectedRoute>
               }
             />
