@@ -14,6 +14,11 @@ export default function ManageCustomerService() {
       description: "Lihat jadwal terdekat.",
       path: "/jadwal_kirim",
     },
+    {
+      title: "Lokasi & Kontak",
+      description: "Lihat Lokasi Cabang & Kontak.",
+      path: "/lokasi-kontak",
+    },
   ];
 
   return (
