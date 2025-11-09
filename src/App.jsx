@@ -15,6 +15,8 @@ import JadwalKirimPage from "./pages/customer_services/manage/JadwalKirimPage";
 import JadwalKirimPageDisplay from "./pages/customer_services/display/JadwalKirimPageDisplay";
 import LokasiKontakPage from "./pages/customer_services/manage/LokasiKontakPage";
 import LokasiKontakPageDisplay from "./pages/customer_services/display/LokasiKontakPageDisplay";
+import SeringDitanyakanPage from "./pages/customer_services/manage/SeringDitanyakanPage";
+import SeringDitanyakanPageDisplay from "./pages/customer_services/display/SeringDitanyakanPageDisplay";
 
 import PackagesByKarungPage from "./pages/PackagesByKarungPage";
 import ArchivePackages from "./pages/ArchivePackages";
@@ -175,6 +177,24 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Customer"]}>
                   <LokasiKontakPageDisplay />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/sering_ditanyakan"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <SeringDitanyakanPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/customer/sering_ditanyakan"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <SeringDitanyakanPageDisplay />
                 </ProtectedRoute>
               }
             />

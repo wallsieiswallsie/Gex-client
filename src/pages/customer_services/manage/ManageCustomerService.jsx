@@ -19,6 +19,11 @@ export default function ManageCustomerService() {
       description: "Lihat Lokasi Cabang & Kontak.",
       path: "/lokasi-kontak",
     },
+    {
+      title: "Sering Ditanyakan",
+      description: "Kelola pertanyaan.",
+      path: "/sering_ditanyakan",
+    },
   ];
 
   return (
