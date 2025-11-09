@@ -22,7 +22,8 @@ function ArchivePackages() {
   const [latestStatuses, setLatestStatuses] = useState({});
 
   const navigate = useNavigate();
-  const { packages, total, page, limit, loading, error, fetchPackages } = useArchivePackages();
+  const { packages, total, page, limit, loading, error, fetchPackages } =
+    useArchivePackages();
   const { fetchLatest } = usePackageStatus();
 
   useEffect(() => {
@@ -65,10 +66,7 @@ function ArchivePackages() {
   };
 
   const filteredPackages = packages
-    .filter((pkg) => {
-      if (viaFilter === "all") return true;
-      return pkg.via === viaFilter;
-    })
+    .filter((pkg) => (viaFilter === "all" ? true : pkg.via === viaFilter))
     .filter((pkg) => {
       if (cabangFilter === "all") return true;
 
@@ -85,7 +83,7 @@ function ArchivePackages() {
 
   return (
     <div className="ddp-container">
-      <h2>Arsip Paket</h2>
+      <h2 className="text-2xl font-bold text-[#3e146d] mb-4">Arsip Paket</h2>
 
       <PackageControls
         filter={filter}
@@ -101,12 +99,13 @@ function ArchivePackages() {
         cabangFilter={cabangFilter}
         setCabangFilter={setCabangFilter}
         onApply={handleApplyFilterSort}
+        hideSelectButton={true} 
       />
 
       {loading && <p>Loading data arsip...</p>}
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
 
-      <div className="cards-container">
+      <div className="w-full mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredPackages.map((pkg) => {
           const isSelected = selectedPackages.some((p) => p.id === pkg.id);
           const latestStatus = latestStatuses[pkg.id];
@@ -114,17 +113,22 @@ function ArchivePackages() {
 
           return (
             <ErrorBoundary key={pkg.id}>
-              <PackageCard
-                pkg={pkg}
-                invoiceId={pkg.invoice_id || null}
-                isSelected={isSelected}
-                isDisabled={false}
-                statusLabel={statusLabel}
+              <div
                 onClick={() =>
                   selectMode ? toggleSelect(pkg) : setSelectedPackage(pkg)
                 }
-                onRightClick={(e) => handleCardRightClick(e, pkg)}
-              />
+                onContextMenu={(e) => handleCardRightClick(e, pkg)}
+                
+              >
+                <PackageCard
+                  pkg={pkg}
+                  invoiceId={pkg.invoice_id || null}
+                  isSelected={isSelected}
+                  isDisabled={false}
+                  statusLabel={statusLabel}
+                  className="flex-1"
+                />
+              </div>
             </ErrorBoundary>
           );
         })}

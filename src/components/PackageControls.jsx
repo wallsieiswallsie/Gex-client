@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 function PackageControls({
   filter,
@@ -12,6 +12,7 @@ function PackageControls({
   selectMode,
   setSelectMode,
   setSelectedPackages,
+  hideSelectButton = false, // tambahkan prop ini
 }) {
   const [showFilters, setShowFilters] = useState(false);
   const popoverRef = useRef(null);
@@ -25,7 +26,6 @@ function PackageControls({
     setShowFilters(!showFilters);
   };
 
-  // Tutup popover jika klik di luar
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (popoverRef.current && !popoverRef.current.contains(e.target)) {
@@ -37,20 +37,20 @@ function PackageControls({
   }, []);
 
   return (
-    <div className="ddp-controls flex items-center gap-2 relative">
+    <div className="ddp-controls flex items-center gap-3 relative">
       {/* Input pencarian */}
       <input
         type="text"
         placeholder="Cari nama atau resi..."
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
-        className="border rounded px-2 py-1 w-48"
+        className="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d] w-48"
       />
 
       {/* Tombol titik tiga */}
       <button
         onClick={handleToggleFilters}
-        className="border rounded px-2 py-1 hover:bg-gray-100"
+        className="px-3 py-2 border rounded-lg shadow-sm hover:bg-gray-100 transition"
         title="Filter lainnya"
       >
         ⋮
@@ -60,22 +60,24 @@ function PackageControls({
       {showFilters && (
         <div
           ref={popoverRef}
-          className="absolute top-full left-0 mt-2 bg-white border shadow-lg rounded-lg p-3 z-50 flex flex-col gap-2 w-52"
+          className="absolute top-full left-0 mt-2 bg-white border shadow-lg rounded-2xl p-4 z-50 flex flex-col gap-3 w-56"
         >
-          <select
-            value={invoicedFilter}
-            onChange={(e) => setInvoicedFilter(e.target.value)}
-            className="border rounded px-2 py-1"
-          >
-            <option value="all">Semua Paket</option>
-            <option value="yes">Sudah Invoiced</option>
-            <option value="no">Belum Invoiced</option>
-          </select>
+          {invoicedFilter !== null && (
+            <select
+              value={invoicedFilter}
+              onChange={(e) => setInvoicedFilter(e.target.value)}
+              className="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d] w-full"
+            >
+              <option value="all">Semua Paket</option>
+              <option value="yes">Sudah Invoiced</option>
+              <option value="no">Belum Invoiced</option>
+            </select>
+          )}
 
           <select
             value={viaFilter}
             onChange={(e) => setViaFilter(e.target.value)}
-            className="border rounded px-2 py-1"
+            className="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d] w-full"
           >
             <option value="all">Semua Moda</option>
             <option value="Kapal">Kapal</option>
@@ -85,7 +87,7 @@ function PackageControls({
           <select
             value={cabangFilter}
             onChange={(e) => setCabangFilter(e.target.value)}
-            className="border rounded px-2 py-1"
+            className="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d] w-full"
           >
             <option value="all">Semua Cabang</option>
             <option value="Remu">Remu</option>
@@ -95,14 +97,18 @@ function PackageControls({
       )}
 
       {/* Tombol mode pilih */}
-      <button
-        className={`border rounded px-2 py-1 ${
-          selectMode ? "bg-blue-500 text-white" : "hover:bg-gray-100"
-        }`}
-        onClick={handleToggleSelect}
-      >
-        {selectMode ? "Batal Pilih" : "Pilih"}
-      </button>
+      {!hideSelectButton && selectMode !== undefined && setSelectMode && setSelectedPackages && (
+        <button
+          className={`px-4 py-2 rounded-lg font-semibold shadow-md transition ${
+            selectMode
+              ? "bg-[#3e146d] text-white hover:opacity-90"
+              : "border hover:bg-gray-100"
+          }`}
+          onClick={handleToggleSelect}
+        >
+          {selectMode ? "Batal Pilih" : "Pilih"}
+        </button>
+      )}
     </div>
   );
 }
