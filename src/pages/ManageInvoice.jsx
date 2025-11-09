@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInvoices } from "../hooks/useInvoices";
-import { 
+import {
   archivePackagesByInvoicesApi,
-  addPaymentMethodApi, 
+  addPaymentMethodApi,
 } from "../utils/api";
-import PaymentMethodModal  from "../components/modals/PaymentMethodModal";
+import PaymentMethodModal from "../components/modals/PaymentMethodModal";
 
 function InvoicesPage() {
   const { invoices, loading } = useInvoices();
@@ -27,26 +27,18 @@ function InvoicesPage() {
 
   const handleArchive = async () => {
     if (selectedInvoices.length === 0) return;
-    setIsModalOpen(true); // buka modal
+    setIsModalOpen(true);
   };
 
   const handlePaymentSubmit = async (paymentMethod) => {
     try {
-      console.log("Payload:", {
+      const result = await archivePackagesByInvoicesApi({
         invoiceIds: selectedInvoices,
         paymentMethod,
       });
-
-      const result = await archivePackagesByInvoicesApi({ 
-        invoiceIds: selectedInvoices, 
-        paymentMethod 
-      });
-
-      // pakai result.data, bukan data
       alert(
         `Metode pembayaran: ${paymentMethod}\nBerhasil diarsipkan: ${result.data.archivedPackageIds.length} paket`
       );
-
       setIsModalOpen(false);
       setSelectMode(false);
       setSelectedInvoices([]);
@@ -59,84 +51,61 @@ function InvoicesPage() {
   const filteredInvoices = useMemo(() => {
     return invoices.filter((inv) => {
       const searchLower = search.toLowerCase();
-
-      // Cek apakah nama atau id mengandung kata pencarian
       const matchesSearch =
         inv.nama_invoice?.toLowerCase().includes(searchLower) ||
         inv.id?.toString().toLowerCase().includes(searchLower);
-
       const branch = inv.cabang?.toLowerCase() || "";
       const matchesBranch =
-        branchFilter === "semua" ||
-        branch === branchFilter.toLowerCase();
-
+        branchFilter === "semua" || branch === branchFilter.toLowerCase();
       return matchesSearch && matchesBranch;
     });
   }, [invoices, search, branchFilter]);
 
-
   return (
-    <div className="invoice-container">
-      {/* Baris 1: Judul dan tombol Arsip */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "12px",
-        }}
-      >
-        <h2 style={{ margin: 0 }}>Daftar Invoice</h2>
-        <button onClick={() => navigate("/archived_invoices")}>Arsip</button>
+    <div className="min-h-screen bg-white flex flex-col items-center px-4 py-10">
+      {/* Header */}
+      <div className="w-full max-w-3xl flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-[#3e146d]">Daftar Invoice</h2>
+        <button
+          onClick={() => navigate("/archived_invoices")}
+          className="px-4 py-2 bg-[#3e146d] text-white rounded-xl shadow hover:opacity-90 transition"
+        >
+          Arsip
+        </button>
       </div>
 
-      {/* Baris 2: Pencarian + Filter + Tombol aksi */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          marginBottom: "16px",
-          flexWrap: "wrap",
-        }}
-      >
-        {/* Input pencarian */}
+      {/* Filter + Search + Action */}
+      <div className="w-full max-w-3xl flex flex-wrap gap-3 mb-6">
         <input
           type="text"
           placeholder="Cari berdasarkan nama atau id invoice"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            flex: 1,
-            padding: "8px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
+          className="flex-1 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
         />
-
-        {/* Filter cabang */}
         <select
           id="branchFilter"
           value={branchFilter}
           onChange={(e) => setBranchFilter(e.target.value)}
-          style={{
-            padding: "8px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-            minWidth: "120px",
-          }}
+          className="px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d] min-w-[140px]"
         >
           <option value="semua">Semua Cabang</option>
           <option value="remu">Remu</option>
           <option value="aimas">Aimas</option>
         </select>
-
-        {/* Tombol aksi */}
         {!selectMode ? (
-          <button onClick={() => setSelectMode(true)}>Pilih</button>
+          <button
+            onClick={() => setSelectMode(true)}
+            className="px-4 py-2 bg-[#3e146d] text-white rounded-xl shadow hover:opacity-90 transition"
+          >
+            Pilih
+          </button>
         ) : (
           <>
-            <button onClick={handleArchive} className="btn btn-primary">
+            <button
+              onClick={handleArchive}
+              className="px-4 py-2 bg-blue-600 text-white rounded-xl shadow hover:opacity-90 transition"
+            >
               Arsipkan ({selectedInvoices.length})
             </button>
             <button
@@ -144,7 +113,7 @@ function InvoicesPage() {
                 setSelectMode(false);
                 setSelectedInvoices([]);
               }}
-              className="btn btn-secondary"
+              className="px-4 py-2 bg-gray-300 rounded-xl shadow hover:opacity-90 transition"
             >
               Batal
             </button>
@@ -152,45 +121,49 @@ function InvoicesPage() {
         )}
       </div>
 
-      {/* Daftar invoice */}
+      {/* Daftar Invoice */}
       {loading ? (
-        <p>Loading daftar invoice...</p>
+        <p className="text-gray-500">Memuat daftar invoice...</p>
       ) : filteredInvoices.length === 0 ? (
-        <p>Invoice tidak ditemukan.</p>
+        <p className="text-gray-500">Invoice tidak ditemukan.</p>
       ) : (
-        <div className="cards-container">
+        <div className="w-full max-w-3xl flex flex-col gap-3">
           {filteredInvoices.map((inv) => {
-          const isSelected = selectedInvoices.includes(inv.id);
-          return (
-            <div
-              key={inv.id}
-              className={`card ${isSelected ? "selected" : ""}`}
-              style={{
-                cursor: "pointer",
-                border: isSelected ? "2px solid blue" : "1px solid #ccc",
-                backgroundColor: isSelected ? "#e0f0ff" : "#fff",
-              }}
-              onClick={() => {
-                if (selectMode) {
-                  toggleSelectInvoice(inv.id);
-                } else {
-                  navigate(`/invoices/${inv.id}`);
-                }
-              }}
-            >
-              <h3>{inv.nama_invoice.toUpperCase()}</h3>
-              <h3>{inv.id}</h3>
-              <p>Jumlah Paket: {inv.package_count}</p>
-              <h4>Rp {Number(inv.total_price).toLocaleString("id-ID")}</h4>
-              {inv.cabang && <h3>{inv.cabang.toUpperCase()}</h3>}
-            </div>
-          );
-        })}
-
+            const isSelected = selectedInvoices.includes(inv.id);
+            return (
+              <div
+                key={inv.id}
+                className={`p-4 border rounded-2xl shadow-sm hover:shadow-md transition flex flex-col cursor-pointer ${
+                  isSelected ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-white"
+                }`}
+                onClick={() => {
+                  if (selectMode) {
+                    toggleSelectInvoice(inv.id);
+                  } else {
+                    navigate(`/invoices/${inv.id}`);
+                  }
+                }}
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-semibold text-[#3e146d] w-1/2">
+                    {inv.nama_invoice.toUpperCase()}
+                  </h3>
+                  <span className="text-gray-500">{inv.id}</span>
+                </div>
+                <p className="text-gray-700">Jumlah Paket: {inv.package_count}</p>
+                <h4 className="text-[#3e146d] font-bold">
+                  Rp {Number(inv.total_price).toLocaleString("id-ID")}
+                </h4>
+                {inv.cabang && (
+                  <span className="text-gray-500 mt-1">{inv.cabang.toUpperCase()}</span>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 
-      {/* MODAL */}
+      {/* Modal */}
       <PaymentMethodModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

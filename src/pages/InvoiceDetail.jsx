@@ -25,9 +25,9 @@ function InvoiceDetailPage() {
     if (invoice) setInvoiceData(invoice);
   }, [invoice]);
 
-  if (loading) return <p>Loading detail invoice...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
-  if (!invoiceData) return <p>Invoice tidak ditemukan.</p>;
+  if (loading) return <p className="text-gray-500">Loading detail invoice...</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
+  if (!invoiceData) return <p className="text-gray-500">Invoice tidak ditemukan.</p>;
 
   const toggleSelect = (pkg) => {
     if (selectedPackages.find((p) => p.id === pkg.id)) {
@@ -80,143 +80,126 @@ function InvoiceDetailPage() {
   };
 
   const handleAddPackages = async () => {
-  if (!resiList.trim()) {
-    alert("Masukkan minimal satu nomor resi.");
-    return;
-  }
-
-  const resiArray = resiList
-    .split(/[\s,;]+/)
-    .map((r) => r.trim())
-    .filter(Boolean);
-
-  try {
-    const result = await addPackagesByResiToInvoiceApi(invoiceData.id, resiArray);
-
-    const addedPackages = result.data?.data?.addedPackages || [];
-    const totalPrice = result.data?.data?.total_price;
-
-    if (addedPackages.length > 0) {
-      setInvoiceData((prev) => {
-        const merged = [...(prev.packages || []), ...addedPackages];
-        return { ...prev, packages: merged, total_price: totalPrice };
-      });
-
-      alert(`✅ Berhasil menambahkan ${addedPackages.length} paket ke invoice.`);
+    if (!resiList.trim()) {
+      alert("Masukkan minimal satu nomor resi.");
+      return;
     }
 
-    setResiList("");
-    setShowAddResiModal(false);
-  } catch (err) {
-    console.error("Gagal menambahkan paket:", err);
+    const resiArray = resiList
+      .split(/[\s,;]+/)
+      .map((r) => r.trim())
+      .filter(Boolean);
 
-    const message =
-      err?.response?.data?.message ||
-      err?.message ||
-      "Terjadi kesalahan saat menambahkan paket.";
+    try {
+      const result = await addPackagesByResiToInvoiceApi(invoiceData.id, resiArray);
+      const addedPackages = result.data?.data?.addedPackages || [];
+      const totalPrice = result.data?.data?.total_price;
 
-    let alertMessage = "⚠️ Terjadi kesalahan saat menambahkan paket.\n\n";
+      if (addedPackages.length > 0) {
+        setInvoiceData((prev) => {
+          const merged = [...(prev.packages || []), ...addedPackages];
+          return { ...prev, packages: merged, total_price: totalPrice };
+        });
+        alert(`✅ Berhasil menambahkan ${addedPackages.length} paket ke invoice.`);
+      }
 
-    // 🔹 Deteksi kasus error berdasarkan isi pesan
-    if (message.includes("Tidak ada paket ditemukan")) {
-      // Semua resi tidak ditemukan
-      alertMessage += "Nomor resi berikut tidak ditemukan di database:\n";
-      alertMessage += resiArray.join(", ");
-    } else if (message.includes("sudah masuk invoice")) {
-      // Ambil daftar resi dari pesan error server
-      const match = message.match(/:(.*)/);
-      const resiSudahMasuk = match ? match[1].split(",").map(r => r.trim()) : [];
-      alertMessage += "Nomor resi berikut sudah di-invoice:\n";
-      alertMessage += resiSudahMasuk.join(", ");
-    } else if (message.includes("Remu") || message.includes("Aimas")) {
-      alertMessage = "❌ Paket dari cabang Remu (QA) dan Aimas (QB) tidak boleh digabung dalam satu invoice.";
-    } else {
-      alertMessage = message;
+      setResiList("");
+      setShowAddResiModal(false);
+    } catch (err) {
+      console.error("Gagal menambahkan paket:", err);
+
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Terjadi kesalahan saat menambahkan paket.";
+
+      let alertMessage = "⚠️ Terjadi kesalahan saat menambahkan paket.\n\n";
+
+      if (message.includes("Tidak ada paket ditemukan")) {
+        alertMessage += "Nomor resi berikut tidak ditemukan:\n" + resiArray.join(", ");
+      } else if (message.includes("sudah masuk invoice")) {
+        const match = message.match(/:(.*)/);
+        const resiSudahMasuk = match ? match[1].split(",").map(r => r.trim()) : [];
+        alertMessage += "Nomor resi berikut sudah di-invoice:\n" + resiSudahMasuk.join(", ");
+      } else if (message.includes("Remu") || message.includes("Aimas")) {
+        alertMessage = "❌ Paket dari cabang Remu (QA) dan Aimas (QB) tidak boleh digabung dalam satu invoice.";
+      } else {
+        alertMessage = message;
+      }
+
+      alert(alertMessage);
     }
-
-    alert(alertMessage);
-  }
-};
+  };
 
   const packages = invoiceData.packages || [];
 
   return (
-    <div className="invoice-detail-container">
-      <h2>{invoiceData.nama_invoice.toUpperCase()}</h2>
-      <p>{invoiceData.id}</p>
-      <p>
-        Jumlah Paket: {invoiceData.package_count || (invoiceData.packages?.length || 0)}
-      </p>
-      <p>Total: Rp {Number(invoiceData.total_price).toLocaleString("id-ID")}</p>
+    <div className="min-h-screen bg-white flex flex-col items-center px-4 py-10">
+      <div className="flex justify-between w-full items-start mb-6">
+        <div className="w-full max-w-3xl mb-6">
+          <h2 className="text-2xl font-bold text-[#3e146d] mb-2">
+            {invoiceData.nama_invoice.toUpperCase()}
+          </h2>
+          <p className="text-gray-500 mb-1">ID: {invoiceData.id}</p>
+          <p className="text-gray-700 mb-1">
+            Jumlah Paket: {invoiceData.package_count || packages.length}
+          </p>
+          <p className="text-[#3e146d] font-semibold mb-2">
+            Total: Rp {Number(invoiceData.total_price).toLocaleString("id-ID")}
+          </p>
+        </div>
 
-      {selectMode && selectedPackages.length > 0 && (
-        <div className="actions-container" style={{ margin: "10px 0" }}>
+        {selectMode && selectedPackages.length > 0 && (
+          <div className="flex gap-2 mb-4">
+            <button
+              onClick={handleRemoveSelected}
+              className="bg-red-600 text-white py-2 px-4 rounded-2xl hover:opacity-90 transition"
+            >
+              Hapus Paket Terpilih ({selectedPackages.length})
+            </button>
+          </div>
+        )}
+
+        <div className="mb-4">
           <button
-            onClick={handleRemoveSelected}
-            style={{
-              backgroundColor: "red",
-              color: "white",
-              padding: "6px 12px",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
+            onClick={() => setShowAddResiModal(true)}
+            className="bg-[#3e146d] text-white rounded-full w-10 h-10 text-lg flex items-center justify-center hover:opacity-90 transition"
           >
-            Hapus Paket Terpilih ({selectedPackages.length})
+            +
           </button>
         </div>
-      )}
-
-      <div style={{ marginBottom: "10px" }}>
-        <button
-          onClick={() => setShowAddResiModal(true)}
-          style={{
-            backgroundColor: "green",
-            color: "white",
-            border: "none",
-            borderRadius: "50%",
-            width: "32px",
-            height: "32px",
-            fontSize: "20px",
-            cursor: "pointer",
-          }}
-        >
-          +
-        </button>
       </div>
 
-      <div
-        className="cards-container"
-        style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-      >
+      <div className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
         {packages.map((pkg) => {
           const isSelected = selectedPackages.some((p) => p.id === pkg.id);
           return (
             <div
               key={pkg.id}
-              className={`card ${isSelected ? "selected" : ""}`}
-              style={{
-                cursor: "pointer",
-                padding: "10px",
-                border: isSelected ? "2px solid blue" : "1px solid #ccc",
-                borderRadius: "6px",
-                position: "relative",
+              onClick={() =>
+                selectMode ? toggleSelect(pkg) : setSelectedPackage(pkg)
+              }
+              onContextMenu={(e) => {
+                e.preventDefault();
+                handleLongPress(pkg);
               }}
               onMouseDown={() => handleMouseDown(pkg)}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseLeave}
               onTouchStart={() => handleTouchStart(pkg)}
               onTouchEnd={handleTouchEnd}
-              onClick={() =>
-                selectMode ? toggleSelect(pkg) : setSelectedPackage(pkg)
-              }
+              className={`p-4 border rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer ${
+                isSelected ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-white"
+              }`}
             >
-              <h4>{pkg.nama.toUpperCase()}</h4>
-              <p>Resi: {pkg.resi.toUpperCase()}</p>
-              <p>
+              <h4 className="text-[#3e146d] font-semibold mb-1">{pkg.nama.toUpperCase()}</h4>
+              <p className="text-gray-700 mb-1">Resi: {pkg.resi.toUpperCase()}</p>
+              <p className="text-gray-700 mb-1">
                 {pkg.panjang} × {pkg.lebar} × {pkg.tinggi}
               </p>
-              <p>Rp {Number(pkg.harga).toLocaleString("id-ID")}</p>
+              <p className="text-[#3e146d] font-medium">
+                Rp {Number(pkg.harga).toLocaleString("id-ID")}
+              </p>
             </div>
           );
         })}
