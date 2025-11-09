@@ -52,7 +52,7 @@ export default function DisplayBatchesKapal() {
       if (res.success) {
         alert("Batch berhasil dibuat!");
         setShowForm(false);
-        setFormData({ 
+        setFormData({
           namaKapal: "",
           tanggalClosing: "",
           tanggalBerangkat: "",
@@ -68,81 +68,87 @@ export default function DisplayBatchesKapal() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return <p className="text-center text-gray-500 mt-10">Loading...</p>;
 
   return (
-    <div className="ddp_batch-container">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Daftar Batch Kapal</h1>
+    <div className="w-full max-w-3xl mx-auto mt-10 flex flex-col gap-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-[#3e146d]">Daftar Batch Kapal</h1>
         <button
           onClick={() => setShowForm(true)}
+          className="bg-[#3e146d] text-white px-4 py-2 rounded-3xl hover:opacity-90"
         >
-          + 
+          +
         </button>
       </div>
 
       {showForm && (
         <form
           onSubmit={handleAddBatch}
-          className="mb-6 p-4 border rounded bg-gray-50"
+          className="bg-white border border-[#3e146d]/20 shadow-lg rounded-2xl p-6 flex flex-col gap-4"
         >
           <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="block mb-1">Nama Kapal</label>
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700">Nama Kapal</label>
               <input
                 type="text"
                 value={formData.namaKapal}
                 onChange={(e) =>
                   setFormData({ ...formData, namaKapal: e.target.value })
                 }
-                className="border px-2 py-1 w-full"
+                className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
               />
             </div>
-            <div>
-              <label className="block mb-1">Tanggal Closing</label>
+
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700">Tanggal Closing</label>
               <input
                 type="date"
                 value={formData.tanggalClosing}
                 onChange={(e) =>
                   setFormData({ ...formData, tanggalClosing: e.target.value })
                 }
-                className="border px-2 py-1 w-full"
+                className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
               />
             </div>
-            <div>
-              <label className="block mb-1">Tanggal Berangkat</label>
+
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700">Tanggal Berangkat</label>
               <input
                 type="date"
                 value={formData.tanggalBerangkat}
                 onChange={(e) =>
                   setFormData({ ...formData, tanggalBerangkat: e.target.value })
                 }
-                className="border px-2 py-1 w-full"
+                className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
               />
             </div>
-            <div>
-              <label className="block mb-1">Vendor</label>
+
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700">Vendor</label>
               <input
                 type="text"
                 value={formData.namaVendor}
                 onChange={(e) =>
                   setFormData({ ...formData, namaVendor: e.target.value })
                 }
-                className="border px-2 py-1 w-full"
+                className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
               />
             </div>
           </div>
-          <div className="mt-4 flex gap-2">
+
+          <div className="flex gap-2 mt-4">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="bg-[#3e146d] text-white px-4 py-2 rounded-lg hover:opacity-90"
             >
               Simpan
             </button>
             <button
               type="button"
               onClick={() => setShowForm(false)}
-              className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
               Batal
             </button>
@@ -150,22 +156,27 @@ export default function DisplayBatchesKapal() {
         </form>
       )}
 
-      <div className="cards-container">
+      <div className="grid gap-4 md:grid-cols-2">
         {batches.map((batch) => (
-          <div className="card" key={batch.id}>
-            <h3>{batch.nama_kapal.toUpperCase()}</h3>
-            <p>{batch.id}</p>
-            <p>{batch.tanggal_closing.split("T")[0]}</p>
-            <div className="flex gap-2">
+          <div
+            key={batch.id}
+            className="bg-white border border-[#3e146d]/20 shadow-lg rounded-2xl p-4 flex flex-col gap-2 hover:shadow-xl transition"
+          >
+            <h3 className="text-lg font-bold text-[#3e146d]">{batch.nama_kapal.toUpperCase()}</h3>
+            <p className="text-gray-600">ID: {batch.id}</p>
+            <p className="text-gray-600">
+              Closing: {batch.tanggal_closing.split("T")[0]}
+            </p>
+            <div className="flex gap-2 mt-2">
               <button
                 onClick={() => navigate(`/batches/kapal/${batch.id}`)}
-                className="bg-indigo-500 text-white px-2 py-1 rounded hover:bg-indigo-600"
+                className="bg-[#3e146d] text-white px-3 py-1 rounded-lg hover:opacity-90"
               >
                 Detail
               </button>
               <button
                 onClick={() => setSelectedBatch(batch)}
-                className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
+                className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:opacity-90"
               >
                 Update
               </button>
@@ -174,7 +185,6 @@ export default function DisplayBatchesKapal() {
         ))}
       </div>
 
-      {/* Modal Update */}
       {selectedBatch && (
         <UpdateStatusBatchModal
           batch={selectedBatch}

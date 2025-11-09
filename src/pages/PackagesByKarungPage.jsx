@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPackagesByKarungApi } from "../utils/api";
 
-const PackagesByKarungPage = () => {
+export default function PackagesByKarungPage() {
   const { batchId, noKarung } = useParams();
   const [packages, setPackages] = useState([]);
   const [search, setSearch] = useState("");
@@ -19,6 +19,7 @@ const PackagesByKarungPage = () => {
       }
     } catch (err) {
       console.error(err);
+      setPackages([]);
     } finally {
       setLoading(false);
     }
@@ -26,11 +27,11 @@ const PackagesByKarungPage = () => {
 
   useEffect(() => {
     fetchPackages();
-  }, [search]);
+  }, [search, batchId, noKarung]);
 
   return (
-    <div className="cards-container">
-      <h2>
+    <div className="max-w-4xl mx-auto mt-10 flex flex-col gap-6">
+      <h2 className="text-2xl font-bold text-[#3e146d]">
         Karung {noKarung} | {batchId}
       </h2>
 
@@ -40,31 +41,29 @@ const PackagesByKarungPage = () => {
           placeholder="Cari berdasarkan nama atau nomor resi..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border px-3 py-2 rounded w-full"
+          className="border border-gray-300 rounded px-3 py-2 w-full"
         />
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-gray-500">Loading...</p>
       ) : packages.length === 0 ? (
-        <p>Tidak ada paket ditemukan</p>
+        <p className="text-gray-500">Tidak ada paket ditemukan</p>
       ) : (
-        <div className="cards-container">
+        <div className="grid gap-4 md:grid-cols-2">
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className="card"
+              className="bg-white border border-[#3e146d]/20 shadow-lg rounded-2xl p-4 flex flex-col gap-1 hover:shadow-xl transition"
             >
-              <p> {pkg.nama.toUpperCase()}</p>
-              <p>{pkg.resi.toUpperCase()}</p>
+              <p className="font-semibold">{pkg.nama.toUpperCase()}</p>
+              <p className="text-gray-600">{pkg.resi.toUpperCase()}</p>
               <p>{pkg.berat_dipakai} kg</p>
-              <p> Rp {Number(pkg.harga).toLocaleString("id-ID")}</p>
+              <p>Rp {Number(pkg.harga).toLocaleString("id-ID")}</p>
             </div>
           ))}
         </div>
       )}
     </div>
   );
-};
-
-export default PackagesByKarungPage;
+}

@@ -106,7 +106,7 @@ function PackageControls({
           }`}
           onClick={handleToggleSelect}
         >
-          {selectMode ? "Batal Pilih" : "Pilih"}
+          {selectMode ? "Batal" : "Pilih"}
         </button>
       )}
     </div>

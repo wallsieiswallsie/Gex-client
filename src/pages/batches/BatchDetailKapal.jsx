@@ -51,60 +51,73 @@ export default function BatchDetailKapal() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (!batch) return <p>Batch tidak ditemukan</p>;
+  if (loading)
+    return <p className="text-center text-gray-500 mt-10">Loading...</p>;
+  if (!batch)
+    return <p className="text-center text-gray-500 mt-10">Batch tidak ditemukan</p>;
 
   return (
-    <div className="detail_batch-container">
-      <h1 className="text-xl font-bold mb-4">{batch.id}</h1>
-      <p><strong>{batch.nama_kapal.toUpperCase()}</strong></p>
-      <p><strong>Tanggal Closing:</strong> {batch.tanggal_closing.split('T')[0]}</p>
-      <p><strong>Tanggal Berangkat:</strong> {batch.tanggal_berangkat.split('T')[0]}</p>
-      <p><strong>Total Berat:</strong> {batch.total_berat} kg</p>
-      <p><strong>Total Nilai:</strong> Rp {Number(batch.total_value).toLocaleString("id-ID")}</p>
+    <div className="max-w-4xl mx-auto mt-10 flex flex-col gap-6">
+      {/* Info batch */}
+      <div className="bg-white border border-[#3e146d]/20 shadow-lg rounded-2xl p-6 flex flex-col gap-2">
+        <h1 className="text-2xl font-bold text-[#3e146d]">{batch.id}</h1>
+        <p><strong>{batch.nama_kapal.toUpperCase()}</strong></p>
+        <p><strong>Tanggal Closing:</strong> {batch.tanggal_closing.split("T")[0]}</p>
+        <p><strong>Tanggal Berangkat:</strong> {batch.tanggal_berangkat.split("T")[0]}</p>
+        <p><strong>Total Berat:</strong> {batch.total_berat} kg</p>
+        <p><strong>Total Nilai:</strong> Rp {Number(batch.total_value).toLocaleString("id-ID")}</p>
+      </div>
 
-      <div className="flex justify-between items-center mt-6 mb-2">
-        <h2 className="text-lg font-semibold">Daftar Karung</h2>
+      {/* Header Karung */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold text-[#3e146d]">Daftar Karung</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+          className="bg-[#3e146d] text-white px-4 py-2 rounded-3xl hover:opacity-90"
         >
-          + Add Karung
+          +
         </button>
       </div>
 
+      {/* Form tambah karung */}
       {showForm && (
-        <form onSubmit={handleAddKarung} className="mb-4 flex gap-2">
+        <form
+          onSubmit={handleAddKarung}
+          className="mb-4 flex gap-2 items-center"
+        >
           <input
             type="text"
             placeholder="Masukkan No Karung"
             value={noKarung}
             onChange={(e) => setNoKarung(e.target.value)}
-            className="border px-2 py-1 rounded w-64"
+            className="border border-gray-300 rounded px-2 py-1 w-64"
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
           >
             Simpan
           </button>
         </form>
       )}
 
+      {/* List Karung */}
       {batch.karung && batch.karung.length > 0 ? (
-        <div className="cards-container">
+        <div className="grid gap-4 md:grid-cols-2">
           {batch.karung.map((karung) => (
             <div
-              className="card"
               key={karung.id}
+              className="bg-white border border-[#3e146d]/20 shadow-lg rounded-2xl p-4 flex flex-col gap-2 hover:shadow-xl transition"
             >
-              <h2 className="font-bold text-lg mb-2">Karung: {karung.no_karung}</h2>
+              <h2 className="font-bold text-[#3e146d] text-lg mb-2">
+                Karung: {karung.no_karung}
+              </h2>
               <p>Total Paket: {karung.packages?.length || 0}</p>
 
-              <div className="flex gap-2 mt-3">
+              <div className="flex gap-2 mt-2">
                 <button
                   onClick={() => setSelectedKarung(karung)}
-                  className="flex-1 bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600"
+                  className="flex-1 bg-[#3e146d] text-white px-3 py-1 rounded hover:opacity-90"
                 >
                   Packing Paket
                 </button>
@@ -125,6 +138,7 @@ export default function BatchDetailKapal() {
         <p className="text-gray-500">Belum ada karung di batch ini</p>
       )}
 
+      {/* Modal Packing */}
       {selectedKarung && (
         <PackingPackageToKarung
           karung={selectedKarung}
