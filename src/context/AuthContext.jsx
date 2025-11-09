@@ -10,6 +10,14 @@ export function AuthProvider({ children }) {
   // ================================================================
   // ✅ Saat aplikasi pertama kali dibuka, coba refresh access token
   // ================================================================
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem(USER_KEY);
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // ✅ restore dulu tanpa nunggu refresh
+    }
+  }, []);
+
   useEffect(() => {
     const storedUser = localStorage.getItem(USER_KEY);
     const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);

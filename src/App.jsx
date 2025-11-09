@@ -58,6 +58,16 @@ function App() {
   const hideNavbar =
   ["/login-customer", "/register-customer", "/login", "/register"].includes(location.pathname);
 
+  // Jika user sudah login, redirect otomatis ke halaman sesuai role
+  if (user && ["/", "/login-customer"].includes(location.pathname)) {
+    const redirectPath = getRedirectPathByRole(user.role);
+
+    // Hindari loop redirect
+    if (location.pathname !== redirectPath) {
+      return <Navigate to={redirectPath} replace />;
+    }
+  }
+
   return (
    <div className={`app-root ${!hideNavbar && user ? "with-sidebar" : ""}`}>
   {/* Sidebar */}
