@@ -14,6 +14,7 @@ import SyaratKetentuanPage from "./pages/customer_services/manage/SyaratKetentua
 import JadwalKirimPage from "./pages/customer_services/manage/JadwalKirimPage";
 import JadwalKirimPageDisplay from "./pages/customer_services/display/JadwalKirimPageDisplay";
 import LokasiKontakPage from "./pages/customer_services/manage/LokasiKontakPage";
+import LokasiKontakPageDisplay from "./pages/customer_services/display/LokasiKontakPageDisplay";
 
 import PackagesByKarungPage from "./pages/PackagesByKarungPage";
 import ArchivePackages from "./pages/ArchivePackages";
@@ -165,6 +166,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Customer"]}>
                   <LokasiKontakPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/customer/lokasi-kontak"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <LokasiKontakPageDisplay />
                 </ProtectedRoute>
               }
             />

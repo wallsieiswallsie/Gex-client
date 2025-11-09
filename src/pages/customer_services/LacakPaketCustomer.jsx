@@ -116,6 +116,16 @@ function LacakPaketCustomer() {
         </p>
       </div>
 
+      {/* CARD: LOKASI & KONTAK */}
+      <div
+        className="p-4 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition"
+        onClick={() => navigate("/customer/lokasi-kontak")}
+      >
+        <p className="font-semibold text-[#3e146d] text-center">
+          Lokasi & Kontak
+        </p>
+      </div>
+
       
     </div>
 
