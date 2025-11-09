@@ -1,8 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, USER_KEY } from "../utils/constants";
-
-const EXPIRY_KEY = "auth_expiry";
-const THREE_MONTHS = 90 * 24 * 60 * 60 * 1000; // 90 hari
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, USER_KEY, API_URL } from "../utils/constants";
 
 const AuthContext = createContext();
 
@@ -10,58 +7,71 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
 
+  // ================================================================
+  // ✅ Saat aplikasi pertama kali dibuka, coba refresh access token
+  // ================================================================
   useEffect(() => {
     const storedUser = localStorage.getItem(USER_KEY);
-    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-    const expiry = localStorage.getItem(EXPIRY_KEY);
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
 
-    // ✅ Jika tidak ada expiry → anggap logout
-    if (!expiry) {
+    // Jika tidak ada refresh token → user dianggap logout
+    if (!storedUser || !refreshToken) {
       setInitializing(false);
       return;
     }
 
-    // ✅ Jika lewat dari expiry → logout otomatis
-    if (Date.now() > Number(expiry)) {
-      localStorage.removeItem(USER_KEY);
-      localStorage.removeItem(ACCESS_TOKEN_KEY);
-      localStorage.removeItem(REFRESH_TOKEN_KEY);
-      localStorage.removeItem(EXPIRY_KEY);
-      setUser(null);
-      setInitializing(false);
-      return;
-    }
+    // ✅ Coba refresh access token ke backend
+    fetch(`${API_URL}/auth/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
+    })
+      .then(async (res) => {
+        const data = await res.json();
 
-    // ✅ Jika masih valid → tetap login
-    if (storedUser && accessToken) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
+        // Jika refresh berhasil → simpan access token baru
+        if (data.accessToken) {
+          localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+          setUser(JSON.parse(storedUser));
+        } else {
+          // Refresh gagal → logout
+          localStorage.removeItem(ACCESS_TOKEN_KEY);
+          localStorage.removeItem(REFRESH_TOKEN_KEY);
+          localStorage.removeItem(USER_KEY);
+          setUser(null);
+        }
+      })
+      .catch(() => {
+        // Jika terjadi error → anggap refresh gagal
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+        localStorage.removeItem(REFRESH_TOKEN_KEY);
         localStorage.removeItem(USER_KEY);
-      }
-    }
-
-    setInitializing(false);
+        setUser(null);
+      })
+      .finally(() => {
+        setInitializing(false);
+      });
   }, []);
 
+  // ================================================================
+  // ✅ Login: simpan user, access token, refresh token
+  // ================================================================
   const login = useCallback(({ userData, accessToken, refreshToken }) => {
     if (userData) {
-      const expiryTime = Date.now() + THREE_MONTHS;
-
       localStorage.setItem(USER_KEY, JSON.stringify(userData));
       localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-      if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-      localStorage.setItem(EXPIRY_KEY, expiryTime);
-
+      localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
       setUser(userData);
     }
   }, []);
 
+  // ================================================================
+  // ✅ Logout: hapus semua
+  // ================================================================
   const logout = useCallback(() => {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
-    localStorage.removeItem(EXPIRY_KEY);
     setUser(null);
   }, []);
 
