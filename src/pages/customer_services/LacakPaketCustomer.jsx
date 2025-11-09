@@ -106,9 +106,17 @@ function LacakPaketCustomer() {
         </p>
       </div>
 
-      {/* --- Nanti tinggal tambah card lain di sini --- */}
-      {/* <div className="p-4 bg-white rounded-xl shadow-md">Card Lain</div> */}
+      {/* CARD: JADWAL KIRIM */}
+      <div
+        className="p-4 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition"
+        onClick={() => navigate("/customer/jadwal_kirim")}
+      >
+        <p className="font-semibold text-[#3e146d] text-center">
+          Jadwal Kirim
+        </p>
+      </div>
 
+      
     </div>
 
     {/* MODAL DETAIL */}

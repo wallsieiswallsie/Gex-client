@@ -11,6 +11,8 @@ import ManageCustomerService from "./pages/customer_services/manage/ManageCustom
 import LacakPaketCustomer from "././pages/customer_services/LacakPaketCustomer";
 import SyaratKetentuanPageDisplay from "./pages/customer_services/display/SyaratKetentuanPageDisplay";
 import SyaratKetentuanPage from "./pages/customer_services/manage/SyaratKetentuanPage";
+import JadwalKirimPage from "./pages/customer_services/manage/JadwalKirimPage";
+import JadwalKirimPageDisplay from "./pages/customer_services/display/JadwalKirimPageDisplay";
 
 import PackagesByKarungPage from "./pages/PackagesByKarungPage";
 import ArchivePackages from "./pages/ArchivePackages";
@@ -135,6 +137,24 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Customer"]}>
                   <SyaratKetentuanPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/jadwal_kirim"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <JadwalKirimPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/customer/jadwal_kirim"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <JadwalKirimPageDisplay />
                 </ProtectedRoute>
               }
             />

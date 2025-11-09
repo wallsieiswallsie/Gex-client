@@ -9,6 +9,11 @@ export default function ManageCustomerService() {
       description: "Lihat detail syarat dan ketentuan layanan.",
       path: "/syarat-ketentuan",
     },
+    {
+      title: "Jadwal Kirim",
+      description: "Lihat jadwal terdekat.",
+      path: "/jadwal_kirim",
+    },
   ];
 
   return (

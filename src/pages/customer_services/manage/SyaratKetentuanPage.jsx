@@ -17,13 +17,11 @@ function SyaratKetentuanPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
 
-  // ✅ State tambahan
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
   const [localEditId, setLocalEditId] = useState(null);
 
-  // ✅ Submit (edit / tambah)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -63,7 +61,6 @@ function SyaratKetentuanPage() {
     );
   };
 
-  // ✅ Hapus banyak item
   const handleDeleteSelected = async () => {
     if (selectedIds.length === 0) return;
     if (!confirm("Hapus syarat ketentuan yang dipilih?")) return;
@@ -86,7 +83,7 @@ function SyaratKetentuanPage() {
 
     const selected = items.find((i) => i.id === selectedIds[0]);
 
-    setLocalEditId(selected.id);     // ✅ aktifkan mode edit
+    setLocalEditId(selected.id);
     setListContent(selected.list);
     setSelectionMode(false);
     setSelectedIds([]);
