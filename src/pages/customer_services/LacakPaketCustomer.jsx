@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { usePackages } from "../../hooks/usePackages";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import PackageCard from "../../components/PackageCard";
@@ -7,8 +8,9 @@ import { usePackageStatus } from "../../hooks/usePackageStatus";
 import { getStatusLabel } from "../../utils/statusLabels";
 
 function LacakPaketCustomer() {
-  const [resiQuery, setResiQuery] = useState("");        // input user
-  const [searchedResi, setSearchedResi] = useState("");  // resi yang dicari setelah klik
+  const navigate = useNavigate();
+  const [resiQuery, setResiQuery] = useState("");        
+  const [searchedResi, setSearchedResi] = useState("");  
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [latestStatuses, setLatestStatuses] = useState({});
   const [hasSearched, setHasSearched] = useState(false);
@@ -44,61 +46,82 @@ function LacakPaketCustomer() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-[#f4e9ff] flex flex-col items-center px-4 py-10">
-      <div className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8 border border-[#3e146d]/10">
+  <div className="min-h-screen bg-gradient-to-b from-white to-[#f4e9ff] flex flex-col items-center px-4 py-10">
 
-        <h2 className="text-3xl font-bold text-center text-[#3e146d] mb-6">
-          Lacak Paket 
-        </h2>
+    {/* BOX LACAK PAKET */}
+    <div className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8 border border-[#3e146d]/10">
+      <h2 className="text-3xl font-bold text-center text-[#3e146d] mb-6">
+        Lacak Paket 
+      </h2>
 
-        <div className="flex flex-col gap-3 mb-4">
-          <input
-            type="text"
-            placeholder="Masukkan nomor resi..."
-            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
-            value={resiQuery}
-            onChange={(e) => setResiQuery(e.target.value)}
-          />
+      <div className="flex flex-col gap-3 mb-4">
+        <input
+          type="text"
+          placeholder="Masukkan nomor resi..."
+          className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
+          value={resiQuery}
+          onChange={(e) => setResiQuery(e.target.value)}
+        />
 
-          <button
-            onClick={handleSearch}
-            className="w-full bg-[#3e146d] text-white font-semibold py-2 rounded-lg shadow-md hover:opacity-90 transition"
-          >
-            Cari
-          </button>
-        </div>
-
-        {hasSearched && searchedResi && !matchedPackage && (
-          <p className="text-center text-red-500 mt-4">
-            Resi tidak ditemukan.
-          </p>
-        )}
-
-        {hasSearched && matchedPackage && (
-          <div className="mt-4">
-            <ErrorBoundary>
-              <PackageCard
-                pkg={matchedPackage}
-                invoiceId={matchedPackage.invoice_id || null}
-                isSelected={false}
-                isDisabled={matchedPackage.invoiced}
-                statusLabel={getStatusLabel(latestStatuses[matchedPackage.id])}
-                onClick={() => setSelectedPackage(matchedPackage)}
-              />
-            </ErrorBoundary>
-          </div>
-        )}
+        <button
+          onClick={handleSearch}
+          className="w-full bg-[#3e146d] text-white font-semibold py-2 rounded-lg shadow-md hover:opacity-90 transition"
+        >
+          Cari
+        </button>
       </div>
 
-      {selectedPackage && (
-        <DetailPackageModal
-          pkg={selectedPackage}
-          invoiceId={selectedPackage.invoice_id}
-          onClose={() => setSelectedPackage(null)}
-        />
+      {hasSearched && searchedResi && !matchedPackage && (
+        <p className="text-center text-red-500 mt-4">
+          Resi tidak ditemukan.
+        </p>
+      )}
+
+      {hasSearched && matchedPackage && (
+        <div className="mt-4">
+          <ErrorBoundary>
+            <PackageCard
+              pkg={matchedPackage}
+              invoiceId={matchedPackage.invoice_id || null}
+              isSelected={false}
+              isDisabled={matchedPackage.invoiced}
+              statusLabel={getStatusLabel(latestStatuses[matchedPackage.id])}
+              onClick={() => setSelectedPackage(matchedPackage)}
+            />
+          </ErrorBoundary>
+        </div>
       )}
     </div>
-  );
+
+    {/* GRID CARD SERVICE */}
+    <div className="w-full max-w-xl mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      {/* CARD: SYARAT & KETENTUAN */}
+      <div
+        className="p-4 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition"
+        onClick={() => navigate("/customer/syarat-ketentuan")}
+      >
+        <p className="font-semibold text-[#3e146d] text-center">
+          Syarat & Ketentuan
+        </p>
+      </div>
+
+      {/* --- Nanti tinggal tambah card lain di sini --- */}
+      {/* <div className="p-4 bg-white rounded-xl shadow-md">Card Lain</div> */}
+
+    </div>
+
+    {/* MODAL DETAIL */}
+    {selectedPackage && (
+      <DetailPackageModal
+        pkg={selectedPackage}
+        invoiceId={selectedPackage.invoice_id}
+        onClose={() => setSelectedPackage(null)}
+      />
+    )}
+  </div>
+);
+
 }
 
 export default LacakPaketCustomer;

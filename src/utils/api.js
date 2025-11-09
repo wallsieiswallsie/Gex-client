@@ -281,3 +281,84 @@ export const addPaymentMethodApi = async (payload) => {
 
 export const fetchFinanceFinishedGroupedApi = async (batchId, kode) =>
   apiFetch(`/finance/${batchId}/${kode}/finished/grouped`);
+
+
+/** =================== SYARAT KETENTUAN =================== */
+export const fetchSyaratKetentuanApi = () => apiFetch("/customer/syarat-ketentuan");
+export const fetchSyaratKetentuanByIdApi = (id) => apiFetch(`/customer/syarat-ketentuan/${id}`);
+export const createSyaratKetentuanApi = (payload) =>
+  apiFetch("/customer/syarat-ketentuan", { method: "POST", body: JSON.stringify(payload) });
+export const patchSyaratKetentuanApi = (id, payload) =>
+  apiFetch(`/customer/syarat-ketentuan/${id}`, { method: "PATCH", body: JSON.stringify(payload) });
+export const deleteSyaratKetentuanApi = (id) =>
+  apiFetch(`/customer/syarat-ketentuan/${id}`, { method: "DELETE" });
+
+/** =================== JADWAL KIRIM =================== */
+export const fetchJadwalKirimApi = () => apiFetch("/customer/jadwal-kirim");
+export const fetchJadwalKirimByIdApi = (id) => apiFetch(`/customer/jadwal-kirim/${id}`);
+export const createJadwalKirimApi = (payload) =>
+  apiFetch("/customer/jadwal-kirim", { method: "POST", body: JSON.stringify(payload) });
+export const patchJadwalKirimApi = (id, payload) =>
+  apiFetch(`/customer/jadwal-kirim/${id}`, { method: "PATCH", body: JSON.stringify(payload) });
+export const deleteJadwalKirimApi = (id) =>
+  apiFetch(`/customer/jadwal-kirim/${id}`, { method: "DELETE" });
+
+/** =================== LOKASI KONTAK =================== */
+export const fetchLokasiKontakApi = () => apiFetch("/customer/lokasi-kontak");
+export const fetchLokasiKontakByIdApi = (id) => apiFetch(`/customer/lokasi-kontak/${id}`);
+export const createLokasiKontakApi = (payload) =>
+  apiFetch("/customer/lokasi-kontak", { method: "POST", body: JSON.stringify(payload) });
+export const patchLokasiKontakApi = (id, payload) =>
+  apiFetch(`/customer/lokasi-kontak/${id}`, { method: "PATCH", body: JSON.stringify(payload) });
+export const deleteLokasiKontakApi = (id) =>
+  apiFetch(`/customer/lokasi-kontak/${id}`, { method: "DELETE" });
+
+/** =================== CARA KIRIM =================== */
+export const fetchCaraKirimApi = () => apiFetch("/customer/cara-kirim");
+export const fetchCaraKirimByIdApi = (id) => apiFetch(`/customer/cara-kirim/${id}`);
+export const createCaraKirimApi = (formData) => {
+  const token = localStorage.getItem("ACCESS_TOKEN_KEY");
+  return fetch(`${process.env.REACT_APP_API_URL}/customer/cara-kirim`, {
+    method: "POST",
+    headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: formData,
+  }).then((res) => res.json());
+};
+export const patchCaraKirimApi = (id, formDataOrJson) => {
+  const token = localStorage.getItem("ACCESS_TOKEN_KEY");
+  const isFormData = formDataOrJson instanceof FormData;
+  return fetch(`${process.env.REACT_APP_API_URL}/customer/cara-kirim/${id}`, {
+    method: "PATCH",
+    headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(isFormData ? {} : { "Content-Type": "application/json" }) },
+    body: isFormData ? formDataOrJson : JSON.stringify(formDataOrJson),
+  }).then((res) => res.json());
+};
+export const deleteCaraKirimApi = (id) => {
+  const token = localStorage.getItem("ACCESS_TOKEN_KEY");
+  return fetch(`${process.env.REACT_APP_API_URL}/customer/cara-kirim/${id}`, {
+    method: "DELETE",
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  }).then((res) => res.json());
+};
+
+/** =================== DAFTAR ONGKIR =================== */
+export const fetchDaftarOngkirApi = () => apiFetch("/customer/daftar-ongkir");
+export const fetchDaftarOngkirByIdApi = (id) => apiFetch(`/customer/daftar-ongkir/${id}`);
+export const createDaftarOngkirApi = (payload) =>
+  apiFetch("/customer/daftar-ongkir", { method: "POST", body: JSON.stringify(payload) });
+export const patchDaftarOngkirApi = (id, payload) =>
+  apiFetch(`/customer/daftar-ongkir/${id}`, { method: "PATCH", body: JSON.stringify(payload) });
+export const deleteDaftarOngkirApi = (id) =>
+  apiFetch(`/customer/daftar-ongkir/${id}`, { method: "DELETE" });
+
+/** =================== SERING DITANYAKAN =================== */
+export const fetchSeringDitanyakanApi = () => apiFetch("/customer/sering-ditanyakan");
+export const fetchSeringDitanyakanByIdApi = (id) => apiFetch(`/customer/sering-ditanyakan/${id}`);
+export const createSeringDitanyakanApi = (payload) =>
+  apiFetch("/customer/sering-ditanyakan", { method: "POST", body: JSON.stringify(payload) });
+export const patchSeringDitanyakanApi = (id, payload) =>
+  apiFetch(`/customer/sering-ditanyakan/${id}`, { method: "PATCH", body: JSON.stringify(payload) });
+export const deleteSeringDitanyakanApi = (id) =>
+  apiFetch(`/customer/sering-ditanyakan/${id}`, { method: "DELETE" });

@@ -7,7 +7,10 @@ import RegisterPageCustomer from "./pages/RegisterPageCustomer";
 
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
+import ManageCustomerService from "./pages/customer_services/manage/ManageCustomerService";
 import LacakPaketCustomer from "././pages/customer_services/LacakPaketCustomer";
+import SyaratKetentuanPageDisplay from "./pages/customer_services/display/SyaratKetentuanPageDisplay";
+import SyaratKetentuanPage from "./pages/customer_services/manage/SyaratKetentuanPage";
 
 import PackagesByKarungPage from "./pages/PackagesByKarungPage";
 import ArchivePackages from "./pages/ArchivePackages";
@@ -104,6 +107,33 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Customer"]}>
                   <LacakPaketCustomer />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/customer/syarat-ketentuan"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <SyaratKetentuanPageDisplay />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/syarat-ketentuan"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <SyaratKetentuanPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/manage-customer-services"
+              element={
+                <ProtectedRoute allowedRoles={["Customer"]}>
+                  <ManageCustomerService />
                 </ProtectedRoute>
               }
             />
