@@ -27,6 +27,8 @@ function DisplayDetailPackage() {
   const { packages, loading, error, fetchPackages } = usePackages();
   const { fetchLatest } = usePackageStatus();
 
+  const sortedPackages = [...packages].sort((a, b) => b.id - a.id);
+
   useEffect(() => {
     const fetchStatuses = async () => {
       const statusesMap = {};
@@ -50,17 +52,17 @@ function DisplayDetailPackage() {
   }, [packages, fetchLatest]);
 
   useEffect(() => {
+    if (filter !== "") return; // scroll aktif hanya jika sedang cari
+
     const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 200
-      ) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
         setVisibleCount((prev) => prev + 10);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [filter]);
 
   const toggleSelect = (pkg) => {
     if (selectedPackages.find((p) => p.id === pkg.id)) {
@@ -86,7 +88,7 @@ function DisplayDetailPackage() {
     }
   };
 
-  const filteredPackages = packages
+  const filteredPackages = sortedPackages
     .filter((pkg) => {
       if (!filter) return true;
       const lowerFilter = filter.toLowerCase();
@@ -118,6 +120,8 @@ function DisplayDetailPackage() {
 
       return cabang === cabangFilter;
     });
+
+    const limitedPackages = filter === "" ? filteredPackages.slice(0, 30) : filteredPackages;
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10 flex flex-col items-center">
@@ -157,7 +161,7 @@ function DisplayDetailPackage() {
       )}
 
       <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredPackages.slice(0, visibleCount).map((pkg) => {
+        {limitedPackages.slice(0, visibleCount).map((pkg) => {
           const isSelected = selectedPackages.some((p) => p.id === pkg.id);
           const isDisabled = pkg.invoiced;
 
