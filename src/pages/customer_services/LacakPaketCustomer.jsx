@@ -7,6 +7,11 @@ import { usePackageStatus } from "../../hooks/usePackageStatus";
 import { getStatusLabel } from "../../utils/statusLabels";
 import { Truck, Clock, Shield } from "lucide-react";
 
+import SyaratKetentuanIcon from "../../../public/images/customer_service/syarat_ketentuan.svg";
+import JadwalKirimIcon from "../../../public/images/customer_service/jadwal_kirim.svg";
+import LokasiKontakIcon  from "../../../public/images/customer_service/lokasi_kontak.svg";
+import SeringDitanyakanIcon  from "../../../public/images/customer_service/sering_ditanyakan.svg";
+
 function LacakPaketCustomer() {
   const navigate = useNavigate();
   const [resiQuery, setResiQuery] = useState("");        
@@ -141,50 +146,43 @@ function LacakPaketCustomer() {
       </div>
 
     {/* GRID CARD SERVICE */}
-    <div className="w-full mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="w-full mt-8 grid grid-cols-2 gap-4">
+        {/* CARD: SYARAT & KETENTUAN */}
+        <div
+          className="p-6 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition flex flex-col items-center text-center"
+          onClick={() => navigate("/customer/syarat-ketentuan")}
+        >
+          <img src={SyaratKetentuanIcon} alt="Syarat Ketentuan" className="w-14 h-14 object-cover rounded-full mb-3" />
+          <p className="font-semibold text-[#3e146d]">Syarat & Ketentuan</p>
+        </div>
 
-      {/* CARD: SYARAT & KETENTUAN */}
-      <div
-        className="p-4 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition"
-        onClick={() => navigate("/customer/syarat-ketentuan")}
-      >
-        <p className="font-semibold text-[#3e146d] text-center">
-          Syarat & Ketentuan
-        </p>
+        {/* CARD: JADWAL KIRIM */}
+        <div
+          className="p-6 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition flex flex-col items-center text-center"
+          onClick={() => navigate("/customer/jadwal_kirim")}
+        >
+          <img src={JadwalKirimIcon} alt="Jadwal Kirim" className="w-14 h-14 object-cover rounded-full mb-3" />
+          <p className="font-semibold text-[#3e146d]">Jadwal Kirim</p>
+        </div>
+
+        {/* CARD: LOKASI & KONTAK */}
+        <div
+          className="p-6 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition flex flex-col items-center text-center"
+          onClick={() => navigate("/customer/lokasi-kontak")}
+        >
+          <img src={LokasiKontakIcon} alt="Lokasi Kontak" className="w-14 h-14 object-cover rounded-full mb-3" />
+          <p className="font-semibold text-[#3e146d]">Lokasi & Kontak</p>
+        </div>
+
+        {/* CARD: SERING DITANYAKAN */}
+        <div
+          className="p-6 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition flex flex-col items-center text-center"
+          onClick={() => navigate("/customer/sering_ditanyakan")}
+        >
+          <img src={SeringDitanyakanIcon} alt="Sering Ditanyakan" className="w-14 h-14 object-cover rounded-full mb-3" />
+          <p className="font-semibold text-[#3e146d]">Sering Ditanyakan</p>
+        </div>
       </div>
-
-      {/* CARD: JADWAL KIRIM */}
-      <div
-        className="p-4 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition"
-        onClick={() => navigate("/customer/jadwal_kirim")}
-      >
-        <p className="font-semibold text-[#3e146d] text-center">
-          Jadwal Kirim
-        </p>
-      </div>
-
-      {/* CARD: LOKASI & KONTAK */}
-      <div
-        className="p-4 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition"
-        onClick={() => navigate("/customer/lokasi-kontak")}
-      >
-        <p className="font-semibold text-[#3e146d] text-center">
-          Lokasi & Kontak
-        </p>
-      </div>
-
-      {/* CARD: SERING DITANYAKAN */}
-      <div
-        className="p-4 bg-white border border-[#3e146d]/20 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02] transition"
-        onClick={() => navigate("/customer/sering_ditanyakan")}
-      >
-        <p className="font-semibold text-[#3e146d] text-center">
-          Sering Ditanyakan
-        </p>
-      </div>
-
-      
-    </div>
   </div>
 );
 
