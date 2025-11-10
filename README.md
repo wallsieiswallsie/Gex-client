@@ -1,7 +1,5 @@
 # Detail Package App
 
-Versi pertama aplikasi manajemen paket dengan integrasi PostgreSQL.
-
 ## Fitur Utama
 1. **Autentikasi**
    - Register pengguna baru.
