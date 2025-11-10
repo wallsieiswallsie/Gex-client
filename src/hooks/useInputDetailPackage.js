@@ -12,6 +12,8 @@ export const useInputDetailPackage = () => {
     tinggi: "",
     berat: "",
     kode: "",
+    tanggal_tiba: "",  
+    ekspedisi: "",
     foto: null,
     preview: null,
     invoiced: false,
@@ -53,6 +55,8 @@ export const useInputDetailPackage = () => {
       tinggi: "",
       berat: "",
       kode: "",
+      tanggal_tiba: "",
+      ekspedisi: "",
       foto: null,
       preview: null,
       invoiced: false,
@@ -88,6 +92,8 @@ export const useInputDetailPackage = () => {
       data.append("via", formData.via);
       data.append("invoiced", formData.invoiced);
       data.append("finished", formData.finished);
+      data.append("tanggal_tiba", formData.tanggal_tiba || "");
+      data.append("ekspedisi", formData.ekspedisi || "");
       if (formData.foto) data.append("photo", formData.foto);
 
       await createPackageApi(data); // kirim sebagai multipart form-data

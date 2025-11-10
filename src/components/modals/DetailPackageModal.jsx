@@ -38,7 +38,7 @@ function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
     >
       <div className="modal-container bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
         <h1 className="modal-title text-xl font-bold text-center mb-2">{pkg.nama.toUpperCase()}</h1>
-        <h2 className="modal-subtitle text-center text-gray-500 mb-4">{pkg.resi}</h2>
+        <h2 className="modal-subtitle text-center text-gray-500 mb-4">{pkg.resi} | {pkg.ekspedisi} </h2>
 
         {/* Foto paket */}
         {pkg.photo_url && (

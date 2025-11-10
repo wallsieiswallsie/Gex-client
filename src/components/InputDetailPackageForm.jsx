@@ -8,17 +8,33 @@ function InputDetailPackageForm({
   handleCancel,
   handleFileChange,
 }) {
-  const fileInputRef = useRef(null); // ✅ ref untuk reset file
+  const fileInputRef = useRef(null);
 
   const onSave = async (e) => {
     e.preventDefault();
     await handleSave(e);
 
-    // Reset input file dan preview setelah berhasil save
     if (fileInputRef.current) {
       fileInputRef.current.value = null;
     }
   };
+
+  const ekspedisiOptions = [
+    { value: "J&T Express", color: "bg-pink-200" },
+    { value: "Shopee Express", color: "bg-orange-200" },
+    { value: "JNE", color: "bg-blue-200" },
+    { value: "LEX", color: "bg-green-200" },
+    { value: "POS", color: "bg-yellow-200" },
+    { value: "TIKI", color: "bg-purple-200" },
+    { value: "Wahana", color: "bg-red-200" },
+    { value: "Indah Cargo", color: "bg-teal-200" },
+    { value: "SiCepat", color: "bg-rose-200" },
+    { value: "Anteraja", color: "bg-fuchsia-200" },
+    { value: "SAPX", color: "bg-lime-200" },
+    { value: "Grab", color: "bg-emerald-200" },
+    { value: "Gojek", color: "bg-indigo-200" },
+    { value: "Lainnya", color: "bg-gray-200" },
+  ];
 
   return (
     <div className="min-h-screen flex justify-center items-start px-4 py-10 bg-gray-50">
@@ -28,6 +44,8 @@ function InputDetailPackageForm({
         </h2>
 
         <form onSubmit={onSave} className="flex flex-col gap-4">
+
+          {/* ====== NAMA ====== */}
           <div className="flex flex-col gap-1">
             <label className="font-medium text-gray-700">Nama</label>
             <input
@@ -37,9 +55,12 @@ function InputDetailPackageForm({
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
             />
-            {errors.nama && <p className="text-red-500 text-sm">{errors.nama}</p>}
+            {errors.nama && (
+              <p className="text-red-500 text-sm">{errors.nama}</p>
+            )}
           </div>
 
+          {/* ====== RESI ====== */}
           <div className="flex flex-col gap-1">
             <label className="font-medium text-gray-700">Resi</label>
             <input
@@ -49,9 +70,12 @@ function InputDetailPackageForm({
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
             />
-            {errors.resi && <p className="text-red-500 text-sm">{errors.resi}</p>}
+            {errors.resi && (
+              <p className="text-red-500 text-sm">{errors.resi}</p>
+            )}
           </div>
 
+          {/* ====== DIMENSI ====== */}
           <div className="grid grid-cols-3 gap-3">
             <div className="flex flex-col gap-1">
               <label className="font-medium text-gray-700">Panjang</label>
@@ -85,6 +109,7 @@ function InputDetailPackageForm({
             </div>
           </div>
 
+          {/* ====== BERAT ====== */}
           <div className="flex flex-col gap-1">
             <label className="font-medium text-gray-700">Berat</label>
             <input
@@ -96,6 +121,47 @@ function InputDetailPackageForm({
             />
           </div>
 
+          {/* ====== TANGGAL TIBA ====== */}
+          <div className="flex flex-col gap-1">
+            <label className="font-medium text-gray-700">
+              Tanggal Tiba Tangerang
+            </label>
+            <input
+              type="date"
+              name="tanggal_tiba"
+              value={formData.tanggal_tiba}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
+            />
+          </div>
+
+          {/* ====== EKSPEDISI ====== */}
+          <div className="flex flex-col gap-1">
+            <label className="font-medium text-gray-700">Ekspedisi</label>
+
+            <select
+              name="ekspedisi"
+              value={formData.ekspedisi}
+              onChange={handleChange}
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]`}
+            >
+              <option value="" disabled hidden>
+                Pilih Ekspedisi
+              </option>
+
+              {ekspedisiOptions.map((opt) => (
+                <option
+                  key={opt.value}
+                  value={opt.value}
+                  className={`${opt.color} text-gray-700`}
+                >
+                  {opt.value}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* ====== FOTO ====== */}
           <div className="flex flex-col gap-1">
             <label className="font-medium text-gray-700">Foto Paket</label>
             <input
@@ -115,8 +181,11 @@ function InputDetailPackageForm({
             )}
           </div>
 
+          {/* ====== KODE ====== */}
           <div className="flex flex-col gap-1">
-            <label className="font-medium text-gray-700">Kode Pengiriman</label>
+            <label className="font-medium text-gray-700">
+              Kode Pengiriman
+            </label>
             <select
               name="kode"
               value={formData.kode}
@@ -124,15 +193,18 @@ function InputDetailPackageForm({
               required
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
             >
-              <option value="" disabled hidden />
+              <option value="" disabled hidden></option>
               <option value="JKSOQA">JKSOQA</option>
               <option value="JKSOQB">JKSOQB</option>
               <option value="JPSOQA">JPSOQA</option>
               <option value="JPSOQB">JPSOQB</option>
             </select>
-            {errors.kode && <p className="text-red-500 text-sm">{errors.kode}</p>}
+            {errors.kode && (
+              <p className="text-red-500 text-sm">{errors.kode}</p>
+            )}
           </div>
 
+          {/* ====== BUTTON ====== */}
           <div className="flex gap-3 mt-4">
             <button
               type="button"

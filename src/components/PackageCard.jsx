@@ -43,7 +43,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
       `}
     >
       <h2 className="font-bold text-lg">{pkg.nama.toUpperCase()}</h2>
-      <h3 className="font-semibold text-sm text-gray-600">{pkg.resi.toUpperCase()}</h3>
+      <h3 className="font-semibold text-sm text-gray-600">{pkg.resi.toUpperCase()} | {pkg.ekspedisi}</h3>
 
       <p className="text-sm text-gray-700">
         {pkg.panjang} × {pkg.lebar} × {pkg.tinggi} | {pkg.berat_dipakai} kg
