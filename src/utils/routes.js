@@ -5,7 +5,7 @@ export const getRedirectPathByRole = (role) => {
     case "Staff Main Warehouse":
       return "/input";
     case "Manager Main Warehouse":
-      return "/input";
+      return "/lacak_paket";
     case "Courier":
       return "/selection_pengantaran";
     case "Customer":

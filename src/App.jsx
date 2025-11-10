@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation, Navigate, Outlet } from "react-router-dom";
 import React, { useState } from "react";
-import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import LoginPageCustomer from "./pages/LoginPageCustomer";
 import RegisterPageCustomer from "./pages/RegisterPageCustomer";
@@ -62,7 +61,7 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const hideNavbar =
-  ["/login-customer", "/register-customer", "/login", "/register"].includes(location.pathname);
+  ["/login-customer", "/register-customer"].includes(location.pathname);
 
   // Jika user sudah login, redirect otomatis ke halaman sesuai role
   if (user && ["/", "/login-customer"].includes(location.pathname)) {
@@ -97,9 +96,6 @@ function App() {
             <Route path="/register-customer" element={<RegisterPageCustomer />} />
 
             {/* Proteksi berbasis role */}
-
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
             
             <Route
               path="/input"
@@ -109,6 +105,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            <Route
+              path="/register"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Main Warehouse"]}>
+                  <RegisterPage />
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="/packages"
               element={

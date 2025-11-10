@@ -55,7 +55,7 @@ function RegisterPage() {
       alert("Registrasi berhasil, silakan login!");
       setFormData({ name: "", email: "", password: "", role: "", cabang: "" });
       setErrors({});
-      navigate("/login");
+      navigate("/login-customer");
     } catch (err) {
       alert(err.message || "Registrasi gagal");
     } finally {
@@ -164,7 +164,7 @@ function RegisterPage() {
 
         <p className="text-center text-sm mt-6 text-gray-700">
           Sudah punya akun? {" "}
-          <Link to="/login" className="text-[#3e146d] font-semibold hover:underline">
+          <Link to="/login-customer" className="text-[#3e146d] font-semibold hover:underline">
             Login di sini
           </Link>
         </p>

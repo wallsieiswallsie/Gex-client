@@ -6,6 +6,7 @@ import { HiX } from "react-icons/hi";
 const MENU_ITEMS = [
   { path: "/lacak_paket", label: "Lacak Paket", roles: ["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"] },
   { path: "/manage-customer-services", label: "Manage Service", roles: ["Manager Main Warehouse"] },
+  { path: "/register", label: "Manage User", roles: ["Manager Main Warehouse"] },
   { path: "/packages", label: "Database Paket", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "/batches", label: "Batches Pengiriman", roles: ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"] },
   { path: "#", label: "Database Customer", roles: ["Manager Destination Warehouse"] },
