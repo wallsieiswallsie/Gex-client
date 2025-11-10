@@ -24,6 +24,8 @@ input {
   margin-top: 4px;
   border-radius: 15px;
   border: 1px solid #ccc;
+  background-color: #ffffff;
+  color: #333333;
 }
 
 label {
