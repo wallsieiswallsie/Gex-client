@@ -11,11 +11,17 @@ function Navbar({ user, onLogout, onToggleSidebar }) {
     navigate(-1);
   };
 
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Apakah kamu yakin ingin logout?");
+    if (confirmLogout) {
+      onLogout();
+    }
+  };
+
   return (
     <nav className="navbar">
       {/* === KIRI === */}
       <div className="navbar-left">
-        {/* Tombol burger (mobile) */}
         <button
           className="burger-btn md:hidden"
           onClick={onToggleSidebar}
@@ -24,7 +30,6 @@ function Navbar({ user, onLogout, onToggleSidebar }) {
           <HiMenu size={26} />
         </button>
 
-        {/* Logo & tagline (desktop) */}
         <div className="hidden md:flex items-center gap-2">
           <button className="back-btn" onClick={handleBack}>
             &lt;
@@ -43,13 +48,12 @@ function Navbar({ user, onLogout, onToggleSidebar }) {
             {user?.name?.toUpperCase() || "GUEST"}
           </p>
           <p className="role text-xs text-gray-500">{user?.role || "User"}</p>
-          <p className="branch text-xs text-gray-400">{user?.cabang.toUpperCase() || "-"}</p>
+          <p className="branch text-xs text-gray-400">{user?.cabang?.toUpperCase() || "-"}</p>
         </div>
 
-        {/* Tombol logout ikon saja */}
         <button
           className="logout-icon-btn"
-          onClick={onLogout}
+          onClick={handleLogout}
           title="Logout"
         >
           <FiLogOut size={24} />

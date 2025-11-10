@@ -222,7 +222,7 @@ function App() {
             <Route
               path="/batches"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <BatchSelectionPage />
                 </ProtectedRoute>
               }
@@ -232,7 +232,7 @@ function App() {
             <Route
               path="/batches/kapal"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <DisplayBatchesKapal />
                 </ProtectedRoute>
               }
@@ -242,7 +242,7 @@ function App() {
             <Route
               path="/batches/pesawat"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <DisplayBatchesPesawat />
                 </ProtectedRoute>
               }
@@ -252,7 +252,7 @@ function App() {
             <Route
               path="/batches/kapal/:batchId"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <BatchDetailKapal />
                 </ProtectedRoute>
               }
@@ -261,7 +261,7 @@ function App() {
             <Route
               path="/batches/kapal/:batchId/karung/:noKarung"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <PackagesByKarungPage />
                 </ProtectedRoute>
               }
@@ -271,7 +271,7 @@ function App() {
             <Route
               path="/batches/pesawat/:batchId"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <BatchDetailPesawat />
                 </ProtectedRoute>
               }

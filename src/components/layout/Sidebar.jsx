@@ -7,7 +7,7 @@ const MENU_ITEMS = [
   { path: "/lacak_paket", label: "Lacak Paket", roles: ["Customer"] },
   { path: "/manage-customer-services", label: "Manage Service", roles: ["Customer"] },
   { path: "/packages", label: "Database Paket", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
-  { path: "/batches", label: "Batches Pengiriman", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
+  { path: "/batches", label: "Batches Pengiriman", roles: ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"] },
   { path: "#", label: "Database Customer", roles: ["Manager Destination Warehouse"] },
   { path: "/invoices", label: "Manage Invoice", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse"] },

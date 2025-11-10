@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { getPackagesByKarungApi } from "../utils/api";
 
 export default function PackagesByKarungPage() {
+  const { user } = useAuth(); // <-- ambil user di sini
   const { batchId, noKarung } = useParams();
   const [packages, setPackages] = useState([]);
   const [search, setSearch] = useState("");
@@ -59,7 +61,11 @@ export default function PackagesByKarungPage() {
               <p className="font-semibold">{pkg.nama.toUpperCase()}</p>
               <p className="text-gray-600">{pkg.resi.toUpperCase()}</p>
               <p>{pkg.berat_dipakai} kg</p>
-              <p>Rp {Number(pkg.harga).toLocaleString("id-ID")}</p>
+              
+              {(user?.role === "Manager Destination Warehouse" ||
+                user?.role === "Manager Main Warehouse") && (
+                <p>Rp {Number(pkg.harga).toLocaleString("id-ID")}</p>
+              )}
             </div>
           ))}
         </div>

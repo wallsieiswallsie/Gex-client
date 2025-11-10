@@ -75,14 +75,16 @@ export default function DisplayBatchesKapal() {
     <div className="w-full max-w-3xl mx-auto mt-10 flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-[#3e146d]">Daftar Batch Kapal</h1>
-        <button
-          onClick={() => setShowForm(true)}
-          className="bg-[#3e146d] text-white px-4 py-2 rounded-3xl hover:opacity-90"
-        >
-          +
-        </button>
+        {user?.role === "Manager Main Warehouse" && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-[#3e146d] text-white px-4 py-2 rounded-3xl hover:opacity-90"
+          >
+            +
+          </button>
+        )}
       </div>
-
+      
       {showForm && (
         <form
           onSubmit={handleAddBatch}
@@ -174,12 +176,15 @@ export default function DisplayBatchesKapal() {
               >
                 Detail
               </button>
-              <button
-                onClick={() => setSelectedBatch(batch)}
-                className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:opacity-90"
-              >
-                Update
-              </button>
+              {(user?.role === "Manager Destination Warehouse" ||
+    user?.role === "Manager Main Warehouse") && (
+    <button
+      onClick={() => setSelectedBatch(batch)}
+      className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:opacity-90"
+    >
+      Update
+    </button>
+  )}
             </div>
           </div>
         ))}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { 
   getBatchWithKarungApi,
   addNoKarungToBatchKapalApi,
@@ -10,6 +11,8 @@ import PackingPackageToKarung from "../../components/modals/PackingPackageToKaru
 export default function BatchDetailKapal() {
   const { batchId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth(); // <-- harus di sini, di body komponen
+
   const [batch, setBatch] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -65,18 +68,25 @@ export default function BatchDetailKapal() {
         <p><strong>Tanggal Closing:</strong> {batch.tanggal_closing.split("T")[0]}</p>
         <p><strong>Tanggal Berangkat:</strong> {batch.tanggal_berangkat.split("T")[0]}</p>
         <p><strong>Total Berat:</strong> {batch.total_berat} kg</p>
-        <p><strong>Total Nilai:</strong> Rp {Number(batch.total_value).toLocaleString("id-ID")}</p>
+
+        {(user?.role === "Manager Destination Warehouse" ||
+          user?.role === "Manager Main Warehouse") && (
+          <p><strong>Total Nilai:</strong> Rp {Number(batch.total_value).toLocaleString("id-ID")}</p>
+        )}
       </div>
 
       {/* Header Karung */}
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold text-[#3e146d]">Daftar Karung</h2>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-[#3e146d] text-white px-4 py-2 rounded-3xl hover:opacity-90"
-        >
-          +
-        </button>
+        {(user?.role === "Manager Main Warehouse" ||
+          user?.role === "Staff Main Warehouse") && (
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="bg-[#3e146d] text-white px-4 py-2 rounded-3xl hover:opacity-90"
+          >
+            +
+          </button>
+        )}
       </div>
 
       {/* Form tambah karung */}
@@ -115,13 +125,15 @@ export default function BatchDetailKapal() {
               <p>Total Paket: {karung.packages?.length || 0}</p>
 
               <div className="flex gap-2 mt-2">
-                <button
-                  onClick={() => setSelectedKarung(karung)}
-                  className="flex-1 bg-[#3e146d] text-white px-3 py-1 rounded hover:opacity-90"
-                >
-                  Packing Paket
-                </button>
-
+                {(user?.role === "Manager Main Warehouse" ||
+                  user?.role === "Staff Main Warehouse") && (
+                  <button
+                    onClick={() => setSelectedKarung(karung)}
+                    className="flex-1 bg-[#3e146d] text-white px-3 py-1 rounded hover:opacity-90"
+                  >
+                    Packing Paket
+                  </button>
+                )}
                 <button
                   onClick={() =>
                     navigate(`/batches/kapal/${batchId}/karung/${karung.no_karung}`)
