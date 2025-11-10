@@ -4,7 +4,7 @@ import {
   fetchFinanceTotalApi,
   fetchFinanceFinishedApi,
   fetchFinanceUnfinishedApi,
-  fetchFinanceFinishedGroupedApi, // ← import API baru
+  fetchFinanceFinishedGroupedApi,
 } from "../../../utils/api";
 
 const PAYMENT_METHODS = ["Qris", "Transfer Bank", "Tunai"];
@@ -26,13 +26,12 @@ const AimasKapalFinancialStatements = () => {
     const fetchFinanceData = async () => {
       try {
         setLoading(true);
-
         const [totalRes, finishedRes, unfinishedRes, finishedGroupedRes] =
           await Promise.all([
             fetchFinanceTotalApi(batchId, kode),
             fetchFinanceFinishedApi(batchId, kode),
             fetchFinanceUnfinishedApi(batchId, kode),
-            fetchFinanceFinishedGroupedApi(batchId, kode), // ← panggil API baru
+            fetchFinanceFinishedGroupedApi(batchId, kode),
           ]);
 
         setData({
@@ -57,40 +56,51 @@ const AimasKapalFinancialStatements = () => {
   if (error) return <div className="p-6 text-red-500 text-center">{error}</div>;
 
   return (
-    <div className="financial_statement-container">
-      <h2>{batchId}</h2>
+    <div className="min-h-screen p-6 flex flex-col items-center bg-white">
+      <h2 className="text-2xl font-bold text-[#3e146d] mb-6">{batchId}</h2>
 
       {/* Summary cards */}
-      <div className="cards-container">
-        <div className="card">
-          <h4>Selesai</h4>
-          <p>Rp {data.finished.toLocaleString("id-ID")}</p>
+      <div className="flex flex-col gap-6 w-full max-w-2xl">
+        <div className="card p-6 rounded-3xl shadow-lg hover:shadow-xl transition text-center bg-white w-full max-w-2xl mx-auto">
+          <h4 className="text-lg font-semibold text-gray-700 mb-2">Selesai</h4>
+          <p className="text-[#3e146d] font-bold text-xl">
+            Rp {data.finished.toLocaleString("id-ID")}
+          </p>
         </div>
-        <div className="card">
-          <h4>Tertahan</h4>
-          <p>{data.unfinished.toLocaleString("id-ID")}</p>
+
+        <div className="card p-6 rounded-3xl shadow-lg hover:shadow-xl transition text-center bg-white w-full max-w-2xl mx-auto">
+          <h4 className="text-lg font-semibold text-gray-700 mb-2">Tertahan</h4>
+          <p className="text-[#3e146d] font-bold text-xl">
+            Rp {data.unfinished.toLocaleString("id-ID")}
+          </p>
         </div>
-        <div className="card">
-          <h4>Total Keseluruhan</h4>
-          <p>Rp {data.total.toLocaleString("id-ID")}</p>
+
+        <div className="card p-6 rounded-3xl shadow-lg hover:shadow-xl transition text-center bg-white w-full max-w-2xl mx-auto">
+          <h4 className="text-lg font-semibold text-gray-700 mb-2">Total Keseluruhan</h4>
+          <p className="text-[#3e146d] font-bold text-xl">
+            Rp {data.total.toLocaleString("id-ID")}
+          </p>
         </div>
       </div>
 
       {/* Grouped payment method cards */}
       {finishedGrouped.length > 0 && (
-        <div className="grouped-payment-method mt-6">
-          <h4>Total per Payment Method</h4>
-          <div className="cards-container">
-            {PAYMENT_METHODS.map((method) => {
-              const item = finishedGrouped.find((d) => d.payment_method === method);
-              return (
-                <div key={method} className="card">
-                  <h5>{method}</h5>
-                  <p>Rp {Number(item?.total_harga || 0).toLocaleString("id-ID")}</p>
-                </div>
-              );
-            })}
-          </div>
+        <div className="mt-8 w-full max-w-2xl flex flex-col gap-6">
+          <h4 className="text-xl font-semibold text-gray-800 mb-4">Total per Payment Method</h4>
+          {PAYMENT_METHODS.map((method) => {
+            const item = finishedGrouped.find((d) => d.payment_method === method);
+            return (
+              <div
+                key={method}
+                className="card p-6 rounded-3xl shadow-lg hover:shadow-xl transition text-center bg-white w-full max-w-2xl mx-auto"
+              >
+                <h5 className="text-lg font-semibold text-gray-700 mb-2">{method}</h5>
+                <p className="text-[#3e146d] font-bold text-xl">
+                  Rp {Number(item?.total_harga || 0).toLocaleString("id-ID")}
+                </p>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

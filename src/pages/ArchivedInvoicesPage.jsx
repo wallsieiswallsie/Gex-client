@@ -1,10 +1,14 @@
 import { useEffect, useState, useMemo } from "react";
 import { useApi, fetchArchivedInvoicesApi } from "../utils/api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // import useAuth
 
 function ArchivedInvoicesPage() {
   const { request } = useApi();
   const navigate = useNavigate();
+  const { user } = useAuth(); // ambil user info
+  const userBranch = user?.cabang?.toLowerCase();
+  const userRole = user?.role;
 
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,12 +37,22 @@ function ArchivedInvoicesPage() {
       const matchesSearch =
         inv.nama_invoice?.toLowerCase().includes(searchLower) ||
         inv.id?.toString().toLowerCase().includes(searchLower);
+
       const branch = inv.cabang?.toLowerCase() || "";
-      const matchesBranch =
-        branchFilter === "semua" || branch === branchFilter.toLowerCase();
-      return matchesSearch && matchesBranch;
+
+      // Filter dropdown hanya jika role bukan Manager Destination Warehouse
+      const matchesBranchFilter =
+        userRole === "Manager Destination Warehouse" ||
+        branchFilter === "semua" ||
+        branch === branchFilter.toLowerCase();
+
+      // Filter cabang user (main + cabang sendiri)
+      const matchesUserBranch =
+        userBranch === "main" || branch === userBranch;
+
+      return matchesSearch && matchesBranchFilter && matchesUserBranch;
     });
-  }, [invoices, search, branchFilter]);
+  }, [invoices, search, branchFilter, userBranch, userRole]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center px-4 py-10">
@@ -55,16 +69,20 @@ function ArchivedInvoicesPage() {
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 px-4 py-2 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
         />
-        <select
-          id="branchFilter"
-          value={branchFilter}
-          onChange={(e) => setBranchFilter(e.target.value)}
-          className="px-4 py-2 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d] min-w-[140px]"
-        >
-          <option value="semua">Semua Cabang</option>
-          <option value="remu">Remu</option>
-          <option value="aimas">Aimas</option>
-        </select>
+
+        {/* Hanya tampilkan dropdown filter jika role bukan Manager Destination Warehouse */}
+        {userRole !== "Manager Destination Warehouse" && (
+          <select
+            id="branchFilter"
+            value={branchFilter}
+            onChange={(e) => setBranchFilter(e.target.value)}
+            className="px-4 py-2 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d] min-w-[140px]"
+          >
+            <option value="semua">Semua Cabang</option>
+            <option value="remu">Remu</option>
+            <option value="aimas">Aimas</option>
+          </select>
+        )}
       </div>
 
       {/* List Invoice */}
@@ -88,7 +106,9 @@ function ArchivedInvoicesPage() {
                 </h3>
                 <span className="text-gray-500">{inv.id}</span>
               </div>
-              <p className="text-gray-700 mb-1">Jumlah Paket: {inv.package_count}</p>
+              <p className="text-gray-700 mb-1">
+                Jumlah Paket: {inv.package_count}
+              </p>
               <h4 className="text-[#3e146d] font-bold mb-1">
                 Rp {Number(inv.total_price).toLocaleString("id-ID")}
               </h4>

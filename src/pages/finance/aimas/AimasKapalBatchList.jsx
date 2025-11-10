@@ -30,17 +30,17 @@ const AimasKapalBatchList = () => {
   if (batches.length === 0) return <div className="p-6 text-center">Belum ada batch kapal tersedia.</div>;
 
   return (
-    <div className="financial_statement-container">
-      <h2>Daftar Batch Kapal</h2>
-      <div className="cards-container">
+    <div className="min-h-screen p-6 bg-white flex flex-col items-center">
+      <h2 className="text-2xl font-bold text-[#3e146d] mb-6">Daftar Batch Kapal</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
         {batches.map((batch) => (
           <div
             key={batch.id}
             onClick={() => navigate(`/aimas-kapal/${batch.id}`)}
-            className="card"
+            className="cursor-pointer p-6 rounded-3xl shadow-lg hover:shadow-xl transition bg-white flex flex-col items-center text-center gap-2"
           >
-            <h2 className="text-lg font-semibold mb-2">{batch.id}</h2>
-            <p className="text-gray-600 text-sm mb-1">
+            <h2 className="text-xl font-semibold text-[#3e146d]">{batch.id}</h2>
+            <p className="text-gray-600 text-sm">
               <span className="font-medium">{batch.nama_kapal.toUpperCase()}</span>
             </p>
           </div>

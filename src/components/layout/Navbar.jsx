@@ -1,6 +1,6 @@
 import React from "react";
 import { HiMenu } from "react-icons/hi";
-import { FiLogOut } from "react-icons/fi"; // ikon logout
+import { FiLogOut } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/images/logo_gex.png";
 
@@ -43,6 +43,7 @@ function Navbar({ user, onLogout, onToggleSidebar }) {
             {user?.name?.toUpperCase() || "GUEST"}
           </p>
           <p className="role text-xs text-gray-500">{user?.role || "User"}</p>
+          <p className="branch text-xs text-gray-400">{user?.cabang.toUpperCase() || "-"}</p>
         </div>
 
         {/* Tombol logout ikon saja */}

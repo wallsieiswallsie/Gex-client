@@ -282,7 +282,7 @@ function App() {
             <Route
               path="/invoices"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <InvoicesPage />
                 </ProtectedRoute>
               }
@@ -290,7 +290,7 @@ function App() {
             <Route
               path="/archived_invoices"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <ArchivedInvoicesPage />
                 </ProtectedRoute>
               }
