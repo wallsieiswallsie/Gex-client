@@ -80,7 +80,7 @@ function App() {
 
   {/* Konten utama */}
   <div className="main-content">
-    {!hideNavbar && user && 
+    {!hideNavbar && 
       <Navbar
         user={user}
         onLogout={logout}
@@ -90,10 +90,16 @@ function App() {
     <main>
         <Routes>
           {/* ========== Semua route kamu tetap sama ========== */}
-          <Route path="/" element={<Navigate to="/login-customer" replace />} />
+          <Route path="/" element={<Navigate to="/lacak_paket" replace />} />
 
             <Route path="/login-customer" element={<LoginPageCustomer />} />
             <Route path="/register-customer" element={<RegisterPageCustomer />} />
+            <Route
+              path="/lacak_paket"
+              element={
+                  <LacakPaketCustomer />
+              }
+            />
 
             {/* Proteksi berbasis role */}
             
@@ -120,15 +126,6 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <DisplayDetailPackage />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/lacak_paket"
-              element={
-                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
-                  <LacakPaketCustomer />
                 </ProtectedRoute>
               }
             />

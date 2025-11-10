@@ -22,42 +22,70 @@ function Navbar({ user, onLogout, onToggleSidebar }) {
     <nav className="navbar">
       {/* === KIRI === */}
       <div className="navbar-left">
-        <button
-          className="burger-btn md:hidden"
-          onClick={onToggleSidebar}
-          aria-label="Toggle sidebar"
-        >
-          <HiMenu size={26} />
-        </button>
 
-        <div className="hidden md:flex items-center gap-2">
-          <button className="back-btn" onClick={handleBack}>
-            &lt;
+        {/* ✅ Jika user login → tampilkan burger */}
+        {user ? (
+          <button
+            className="burger-btn md:hidden"
+            onClick={onToggleSidebar}
+            aria-label="Toggle sidebar"
+          >
+            <HiMenu size={26} />
           </button>
+        ) : (
+          /* ✅ Jika user belum login → tampilkan logo */
           <img src={logo} alt="Logo" className="h-8" />
-          <span className="text-sm text-gray-600 font-medium">
-            #BahagianyaOngkirMurah
-          </span>
-        </div>
+        )}
+
+        {/* ✅ Bagian kiri desktop (hanya muncul saat login) */}
+        {user && (
+          <div className="hidden md:flex items-center gap-2">
+            <button className="back-btn" onClick={handleBack}>
+              &lt;
+            </button>
+
+            {/* ❌ Logo hilang ketika login (sesuai permintaan) */}
+            {/* <img src={logo} alt="Logo" className="h-8" /> */}
+
+            <span className="text-sm text-gray-600 font-medium">
+              #BahagianyaOngkirMurah
+            </span>
+          </div>
+        )}
       </div>
 
       {/* === KANAN === */}
       <div className="navbar-right">
-        <div className="user-info text-right">
-          <p className="name text-sm font-semibold text-black">
-            {user?.name?.toUpperCase() || "GUEST"}
-          </p>
-          <p className="role text-xs text-gray-500">{user?.role || "User"}</p>
-          <p className="branch text-xs text-gray-400">{user?.cabang?.toUpperCase() || "-"}</p>
-        </div>
+        {!user ? (
+          // ✅ Jika belum login → tombol Login
+          <button
+            onClick={() => navigate("/login-customer")}
+            className="px-4 py-2 text-[#3e146d] rounded-lg text-sm font-semibold"
+          >
+            Login
+          </button>
+        ) : (
+          <>
+            {/* ✅ Jika login → tampilkan data user */}
+            <div className="user-info text-right">
+              <p className="name text-sm font-semibold text-black">
+                {user?.name?.toUpperCase()}
+              </p>
+              <p className="role text-xs text-gray-500">{user.role}</p>
+              <p className="branch text-xs text-gray-400">
+                {user?.cabang?.toUpperCase()}
+              </p>
+            </div>
 
-        <button
-          className="logout-icon-btn"
-          onClick={handleLogout}
-          title="Logout"
-        >
-          <FiLogOut size={24} />
-        </button>
+            <button
+              className="logout-icon-btn"
+              onClick={handleLogout}
+              title="Logout"
+            >
+              <FiLogOut size={24} />
+            </button>
+          </>
+        )}
       </div>
     </nav>
   );
