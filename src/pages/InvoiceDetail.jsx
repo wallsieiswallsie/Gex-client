@@ -149,17 +149,6 @@ function InvoiceDetailPage() {
           </p>
         </div>
 
-        {selectMode && selectedPackages.length > 0 && (
-          <div className="flex gap-2 mb-4">
-            <button
-              onClick={handleRemoveSelected}
-              className="bg-red-600 text-white py-2 px-4 rounded-2xl hover:opacity-90 transition"
-            >
-              Hapus Paket Terpilih ({selectedPackages.length})
-            </button>
-          </div>
-        )}
-
         <div className="mb-4">
           <button
             onClick={() => setShowAddResiModal(true)}
@@ -169,6 +158,17 @@ function InvoiceDetailPage() {
           </button>
         </div>
       </div>
+
+      {selectMode && selectedPackages.length > 0 && (
+          <div className="w-full max-w-3xl mx-auto mb-4">
+            <button
+              onClick={handleRemoveSelected}
+              className="w-full bg-red-600 text-white py-3 rounded-2xl hover:opacity-90 transition font-semibold"
+            >
+              Hapus Paket Terpilih ({selectedPackages.length})
+            </button>
+          </div>
+        )}
 
       <div className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
         {packages.map((pkg) => {
