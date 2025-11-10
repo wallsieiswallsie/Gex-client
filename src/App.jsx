@@ -121,7 +121,7 @@ function App() {
             <Route
               path="/lacak_paket"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
                   <LacakPaketCustomer />
                 </ProtectedRoute>
               }
@@ -130,7 +130,7 @@ function App() {
             <Route
               path="/customer/syarat-ketentuan"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
                   <SyaratKetentuanPageDisplay />
                 </ProtectedRoute>
               }
@@ -139,7 +139,7 @@ function App() {
             <Route
               path="/syarat-ketentuan"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Manager Main Warehouse"]}>
                   <SyaratKetentuanPage />
                 </ProtectedRoute>
               }
@@ -148,7 +148,7 @@ function App() {
             <Route
               path="/jadwal_kirim"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Manager Main Warehouse"]}>
                   <JadwalKirimPage />
                 </ProtectedRoute>
               }
@@ -157,7 +157,7 @@ function App() {
             <Route
               path="/customer/jadwal_kirim"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
                   <JadwalKirimPageDisplay />
                 </ProtectedRoute>
               }
@@ -166,7 +166,7 @@ function App() {
             <Route
               path="/lokasi-kontak"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Manager Main Warehouse"]}>
                   <LokasiKontakPage />
                 </ProtectedRoute>
               }
@@ -175,7 +175,7 @@ function App() {
             <Route
               path="/customer/lokasi-kontak"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
                   <LokasiKontakPageDisplay />
                 </ProtectedRoute>
               }
@@ -184,7 +184,7 @@ function App() {
             <Route
               path="/sering_ditanyakan"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Manager Main Warehouse"]}>
                   <SeringDitanyakanPage />
                 </ProtectedRoute>
               }
@@ -193,7 +193,7 @@ function App() {
             <Route
               path="/customer/sering_ditanyakan"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
                   <SeringDitanyakanPageDisplay />
                 </ProtectedRoute>
               }
@@ -202,7 +202,7 @@ function App() {
             <Route
               path="/manage-customer-services"
               element={
-                <ProtectedRoute allowedRoles={["Customer"]}>
+                <ProtectedRoute allowedRoles={["Manager Main Warehouse"]}>
                   <ManageCustomerService />
                 </ProtectedRoute>
               }
@@ -298,7 +298,7 @@ function App() {
             <Route
               path="/invoices/:id"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <InvoiceDetailPage />
                 </ProtectedRoute>
               }
@@ -307,7 +307,7 @@ function App() {
             <Route
               path="/selection_pengantaran"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse","Courier"]}>
                   <DeliverySelectionPage />
                 </ProtectedRoute>
               }
@@ -316,7 +316,7 @@ function App() {
             <Route
               path="/pengantaran"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse","Courier"]}>
                   <ManageDelivery />
                 </ProtectedRoute>
               }
@@ -325,7 +325,7 @@ function App() {
             <Route
               path="/pengantaran_active"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse","Courier"]}>
                   <ActiveDeliveries />
                 </ProtectedRoute>
               }
@@ -334,7 +334,7 @@ function App() {
             <Route
               path="/pengantaran_archive"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse","Courier"]}>
                   <ArchiveDeliveries />
                 </ProtectedRoute>
               }

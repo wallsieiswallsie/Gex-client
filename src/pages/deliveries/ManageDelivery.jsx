@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { 
   createPengantaranApi, 
   fetchPengantaranApi, 
@@ -11,6 +12,9 @@ import UpdateActivePackageModal from "../../components/modals/UpdateActivePackag
 import PaymentMethodModal from "../../components/modals/PaymentMethodModal";
 
 export default function ManageDelivery() {
+  const { user } = useAuth();
+  const userRole = user?.role;
+
   const [invoiceId, setInvoiceId] = useState("");
   const [deliveries, setDeliveries] = useState([]);
   const [showModal, setShowModal] = useState(null); 
@@ -63,21 +67,23 @@ export default function ManageDelivery() {
   return (
     <div className="min-h-screen p-6 bg-white flex flex-col items-center">
       {/* Input invoice + tombol tambah */}
-      <div className="flex gap-2 mb-6 w-full max-w-3xl">
-        <input
-          type="text"
-          value={invoiceId}
-          onChange={(e) => setInvoiceId(e.target.value)}
-          placeholder="Masukkan Invoice ID"
-          className="flex-1 border p-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
-        />
-        <button
-          onClick={handleAdd}
-          className="bg-[#3e146d] text-white px-4 py-2 rounded-3xl hover:bg-blue-600 transition"
-        >
-          +
-        </button>
-      </div>
+      {userRole === "Manager Destination Warehouse" && (
+        <div className="flex gap-2 mb-6 w-full max-w-3xl">
+          <input
+            type="text"
+            value={invoiceId}
+            onChange={(e) => setInvoiceId(e.target.value)}
+            placeholder="Masukkan Invoice ID"
+            className="flex-1 border p-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
+          />
+          <button
+            onClick={handleAdd}
+            className="bg-[#3e146d] text-white px-4 py-2 rounded-3xl hover:bg-blue-600 transition"
+          >
+            +
+          </button>
+        </div>
+      )}
 
       {/* Daftar pengantaran */}
       <div className="w-full max-w-3xl">
@@ -98,12 +104,14 @@ export default function ManageDelivery() {
                 <p className="text-gray-500 text-sm">{inv.created_at}</p>
               </div>
 
+            {userRole === "Courier" && (
               <button
                 onClick={() => setShowModal(inv.id)}
-                className="mt-2 w-full bg-green-600 text-white py-2 rounded-2xl hover:bg-green-700 transition"
+                className="mt-2 w-full bg-[#3e146d] text-white py-2 rounded-2xl hover:bg-green-700 transition"
               >
                 Input Resi Pickup
               </button>
+            )}
 
               {showModal === inv.id && (
                 <UpdateActivePackageModal

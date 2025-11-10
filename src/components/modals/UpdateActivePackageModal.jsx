@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { addPackageStatus } from "../../utils/api";
 
-function UpdateActivePackageModal({ onClose, activePengantaranApi}) {
+function UpdateActivePackageModal({ onClose, activePengantaranApi }) {
   const [resi, setResi] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -16,10 +15,10 @@ function UpdateActivePackageModal({ onClose, activePengantaranApi}) {
     setError(null);
 
     try {
-      // 1️⃣ Jalankan aktivasi pengantaran (update resi)
+      // Jalankan aktivasi pengantaran (update resi)
       await activePengantaranApi(resi);
 
-      // 3️⃣ Tutup modal setelah sukses
+      // Tutup modal setelah sukses
       onClose();
     } catch (err) {
       setError(err.message || "Terjadi kesalahan saat update status");
@@ -36,30 +35,30 @@ function UpdateActivePackageModal({ onClose, activePengantaranApi}) {
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-container">
-        <h2 className="modal-title">Aktifkan Pengantaran</h2>
+      <div className="modal-container p-6 rounded-3xl shadow-lg bg-white max-w-md w-full mx-auto">
+        <h2 className="modal-title text-2xl font-bold text-center mb-4">Aktifkan Pengantaran</h2>
 
         <input
           type="text"
           placeholder="Masukkan nomor resi"
           value={resi}
           onChange={(e) => setResi(e.target.value)}
-          className="w-full border p-2 rounded mb-3"
+          className="w-full border p-3 rounded-2xl mb-3 focus:outline-none focus:ring-2 focus:ring-green-400"
         />
 
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+        {error && <p className="text-red-500 text-sm mb-3 text-center">{error}</p>}
 
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="update_active_pengantaran_modal-button bg-green-600 text-white hover:bg-green-700"
+          className="w-full bg-[#3e146d] text-white py-3 rounded-2xl hover:bg-green-700 transition font-semibold"
         >
           {loading ? "Memproses..." : "Sudah di Pick Up"}
         </button>
 
         <button
           onClick={onClose}
-          className="update_active_pengantaran_modal-button bg-gray-400 text-white hover:bg-gray-500 mt-2"
+          className="w-full mt-3 bg-gray-400 text-white py-3 rounded-2xl hover:bg-gray-500 transition font-semibold"
         >
           Batal
         </button>

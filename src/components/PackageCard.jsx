@@ -18,15 +18,28 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
     ? getStatusLabel(latestStatus.status)
     : "Belum ada status";
 
+  // tentukan background color berdasarkan kode
+  let bgColor = "bg-purple-50"; // default
+  if (pkg.kode === "JPSOQA" || pkg.kode === "JKSOQA") {
+    bgColor = "bg-[#fcffe0]"; // kuning pastel
+  } else if (pkg.kode === "JPSOQB" || pkg.kode === "JKSOQB") {
+    bgColor = "bg-[#e0ffe4]"; // hijau pastel
+  }
+
+  // jika sudah invoiced, override warna menjadi abu-abu transparan
+  if (invoiceId) {
+    bgColor = "bg-gray-100 opacity-80";
+  }
+
   return (
     <div
       onClick={onClick}
       onContextMenu={onRightClick}
       className={`
-        w-full max-w-md mx-auto p-4 rounded-xl border
-        bg-white shadow-sm flex flex-col gap-1
+        w-full max-w-md mx-auto p-4 rounded-xl border shadow-sm flex flex-col gap-1
         ${isSelected ? "border-blue-500 shadow-md" : "border-gray-300"}
         ${isDisabled ? "opacity-60" : ""}
+        ${bgColor}
       `}
     >
       <h2 className="font-bold text-lg">{pkg.nama.toUpperCase()}</h2>
@@ -44,7 +57,6 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
 
       <p className="text-sm font-medium">{statusLabel}</p>
 
-      {isDisabled && <small className="text-red-500 text-xs">Sudah invoiced</small>}
       {invoiceId && <p className="text-xs text-gray-500">{invoiceId}</p>}
     </div>
   );

@@ -11,7 +11,6 @@ function LacakPaketCustomer() {
   const navigate = useNavigate();
   const [resiQuery, setResiQuery] = useState("");        
   const [searchedResi, setSearchedResi] = useState("");  
-  const [selectedPackage, setSelectedPackage] = useState(null);
   const [latestStatuses, setLatestStatuses] = useState({});
   const [hasSearched, setHasSearched] = useState(false);
 
@@ -86,7 +85,6 @@ function LacakPaketCustomer() {
               isSelected={false}
               isDisabled={matchedPackage.invoiced}
               statusLabel={getStatusLabel(latestStatuses[matchedPackage.id])}
-              onClick={() => setSelectedPackage(matchedPackage)}
             />
           </ErrorBoundary>
         </div>
@@ -138,15 +136,6 @@ function LacakPaketCustomer() {
 
       
     </div>
-
-    {/* MODAL DETAIL */}
-    {selectedPackage && (
-      <DetailPackageModal
-        pkg={selectedPackage}
-        invoiceId={selectedPackage.invoice_id}
-        onClose={() => setSelectedPackage(null)}
-      />
-    )}
   </div>
 );
 

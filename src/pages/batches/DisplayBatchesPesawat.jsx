@@ -147,12 +147,15 @@ export default function DisplayBatchesPesawat() {
             key={batch.id}
             className="bg-white border border-[#3e146d]/20 shadow-lg rounded-2xl p-4 flex flex-col gap-2 hover:shadow-xl transition"
           >
-            <h3 className="text-lg font-bold text-[#3e146d]">PIC: {batch.pic}</h3>
+            {(user?.role === "Manager Main Warehouse" || user?.role === "Staff Main Warehouse") && (
+              <h3 className="text-lg font-bold text-[#3e146d]">PIC: {batch.pic}</h3>
+            )}
+
             <p className="text-gray-600">ID: {batch.id}</p>
             <p className="text-gray-600">
               Tanggal Kirim: {batch.tanggal_kirim.split("T")[0]}
             </p>
-            <p className="text-gray-600">Vendor: {batch.vendor}</p>
+            <p className="text-gray-600">Vendor: {batch.vendor.toUpperCase()}</p>
             <div className="flex gap-2 mt-2">
               <button
                 onClick={() => navigate(`/batches/pesawat/${batch.id}`)}
@@ -160,12 +163,15 @@ export default function DisplayBatchesPesawat() {
               >
                 Detail
               </button>
-              <button
-                onClick={() => setSelectedBatch(batch)}
-                className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:opacity-90"
-              >
-                Update
-              </button>
+              {(user?.role === "Manager Destination Warehouse" ||
+                user?.role === "Manager Main Warehouse") && (
+                <button
+                  onClick={() => setSelectedBatch(batch)}
+                  className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:opacity-90"
+                >
+                  Update
+                </button>
+              )}
             </div>
           </div>
         ))}
