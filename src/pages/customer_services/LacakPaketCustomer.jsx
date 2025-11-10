@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { usePackages } from "../../hooks/usePackages";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import PackageCard from "../../components/PackageCard";
-import DetailPackageModal from "../../components/modals/DetailPackageModal";
 import { usePackageStatus } from "../../hooks/usePackageStatus";
 import { getStatusLabel } from "../../utils/statusLabels";
+import { Truck, Clock, Shield } from "lucide-react";
 
 function LacakPaketCustomer() {
   const navigate = useNavigate();
@@ -45,10 +45,32 @@ function LacakPaketCustomer() {
   };
 
   return (
-  <div className="min-h-screen bg-gradient-to-b from-white to-[#f4e9ff] flex flex-col items-center px-4 py-10">
+  <div className="min-h-screen bg-gradient-to-br from-[#f8f5ff] via-[#faf0ff] to-[#ffeef4] flex flex-col items-center py-10 px-10">
+    
+    {/* HERO SECTION */}
+    <div className="w-full  py-8 px-6">
+      <div className="max-w-4xl mx-auto text-left">
+        <h1 className="text-5xl sm:text-6xl font-extrabold leading-tight text-gray-900">
+          Kirimanmu Jadi{" "}
+        </h1>
 
+        <h1>
+          <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text
+                          text-5xl sm:text-6xl font-extrabold leading-tight">
+            Mudah & Nyaman
+          </span>
+        </h1>
+
+        <p className="text-lg sm:text-xl text-gray-700 max-w-2xl leading-relaxed mt-6">
+          Nikmati pengiriman yang <strong>Mudah</strong>, <strong>Nyaman</strong>, dan <strong>Transparan</strong>.
+          Lacak paketmu melalui kolom di bawah ini menggunakan nomor resi,
+          atau nomor pesanan jika layanan kurirmu adalah <em>Instant/Sameday</em>.
+        </p>
+      </div>
+    </div>
+    
     {/* BOX LACAK PAKET */}
-    <div className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8 border border-[#3e146d]/10">
+    <div className="w-full bg-white shadow-xl rounded-2xl p-8 border border-[#3e146d]/10">
       <h2 className="text-3xl font-bold text-center text-[#3e146d] mb-6">
         Lacak Paket 
       </h2>
@@ -91,8 +113,35 @@ function LacakPaketCustomer() {
       )}
     </div>
 
+    {/* 🔹 FEATURE ICON SECTION */}
+      <div className="flex justify-center gap-8 mt-12">
+        {/* Fast Delivery */}
+        <div className="flex flex-col items-center text-center">
+          <div className="p-6 bg-blue-100 rounded-full mb-3">
+            <Truck className="w-5 h-5 text-blue-600" />
+          </div>
+          <p className="font-semibold text-gray-800">Fast Delivery</p>
+        </div>
+
+        {/* Real-Time Tracking */}
+        <div className="flex flex-col items-center text-center">
+          <div className="p-6 bg-red-100 rounded-full mb-3">
+            <Clock className="w-5 h-5 text-red-500" />
+          </div>
+          <p className="font-semibold text-gray-800">Real-Time Tracking</p>
+        </div>
+
+        {/* Safe & Transparent */}
+        <div className="flex flex-col items-center text-center">
+          <div className="p-6 bg-gray-100 rounded-full mb-3">
+            <Shield className="w-5 h-5 text-gray-600" />
+          </div>
+          <p className="font-semibold text-gray-800">Safe & Transparent</p>
+        </div>
+      </div>
+
     {/* GRID CARD SERVICE */}
-    <div className="w-full max-w-xl mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="w-full mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
 
       {/* CARD: SYARAT & KETENTUAN */}
       <div

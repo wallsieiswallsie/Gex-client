@@ -485,5 +485,5 @@ html, body, #root {
 }
 
 main {
-  @apply flex-1 w-full p-4;
+  @apply flex-1 w-full;
 }
