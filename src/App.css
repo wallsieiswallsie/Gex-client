@@ -27,6 +27,7 @@ input, select {
   background-color: #ffffff;
   color: #333333;
   border-width: 1px;
+  border-color: #555;
 }
 
 label {
