@@ -32,7 +32,7 @@ export default function PackagesByKarungPage() {
   }, [search, batchId, noKarung]);
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 flex flex-col gap-6">
+    <div className="max-w-4xl mx-6 mt-10 flex flex-col gap-6">
       <h2 className="text-2xl font-bold text-[#3e146d]">
         Karung {noKarung} | {batchId}
       </h2>

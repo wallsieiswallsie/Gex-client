@@ -60,17 +60,19 @@ export default function BatchDetailKapal() {
     return <p className="text-center text-gray-500 mt-10">Batch tidak ditemukan</p>;
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 flex flex-col gap-6">
+    <div className="max-w-4xl mx-6 mt-10 flex flex-col gap-6">
       {/* Info batch */}
       <div className="bg-white border border-[#3e146d]/20 shadow-lg rounded-2xl p-6 flex flex-col gap-2">
         <h1 className="text-2xl font-bold text-[#3e146d]">{batch.id}</h1>
         <p><strong>{batch.nama_kapal.toUpperCase()}</strong></p>
         <p><strong>Tanggal Closing:</strong> {batch.tanggal_closing.split("T")[0]}</p>
         <p><strong>Tanggal Berangkat:</strong> {batch.tanggal_berangkat.split("T")[0]}</p>
-        <p><strong>Total Berat:</strong> {batch.total_berat} kg</p>
 
-        {(user?.role === "Manager Destination Warehouse" ||
-          user?.role === "Manager Main Warehouse") && (
+        {(user?.role === "Manager Main Warehouse") && (
+          <p><strong>Total Berat:</strong>{batch.total_berat} kg</p>
+          )}
+
+        {(user?.role === "Manager Main Warehouse") && (
           <p><strong>Total Nilai:</strong> Rp {Number(batch.total_value).toLocaleString("id-ID")}</p>
         )}
       </div>
