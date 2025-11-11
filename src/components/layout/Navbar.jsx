@@ -19,7 +19,7 @@ function Navbar({ user, onLogout, onToggleSidebar }) {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar fixed bg-white">
       {/* === KIRI === */}
       <div className="navbar-left">
 

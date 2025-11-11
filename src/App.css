@@ -487,5 +487,5 @@ html, body, #root {
 }
 
 main {
-  @apply flex-1 w-full;
+  @apply flex-1 w-full mt-16;
 }

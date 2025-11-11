@@ -68,7 +68,7 @@ export default function Sidebar({ open, setOpen }) {
 
             {/* Tombol close hanya mobile */}
             <button
-              className="md:hidden"
+              className="md:hidden bg-transparent"
               onClick={() => setOpen(false)}
               aria-label="Close sidebar"
             >
