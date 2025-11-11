@@ -13,7 +13,7 @@ function InputDetailPackageForm({
   const onSave = async (e) => {
     e.preventDefault();
     
-    if (!formData.ekspedisi) {
+  if (!formData.ekspedisi) {
     alert("Silakan pilih ekspedisi terlebih dahulu!");
     return;
   }
@@ -25,6 +25,36 @@ function InputDetailPackageForm({
 
   if (!formData.preview) {
     alert("Silakan tambahkan foto terlebih dahulu!");
+    return;
+  }
+
+  if (!formData.nama) {
+    alert("Silakan isi nama terlebih dahulu!");
+    return;
+  }
+
+  if (!formData.panjang) {
+    alert("Silakan isi data panjang terlebih dahulu!");
+    return;
+  }
+
+  if (!formData.lebar) {
+    alert("Silakan isi data lebar terlebih dahulu!");
+    return;
+  }
+
+  if (!formData.tinggi) {
+    alert("Silakan isi data tinggi terlebih dahulu!");
+    return;
+  }
+
+  if (!formData.berat) {
+    alert("Silakan isi data berat terlebih dahulu!");
+    return;
+  }
+
+  if (!formData.kode) {
+    alert("Silakan isi data kode terlebih dahulu!");
     return;
   }
 
