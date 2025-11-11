@@ -23,6 +23,11 @@ function InputDetailPackageForm({
     return;
   }
 
+  if (!formData.preview) {
+    alert("Silakan tambahkan foto terlebih dahulu!");
+    return;
+  }
+
     await handleSave(e);
 
     if (fileInputRef.current) {
