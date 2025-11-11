@@ -1,9 +1,11 @@
 import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 import { usePackageStatus } from "../hooks/usePackageStatus";
 import { getStatusLabel } from "../utils/statusLabels";
 
 function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightClick }) {
   const { latestStatus, fetchLatest, loading, error } = usePackageStatus(pkg?.id);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!pkg?.id) return;
@@ -45,8 +47,16 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
       <h2 className="font-bold text-lg">{pkg.nama.toUpperCase()}</h2>
       <h3 className="font-semibold text-sm text-gray-600">{pkg.resi.toUpperCase()} | {pkg.ekspedisi}</h3>
 
-      <p className="text-sm text-gray-700">
-        {pkg.panjang} × {pkg.lebar} × {pkg.tinggi} | {pkg.berat_dipakai} kg
+      {(user?.role === "Manager Main Warehouse" ||
+        user?.role === "Manager Destination Warehouse" ||
+        user?.role === "Staff Main Warehouse") && (
+        <p className="text-sm text-gray-700">
+          {pkg.panjang} × {pkg.lebar} × {pkg.tinggi} | {pkg.berat_dipakai} kg
+        </p>
+      )}
+
+      <p>
+        {pkg.berat_dipakai} kg
       </p>
 
       <p className="text-sm text-gray-500">{pkg.kode}</p>

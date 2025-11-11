@@ -11,7 +11,7 @@ import PackingPackageToKarung from "../../components/modals/PackingPackageToKaru
 export default function BatchDetailKapal() {
   const { batchId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth(); // <-- harus di sini, di body komponen
+  const { user } = useAuth();
 
   const [batch, setBatch] = useState(null);
   const [loading, setLoading] = useState(true);
