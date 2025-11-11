@@ -150,6 +150,12 @@ export const getBatchWithKarungApi = async (batchId) =>
 export const getPackagesByKarungApi = async (batchId, noKarung, search = "") =>
   apiFetch(`/batches/kapal/${batchId}/karung/${noKarung}/packages?search=${search}`);
 
+export const movePackageToKarungApi = async (batchId, resi, noKarungBaru) =>
+  apiFetch(`/batches/kapal/${batchId}/karung/move-package`, {
+    method: "POST",
+    body: JSON.stringify({ resi, noKarungBaru }),
+  });
+
 /** PENGANTARAN API */
 
 // Tambah invoice ke deliveries

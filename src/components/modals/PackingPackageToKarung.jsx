@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { addPackageToKarungApi } from "../../utils/api";
+import { 
+  addPackageToKarungApi,
+  movePackageToKarungApi,
+} from "../../utils/api";
 
 export default function PackingPackageToKarung({
   karung,
@@ -19,21 +22,67 @@ export default function PackingPackageToKarung({
 
     setLoading(true);
     try {
+      // ✅ 1) Coba tambah paket ke karung ini
       const res = await addPackageToKarungApi(
         batchId,
         resi,
         karung.no_karung
       );
+
       if (res.status === "success") {
         alert("Paket berhasil ditambahkan ke karung!");
         setResi("");
         onSuccess?.();
         onClose?.();
-      } else {
-        alert("Gagal menambahkan paket: " + res.message);
+        return;
       }
+
+      // ✅ 2) Jika paket sudah ada di karung lain → langsung pindahkan tanpa confirm
+      if (res.message?.includes("karung lain")) {
+        const res2 = await movePackageToKarungApi(
+          batchId,
+          resi,
+          karung.no_karung
+        );
+
+        if (res2.status === "success") {
+          alert("Paket berhasil ditambahkan ke karung!");
+          setResi("");
+          onSuccess?.();
+          onClose?.();
+        } else {
+          alert("Gagal memindahkan paket: " + res2.message);
+        }
+
+        return;
+      }
+
+      alert("Gagal menambahkan paket: " + res.message);
+
     } catch (err) {
       console.error(err);
+      const msg = err?.data?.message || err.message || "";
+
+      // ✅ Tangani error yang juga menyebutkan "karung lain"
+      if (msg.includes("karung lain")) {
+        const res2 = await movePackageToKarungApi(
+          batchId,
+          resi,
+          karung.no_karung
+        );
+
+        if (res2.status === "success") {
+          alert("Paket berhasil ditambahkan ke karung!");
+          setResi("");
+          onSuccess?.();
+          onClose?.();
+        } else {
+          alert("Gagal memindahkan paket: " + res2.message);
+        }
+
+        return;
+      }
+
       alert("Terjadi kesalahan saat menambahkan paket");
     } finally {
       setLoading(false);
@@ -43,11 +92,11 @@ export default function PackingPackageToKarung({
   return (
     <div
       className="modal-overlay fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center"
-      onClick={onClose} // ✅ klik overlay menutup modal
+      onClick={onClose}
     >
       <div
         className="modal-container bg-white p-4 rounded shadow-lg w-[350px]"
-        onClick={(e) => e.stopPropagation()} // ✅ supaya klik di dalam modal tidak menutup
+        onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-lg font-bold mb-4">
           Packing Paket ke Karung {karung.no_karung}
@@ -64,12 +113,11 @@ export default function PackingPackageToKarung({
               disabled={loading}
             />
 
-            {/* ✅ Tombol X muncul hanya jika ada teks */}
             {resi.length > 0 && (
               <button
                 type="button"
                 onClick={() => setResi("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-transparent p-0 text-gray-500 hover:text-black"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 bg-transparent p-0 hover:text-black"
               >
                 ✕
               </button>
