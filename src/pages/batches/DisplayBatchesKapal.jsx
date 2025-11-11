@@ -72,7 +72,7 @@ export default function DisplayBatchesKapal() {
     return <p className="text-center text-gray-500 mt-10">Loading...</p>;
 
   return (
-    <div className="w-full max-w-3xl mx-auto mt-10 flex flex-col gap-6">
+    <div className="w-full max-w-3xl mb-10 px-4 md:px-6 mx-auto mt-10 flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-[#3e146d]">Daftar Batch Kapal</h1>
         {user?.role === "Manager Main Warehouse" && (

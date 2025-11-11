@@ -60,7 +60,7 @@ export default function BatchDetailKapal() {
     return <p className="text-center text-gray-500 mt-10">Batch tidak ditemukan</p>;
 
   return (
-    <div className="max-w-4xl mx-6 mt-10 flex flex-col gap-6">
+    <div className="max-w-4xl mb-10 mx-6 px-4 md:px-6 mt-10 flex flex-col gap-6">
       {/* Info batch */}
       <div className="bg-white border border-[#3e146d]/20 shadow-lg rounded-2xl p-6 flex flex-col gap-2">
         <h1 className="text-2xl font-bold text-[#3e146d]">{batch.id}</h1>

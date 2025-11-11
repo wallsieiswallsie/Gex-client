@@ -9,7 +9,8 @@ const BatchSelectionPage = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="container mx-auto mt-10 px-4 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
+
       {/* Card Kapal */}
       <div
         className="bg-white shadow-lg rounded-2xl p-6 cursor-pointer hover:shadow-xl transition flex flex-col justify-center items-start gap-2 border border-[#3e146d]/20"
