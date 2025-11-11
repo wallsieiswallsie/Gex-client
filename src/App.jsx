@@ -106,7 +106,7 @@ function App() {
             <Route
               path="/input"
               element={
-                <ProtectedRoute allowedRoles={["Staff Main Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Staff Main Warehouse", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
                   <InputDetailPackage />
                 </ProtectedRoute>
               }

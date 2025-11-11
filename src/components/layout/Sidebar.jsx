@@ -13,7 +13,7 @@ const MENU_ITEMS = [
   { path: "/invoices", label: "Manage Invoice", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse", "Manager Main Warehouse","Courier"] },
   { path: "/finance", label: "Keuangan", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
-  { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse"] },
+  { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse", "Manager Destination Warehouse"] },
 ];
 
 export default function Sidebar({ open, setOpen }) {
@@ -68,7 +68,7 @@ export default function Sidebar({ open, setOpen }) {
 
             {/* Tombol close hanya mobile */}
             <button
-              className="md:hidden bg-transparent"
+              className="md:hidden"
               onClick={() => setOpen(false)}
               aria-label="Close sidebar"
             >
