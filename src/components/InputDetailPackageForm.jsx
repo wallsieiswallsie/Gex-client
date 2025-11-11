@@ -12,6 +12,17 @@ function InputDetailPackageForm({
 
   const onSave = async (e) => {
     e.preventDefault();
+    
+    if (!formData.ekspedisi) {
+    alert("Silakan pilih ekspedisi terlebih dahulu!");
+    return;
+  }
+
+  if (!formData.tanggal_tiba) {
+    alert("Silakan isi tanggal tiba terlebih dahulu!");
+    return;
+  }
+
     await handleSave(e);
 
     if (fileInputRef.current) {
