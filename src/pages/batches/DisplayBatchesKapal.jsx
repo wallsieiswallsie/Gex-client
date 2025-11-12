@@ -169,22 +169,35 @@ export default function DisplayBatchesKapal() {
             <p className="text-gray-600">
               Closing: {batch.tanggal_closing.split("T")[0]}
             </p>
-            <div className="flex gap-2 mt-2">
-              <button
-                onClick={() => navigate(`/batches/kapal/${batch.id}`)}
-                className="bg-[#3e146d] text-white px-3 py-1 rounded-lg hover:opacity-90"
-              >
-                Detail
-              </button>
+            <div className="flex flex-col gap-5 mt-2">
+
               {(user?.role === "Manager Destination Warehouse" ||
-    user?.role === "Manager Main Warehouse") && (
-    <button
-      onClick={() => setSelectedBatch(batch)}
-      className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:opacity-90"
-    >
-      Update
-    </button>
-  )}
+                user?.role === "Manager Main Warehouse") && (
+                <button
+                  onClick={() => {navigate(`/batches/kapal/${batch.id}/all`);}}
+                  className="bg-red-950 h-10 text-white px-3 py-1 rounded-lg hover:opacity-90"
+                >
+                  Daftar Per Batch
+                </button>
+              )}
+
+              <button
+                onClick={() => {navigate(`/batches/kapal/${batch.id}`);}}
+                className="bg-[#3e146d] h-10 text-white px-3 w-full py-1 rounded-lg hover:opacity-90"
+              >
+                Detail Per Karung
+              </button>
+
+              {(user?.role === "Manager Destination Warehouse" ||
+                user?.role === "Manager Main Warehouse") && (
+                <button
+                  onClick={() => setSelectedBatch(batch)}
+                  className="bg-yellow-500 h-10 text-white px-3 py-1 rounded-lg hover:opacity-90"
+                >
+                  Update
+                </button>
+              )}
+
             </div>
           </div>
         ))}

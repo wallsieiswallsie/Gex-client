@@ -18,7 +18,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
     ? "Gagal ambil status"
     : latestStatus
     ? getStatusLabel(latestStatus.status)
-    : "Belum ada status";
+    : "";
 
   // tentukan background color berdasarkan kode
   let bgColor = "bg-purple-50"; // default
@@ -40,7 +40,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
       className={`
         w-full max-w-md mx-auto p-4 rounded-xl border shadow-sm flex flex-col gap-1
         ${isSelected ? "border-blue-500 shadow-md" : "border-gray-300"}
-        ${isDisabled ? "opacity-60" : ""}
+        ${isDisabled ? "opacity-80 bg-slate-200" : ""}
         ${bgColor}
       `}
     >

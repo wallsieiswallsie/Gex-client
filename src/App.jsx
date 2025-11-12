@@ -23,7 +23,9 @@ import BatchSelectionPage from "./pages/batches/BatchSelectionPage";
 import DisplayBatchesKapal from "./pages/batches/DisplayBatchesKapal";
 import DisplayBatchesPesawat from "./pages/batches/DisplayBatchesPesawat";
 import BatchDetailKapal from "./pages/batches/BatchDetailKapal";
+import DisplayPackageBatchKapal from "./pages/batches/DisplayPackageBatchKapal";
 import BatchDetailPesawat from "./pages/batches/BatchDetailPesawat";
+
 import InvoicesPage from "./pages/ManageInvoice";
 import InvoiceDetailPage from "./pages/InvoiceDetail";
 import ArchivedInvoicesPage from "./pages/ArchivedInvoicesPage";
@@ -132,11 +134,7 @@ function App() {
 
             <Route
               path="/customer/syarat-ketentuan"
-              element={
-                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
-                  <SyaratKetentuanPageDisplay />
-                </ProtectedRoute>
-              }
+              element={<SyaratKetentuanPageDisplay />}
             />
 
             <Route
@@ -159,11 +157,7 @@ function App() {
 
             <Route
               path="/customer/jadwal_kirim"
-              element={
-                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
-                  <JadwalKirimPageDisplay />
-                </ProtectedRoute>
-              }
+              element={<JadwalKirimPageDisplay />}
             />
 
             <Route
@@ -177,11 +171,7 @@ function App() {
 
             <Route
               path="/customer/lokasi-kontak"
-              element={
-                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
-                  <LokasiKontakPageDisplay />
-                </ProtectedRoute>
-              }
+              element={<LokasiKontakPageDisplay />}
             />
 
             <Route
@@ -195,11 +185,7 @@ function App() {
 
             <Route
               path="/customer/sering_ditanyakan"
-              element={
-                <ProtectedRoute allowedRoles={["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
-                  <SeringDitanyakanPageDisplay />
-                </ProtectedRoute>
-              }
+              element={<SeringDitanyakanPageDisplay />}
             />
 
             <Route
@@ -257,6 +243,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <BatchDetailKapal />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/batches/kapal/:batchId/all"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <DisplayPackageBatchKapal />
                 </ProtectedRoute>
               }
             />
