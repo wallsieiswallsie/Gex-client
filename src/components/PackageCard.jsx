@@ -45,6 +45,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
       `}
     >
       <h2 className="font-bold text-lg">{pkg.nama.toUpperCase()}</h2>
+      <p className="font-medium text-lg">{pkg.tanggal_tiba.split("T")[0]}</p>
       <h3 className="font-semibold text-sm text-gray-600">{pkg.resi.toUpperCase()} | {pkg.ekspedisi}</h3>
 
       {(user?.role === "Manager Main Warehouse" ||
