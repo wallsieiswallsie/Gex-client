@@ -193,10 +193,9 @@ function InvoiceDetailPage() {
               }`}
             >
               <h4 className="text-[#3e146d] font-semibold mb-1">{pkg.nama.toUpperCase()}</h4>
-              <p className="text-gray-700 mb-1">Resi: {pkg.resi.toUpperCase()}</p>
-              <p className="text-gray-700 mb-1">
-                {pkg.panjang} × {pkg.lebar} × {pkg.tinggi}
-              </p>
+              <p className="text-gray-700 mb-1">{pkg.resi.toUpperCase()}</p>
+              <p className="text-gray-700 mb-1">{pkg.berat_dipakai} kg</p>
+              <p className="text-gray-700 mb-1">{pkg.via}</p>
               <p className="text-[#3e146d] font-medium">
                 Rp {Number(pkg.harga).toLocaleString("id-ID")}
               </p>
