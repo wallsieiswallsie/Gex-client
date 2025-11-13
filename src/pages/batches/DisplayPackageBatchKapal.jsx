@@ -25,7 +25,6 @@ export default function DisplayPackageBatchKapal() {
     try {
       setLoading(true);
       const res = await fetchBatchKapalDetailApi(batchId);
-      console.log("Server response:", res);
 
       if (res.success) {
         setBatch(res.data);

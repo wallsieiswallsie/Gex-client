@@ -60,7 +60,7 @@ function PackageControls({
       {showFilters && (
         <div
           ref={popoverRef}
-          className="absolute top-full left-0 mt-2 bg-white border shadow-lg rounded-2xl p-4 z-50 flex flex-col gap-3 w-56"
+          className="absolute top-full left-0 mt-2 bg-white border shadow-lg rounded-2xl p-4 flex flex-col gap-3 w-56"
         >
           {invoicedFilter !== null && (
             <select

@@ -62,9 +62,11 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
 
       <p className="text-sm text-gray-500">{pkg.kode}</p>
 
-      <h3 className="font-semibold text-base">
-        Rp {Number(pkg.harga).toLocaleString("id-ID")}
-      </h3>
+      {user.role !== "Staff Main Warehouse" && (
+        <h3 className="font-semibold text-base">
+          Rp {Number(pkg.harga).toLocaleString("id-ID")}
+        </h3>
+      )}
 
       <p className="text-sm font-medium">{statusLabel}</p>
 
