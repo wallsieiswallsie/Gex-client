@@ -244,6 +244,7 @@ function InputDetailPackageForm({
               <option value="JKSOQB">JKSOQB</option>
               <option value="JPSOQA">JPSOQA</option>
               <option value="JPSOQB">JPSOQB</option>
+              <option value="Bermasalah">Bermasalah</option>
             </select>
             {errors.kode && (
               <p className="text-red-500 text-sm">{errors.kode}</p>

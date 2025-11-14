@@ -4,6 +4,13 @@ import { removePackageFromInvoiceApi } from "../../utils/api";
 function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
   if (!pkg) return null;
 
+
+  useEffect(() => {
+    if (pkg) {
+      console.log("Modal terbuka untuk paket ID:", pkg.id);
+    }
+  }, [pkg]);
+
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("modal-overlay")) {
       onClose();
