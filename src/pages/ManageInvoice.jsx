@@ -145,7 +145,7 @@ function InvoicesPage() {
       ) : filteredInvoices.length === 0 ? (
         <p className="text-gray-500">Invoice tidak ditemukan.</p>
       ) : (
-        <div className="w-full max-w-3xl flex flex-col gap-3">
+        <div className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-3">
           {filteredInvoices.map((inv) => {
             const isSelected = selectedInvoices.includes(inv.id);
             return (
