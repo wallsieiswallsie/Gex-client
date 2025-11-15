@@ -9,10 +9,12 @@ function PackageControls({
   setViaFilter,
   cabangFilter,
   setCabangFilter,
+  bermasalahFilter,
+  setBermasalahFilter,
   selectMode,
   setSelectMode,
   setSelectedPackages,
-  hideSelectButton = false, // tambahkan prop ini
+  hideSelectButton = false,
 }) {
   const [showFilters, setShowFilters] = useState(false);
   const popoverRef = useRef(null);
@@ -93,6 +95,16 @@ function PackageControls({
             <option value="Remu">Remu</option>
             <option value="Aimas">Aimas</option>
           </select>
+
+          <select
+            value={bermasalahFilter}
+            onChange={(e) => setBermasalahFilter(e.target.value)}
+            className="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d] w-full"
+          >
+            <option value="all">Semua</option>
+            <option value="yes">Bermasalah</option>
+          </select>
+
         </div>
       )}
 

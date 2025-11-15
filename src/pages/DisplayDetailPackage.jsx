@@ -16,6 +16,7 @@ function DisplayDetailPackage() {
   const [invoicedFilter, setInvoicedFilter] = useState("all");
   const [viaFilter, setViaFilter] = useState("all");
   const [cabangFilter, setCabangFilter] = useState("all");
+  const [bermasalahFilter, setBermasalahFilter] = useState("all");
   const [visibleCount, setVisibleCount] = useState(10);
 
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -119,6 +120,11 @@ function DisplayDetailPackage() {
           : null;
 
       return cabang === cabangFilter;
+    })
+    .filter((pkg) => {
+      if (bermasalahFilter === "all") return true;
+      if (bermasalahFilter === "yes") return pkg.kode === "Bermasalah";
+      return true;
     });
 
     const limitedPackages = filter === "" ? filteredPackages.slice(0, 30) : filteredPackages;
@@ -145,6 +151,8 @@ function DisplayDetailPackage() {
           setViaFilter={setViaFilter}
           cabangFilter={cabangFilter}
           setCabangFilter={setCabangFilter}
+          bermasalahFilter={bermasalahFilter}
+          setBermasalahFilter={setBermasalahFilter}
           selectMode={selectMode}
           setSelectMode={setSelectMode}
           setSelectedPackages={setSelectedPackages}
