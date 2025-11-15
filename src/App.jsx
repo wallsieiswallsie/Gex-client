@@ -138,7 +138,7 @@ function App() {
             <Route
               path="/packages/confirm-select"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <ConfirmPackagesSelectionPage />
                 </ProtectedRoute>
               }

@@ -117,6 +117,11 @@ export const confirmPackageApi = async ({ resi, kode, nama }) =>
 export const fetchUnmovedConfirmedPackagesApi = async () =>
   apiFetch("/packages/confirm-unmoved");
 
+export const markConfirmedPackageAsMovedApi = async (resi) =>
+  apiFetch("/packages/confirm-moved", {
+    method: "POST",
+    body: JSON.stringify({ resi }),
+  });
 
 export const createBatchesKapalApi = async (payload) =>
   apiFetch("/batches/kapal", { method: "POST", body: JSON.stringify(payload) });
