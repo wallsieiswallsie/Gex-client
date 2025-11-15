@@ -14,6 +14,7 @@ const MENU_ITEMS = [
   { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse", "Manager Main Warehouse","Courier"] },
   { path: "/finance", label: "Keuangan", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
   { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse", "Manager Destination Warehouse"] },
+  { path: "/packages/confirm-select", label: "Konfirmasi Paket Bermasalah", roles: ["Manager Main Warehouse", "Staff Main Warehouse", "Manager Destination Warehouse"] },
 ];
 
 export default function Sidebar({ open, setOpen }) {

@@ -6,6 +6,8 @@ import RegisterPageCustomer from "./pages/RegisterPageCustomer";
 
 import InputDetailPackage from "./pages/InputDetailPackage";
 import DisplayDetailPackage from "./pages/DisplayDetailPackage";
+import ConfirmPackageForm from "./components/ConfirmPackageForm";
+import ConfirmPackagesSelectionPage from "./components/ConfirmPackagesSelectionPage";
 import ManageCustomerService from "./pages/customer_services/manage/ManageCustomerService";
 import LacakPaketCustomer from "././pages/customer_services/LacakPaketCustomer";
 import SyaratKetentuanPageDisplay from "./pages/customer_services/display/SyaratKetentuanPageDisplay";
@@ -128,6 +130,24 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
                   <DisplayDetailPackage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/packages/confirm-select"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <ConfirmPackagesSelectionPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/packages/confirm-form"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                  <ConfirmPackageForm />
                 </ProtectedRoute>
               }
             />

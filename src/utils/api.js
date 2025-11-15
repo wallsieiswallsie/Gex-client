@@ -108,6 +108,12 @@ export const fetchArchivePackagesApi = async ({
   return apiFetch(`/archive_packages?${params.toString()}`);
 };
 
+export const confirmPackageApi = async ({ resi, kode, nama }) =>
+  apiFetch("/packages/confirm", {
+    method: "POST",
+    body: JSON.stringify({ resi, kode, nama }),
+  });
+
 export const createBatchesKapalApi = async (payload) =>
   apiFetch("/batches/kapal", { method: "POST", body: JSON.stringify(payload) });
 
