@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useCustomerApi } from "../../../hooks/useCustomerApi";
+import { FiMapPin, FiPhone } from "react-icons/fi";
 
 function LokasiKontakPageDisplay() {
   const { items, loading, error, fetchItems } = useCustomerApi("lokasiKontak");
@@ -42,25 +43,25 @@ function LokasiKontakPageDisplay() {
               key={item.id}
               className="p-4 border rounded-2xl shadow-sm bg-white hover:shadow-md transition"
             >
+              {/* Nama Cabang */}
+              <h2 className="font-bold text-[#3e146d] text-center mb-2">
+                {item.nama_cabang.toUpperCase() || "(Tanpa nama cabang)"}
+              </h2>
+
               {/* Alamat */}
-              <h6 className="font-semibold text-[#3e146d] text-lg whitespace-pre-wrap break-words mb-2">
-                {item.alamat_cabang || "(Tanpa alamat)"}
-              </h6>
+              <div className="flex items-start gap-2 mb-2">
+                <FiMapPin className="text-gray-500 text-xl mt-1" />
+                <p className="font-semibold text-gray-600 text-lg whitespace-pre-wrap break-words">
+                  {item.alamat_cabang || "(Tanpa alamat)"}
+                </p>
+              </div>
 
               {/* No HP */}
               {item.no_hp && (
-                <p className="text-gray-700 text-sm mb-2">{item.no_hp}</p>
-              )}
-
-              {/* WhatsApp */}
-              {item.link_whatsapp && (
-                <a
-                  href={item.link_whatsapp}
-                  target="_blank"
-                  className="text-green-600 underline text-sm mb-2 block"
-                >
-                  WhatsApp
-                </a>
+                <div className="flex items-center gap-2 mb-2">
+                  <FiPhone className="text-gray-500 text-lg" />
+                  <p className="text-gray-700 text-sm">{item.no_hp}</p>
+                </div>
               )}
 
               {/* Map */}
@@ -70,16 +71,24 @@ function LokasiKontakPageDisplay() {
                   onClick={() => window.open(item.link_map, "_blank")}
                 >
                   <iframe
-                    className="w-full h-48 rounded-lg border pointer-events-none"
+                    className="w-full h-48 rounded-lg border mt-5 mb-5 pointer-events-none"
                     src={getEmbedLink(item.link_map)}
                     loading="lazy"
                   ></iframe>
-
-                  <p className="text-center text-sm text-blue-600 underline mt-1">
-                    Lihat di Google Maps
-                  </p>
                 </div>
               )}
+
+              {/* WhatsApp */}
+              {item.link_whatsapp && (
+                <a
+                  href={item.link_whatsapp}
+                  target="_blank"
+                  className="w-full bg-green-500 !text-white text-sm py-2 px-4 rounded-xl shadow-md shadow-slate-600 inline-block text-center mb-2 hover:bg-green-600 transition"
+                >
+                  WhatsApp
+                </a>
+              )}
+
             </div>
           ))}
         </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCustomerApi } from "../../../hooks/useCustomerApi";
 import { MoreVertical } from "lucide-react";
+import { FiMapPin, FiPhone } from "react-icons/fi";
 
 function LokasiKontakPage() {
   const {
@@ -13,6 +14,7 @@ function LokasiKontakPage() {
     deleteItem,
   } = useCustomerApi("lokasiKontak");
 
+  const [namaCabang, setNamaCabang] = useState("");
   const [alamat, setAlamat] = useState("");
   const [linkMap, setLinkMap] = useState("");
   const [noHp, setNoHp] = useState("");
@@ -29,6 +31,7 @@ function LokasiKontakPage() {
   }, []);
 
   const resetForm = () => {
+    setNamaCabang("");
     setAlamat("");
     setLinkMap("");
     setNoHp("");
@@ -42,6 +45,7 @@ function LokasiKontakPage() {
     setMessage("");
 
     const payload = {
+      nama_cabang: namaCabang,
       alamat_cabang: alamat,
       link_map: linkMap,
       no_hp: noHp,
@@ -68,6 +72,7 @@ function LokasiKontakPage() {
 
   const handleEdit = (item) => {
     setLocalEditId(item.id);
+    setNamaCabang(item.nama_cabang || "");
     setAlamat(item.alamat_cabang || "");
     setLinkMap(item.link_map || "");
     setNoHp(item.no_hp || "");
@@ -89,24 +94,20 @@ function LokasiKontakPage() {
   const getEmbedLink = (url) => {
     if (!url) return "";
 
-    // Jika sudah embed, langsung pakai
     if (url.includes("maps/embed")) return url;
 
-    // Jika format share link Google Maps pendek
     if (url.includes("maps.app.goo.gl") || url.includes("goo.gl/maps")) {
-        return `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
+      return `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
         url
-        )}&key=AIzaSyDd0GigMQWL7AuiFQLHYisCLY3_NBOJAxw`; //api map key
+      )}&key=AIzaSyDd0GigMQWL7AuiFQLHYisCLY3_NBOJAxw`;
     }
 
-    // Jika format full Google Maps
     if (url.includes("/maps/")) {
-        return url.replace("/maps/", "/maps/embed/");
+      return url.replace("/maps/", "/maps/embed/");
     }
 
     return "";
   };
-
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center px-4 py-10">
@@ -116,6 +117,14 @@ function LokasiKontakPage() {
         </h2>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Nama Cabang"
+            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-[#3e146d]"
+            value={namaCabang}
+            onChange={(e) => setNamaCabang(e.target.value)}
+          />
+
           <input
             type="text"
             placeholder="Alamat Cabang"
@@ -137,7 +146,8 @@ function LokasiKontakPage() {
             placeholder="No HP"
             className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-[#3e146d]"
             value={noHp}
-            onChange={(e) => setNoHp(e.target.value)}n          />
+            onChange={(e) => setNoHp(e.target.value)}
+          />
 
           <input
             type="text"
@@ -166,68 +176,82 @@ function LokasiKontakPage() {
           <p className="text-center text-gray-500">Memuat...</p>
         ) : (
           items.map((item) => (
-            
             <div
               key={item.id}
               className="p-4 border rounded-2xl shadow-sm bg-white hover:shadow-md transition relative"
             >
-              <div className="flex justify-between items-start mb-2"> 
-                <h6 className="font-semibold text-[#3e146d] text-lg whitespace-pre-wrap break-words">
+              {/* Menu tombol kanan atas */}
+              <button
+                onClick={() =>
+                  setMenuOpen(menuOpen === item.id ? null : item.id)
+                }
+                className="absolute right-3 top-3 p-2 rounded hover:bg-gray-100"
+              >
+                <MoreVertical size={20} />
+              </button>
+
+              {menuOpen === item.id && (
+                <div className="absolute right-3 top-12 bg-white border shadow-md rounded-lg w-32 z-20">
+                  <button
+                    className="w-full px-3 py-2 hover:bg-gray-100 text-left"
+                    onClick={() => handleEdit(item)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="w-full px-3 py-2 hover:bg-gray-100 text-left text-red-600"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    Hapus
+                  </button>
+                </div>
+              )}
+
+              {/* Nama Cabang */}
+              <h2 className="font-bold text-[#3e146d] text-center mb-2">
+                {item.nama_cabang?.toUpperCase() || "(Tanpa nama cabang)"}
+              </h2>
+
+              {/* Alamat */}
+              <div className="flex items-start gap-2 mb-2">
+                <FiMapPin className="text-gray-500 text-xl mt-1" />
+                <p className="font-semibold text-gray-600 text-lg whitespace-pre-wrap break-words">
                   {item.alamat_cabang || "(Tanpa alamat)"}
-                </h6>
-
-                <button
-                  onClick={() => setMenuOpen(menuOpen === item.id ? null : item.id)}
-                  className="p-2 rounded hover:bg-gray-100"
-                >
-                  <MoreVertical size={20} />
-                </button>
-
-                {menuOpen === item.id && (
-                  <div className="absolute right-3 top-10 bg-white border shadow-md rounded-lg w-32 z-20">
-                    <button
-                      className="w-full px-3 py-2 hover:bg-gray-100 text-left"
-                      onClick={() => handleEdit(item)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="w-full px-3 py-2 hover:bg-gray-100 text-left text-red-600"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      Hapus
-                    </button>
-                  </div>
-                )}
+                </p>
               </div>
 
-              <p className="text-gray-700 text-sm mb-2">{item.no_hp}</p>
+              {/* No HP */}
+              {item.no_hp && (
+                <div className="flex items-center gap-2 mb-2">
+                  <FiPhone className="text-gray-500 text-lg" />
+                  <p className="text-gray-700 text-sm">{item.no_hp}</p>
+                </div>
+              )}
 
+              {/* Map */}
+              {item.link_map && (
+                <div
+                  className="cursor-pointer mt-2"
+                  onClick={() => window.open(item.link_map, "_blank")}
+                >
+                  <iframe
+                    className="w-full h-48 rounded-lg border mt-5 mb-5 pointer-events-none"
+                    src={getEmbedLink(item.link_map)}
+                    loading="lazy"
+                  ></iframe>
+                </div>
+              )}
+
+              {/* WhatsApp */}
               {item.link_whatsapp && (
                 <a
                   href={item.link_whatsapp}
                   target="_blank"
-                  className="text-green-600 underline text-sm mb-2 block"
+                  className="w-full bg-green-500 !text-white text-sm py-2 px-4 rounded-xl shadow-md shadow-slate-600 inline-block text-center mb-2 hover:bg-green-600 transition"
                 >
                   WhatsApp
                 </a>
               )}
-
-              {item.link_map && (
-                <div
-                    className="cursor-pointer mt-2"
-                    onClick={() => window.open(item.link_map, "_blank")}
-                >
-                    <iframe
-                    className="w-full h-48 rounded-lg border pointer-events-none"
-                    src={getEmbedLink(item.link_map)}
-                    loading="lazy"
-                    ></iframe>
-                    <p className="text-center text-sm text-blue-600 underline mt-1">
-                    Lihat di Google Maps
-                    </p>
-                </div>
-                )}
             </div>
           ))
         )}
