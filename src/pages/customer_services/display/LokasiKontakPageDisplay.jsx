@@ -50,7 +50,7 @@ function LokasiKontakPageDisplay() {
 
               {/* Alamat */}
               <div className="flex items-start gap-2 mb-2">
-                <FiMapPin className="text-gray-500 text-xl mt-1" />
+                <FiMapPin className="text-gray-500 text-xl flex-shrink-0 mt-1" />
                 <p className="font-semibold text-gray-600 text-lg whitespace-pre-wrap break-words">
                   {item.alamat_cabang || "(Tanpa alamat)"}
                 </p>
@@ -59,7 +59,7 @@ function LokasiKontakPageDisplay() {
               {/* No HP */}
               {item.no_hp && (
                 <div className="flex items-center gap-2 mb-2">
-                  <FiPhone className="text-gray-500 text-lg" />
+                  <FiPhone className="text-gray-500 flex-shrink-0 text-lg" />
                   <p className="text-gray-700 text-sm">{item.no_hp}</p>
                 </div>
               )}
