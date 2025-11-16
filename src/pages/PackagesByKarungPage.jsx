@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getPackagesByKarungApi } from "../utils/api";
+import PackingPackageToKarung from "../components/modals/PackingPackageToKarung";
 
 export default function PackagesByKarungPage() {
-  const { user } = useAuth(); // <-- ambil user di sini
+  const { user } = useAuth();
   const { batchId, noKarung } = useParams();
   const [packages, setPackages] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   const fetchPackages = async () => {
     try {
@@ -37,14 +40,24 @@ export default function PackagesByKarungPage() {
         Karung {noKarung} | {batchId}
       </h2>
 
-      <div className="mb-4">
+      <div className="mb-4 flex gap-2">
         <input
           type="text"
           placeholder="Cari berdasarkan nama atau nomor resi..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2 w-full"
+          className="border border-gray-300 rounded px-3 py-2 flex-1"
         />
+        {(user?.role === "Staff Main Warehouse" ||
+          user?.role === "Manager Main Warehouse") && (
+          <button
+            type="button"
+            onClick={() => setModalOpen(true)}
+            className="bg-[#3e146d] text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            +
+          </button>
+        )}
       </div>
 
       {loading ? (
@@ -69,6 +82,15 @@ export default function PackagesByKarungPage() {
             </div>
           ))}
         </div>
+      )}
+
+      {modalOpen && (
+        <PackingPackageToKarung
+          karung={{ no_karung: noKarung }}
+          batchId={batchId}
+          onClose={() => setModalOpen(false)}
+          onSuccess={fetchPackages}
+        />
       )}
     </div>
   );
