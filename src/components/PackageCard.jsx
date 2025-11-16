@@ -48,9 +48,10 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
       <p className="font-medium text-lg">{pkg.tanggal_tiba.split("T")[0]}</p>
       <h3 className="font-semibold text-sm text-gray-600">{pkg.resi.toUpperCase()} | {pkg.ekspedisi}</h3>
 
-      {(user?.role === "Manager Main Warehouse" ||
-        user?.role === "Manager Destination Warehouse" ||
-        user?.role === "Staff Main Warehouse") && (
+      {(!user?.role || 
+        user.role === "Manager Main Warehouse" ||
+        user.role === "Manager Destination Warehouse" ||
+        user.role === "Staff Main Warehouse") && (
         <p className="text-sm text-gray-700">
           {pkg.panjang} × {pkg.lebar} × {pkg.tinggi} | {pkg.berat_dipakai} kg
         </p>
@@ -62,7 +63,7 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
 
       <p className="text-sm text-gray-500">{pkg.kode}</p>
 
-      {user.role !== "Staff Main Warehouse" && (
+      {(!user?.role || user.role !== "Staff Main Warehouse") && (
         <h3 className="font-semibold text-base">
           Rp {Number(pkg.harga).toLocaleString("id-ID")}
         </h3>
