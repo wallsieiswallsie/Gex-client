@@ -62,6 +62,13 @@ function PackageCard({ pkg, invoiceId, isSelected, isDisabled, onClick, onRightC
 
       <p className="text-sm font-medium">{statusLabel}</p>
 
+      {/* Label gagal xray */}
+      {pkg.is_failed_xray && (
+        <p className="text-sm font-semibold text-red-600">
+          Tidak lolos xray, dialihkan ke via kapal
+        </p>
+      )}
+
       {invoiceId && <p className="text-xs text-gray-500">{invoiceId}</p>}
     </div>
   );

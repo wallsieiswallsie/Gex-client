@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useArchivePackages } from "../hooks/useArchivePackages";
-import { usePackageStatus } from "../hooks/usePackageStatus";
-import { getStatusLabel } from "../utils/statusLabels";
+import { useArchivePackages } from "../../hooks/useArchivePackages";
+import { usePackageStatus } from "../../hooks/usePackageStatus";
+import { getStatusLabel } from "../../utils/statusLabels";
 
-import PackageControls from "../components/PackageControls";
-import ErrorBoundary from "../components/ErrorBoundary";
-import PackageCard from "../components/PackageCard";
-import DetailPackageModal from "../components/modals/DetailPackageModal";
+import PackageControls from "../../components/PackageControls";
+import ErrorBoundary from "../../components/ErrorBoundary";
+import PackageCard from "../../components/PackageCard";
+import DetailPackageModal from "../../components/modals/packages/DetailPackageModal";
 
 function ArchivePackages() {
   const [filter, setFilter] = useState("");

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchActivePengantaranApi, archivePengantaranApi } from "../../utils/api";
-import UpdateArchivePackageModal from "../../components/modals/UpdateArchivePackageModal";
+import UpdateArchivePackageModal from "../../components/modals/packages/UpdateArchivePackageModal";
 
 function ActiveDeliveries() {
   const [deliveries, setDeliveries] = useState([]);

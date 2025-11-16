@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { addPackageStatus, fetchBatchPesawatDetailApi } from "../../utils/api";
+import { useAuth } from "../../../context/AuthContext";
+import { addPackageStatus, fetchBatchKapalDetailApi } from "../../../utils/api";
 
 export default function UpdateStatusBatchModal({ batch, onClose, onUpdated }) {
-  const { user } = useAuth(); // Ambil role dari context
+  const { user } = useAuth();
   const [status, setStatus] = useState(batch.status || "");
 
   const handleOverlayClick = (e) => {
@@ -15,7 +15,7 @@ export default function UpdateStatusBatchModal({ batch, onClose, onUpdated }) {
   const handleSubmit3 = async (e) => {
     e.preventDefault();
     try {
-      const resJson = await fetchBatchPesawatDetailApi(batch.id);
+      const resJson = await fetchBatchKapalDetailApi(batch.id);
       const batchData = resJson.data;
 
       if (!batchData || !batchData.packages || batchData.packages.length === 0) {
@@ -37,7 +37,7 @@ export default function UpdateStatusBatchModal({ batch, onClose, onUpdated }) {
   const handleSubmit4 = async (e) => {
     e.preventDefault();
     try {
-      const resJson = await fetchBatchPesawatDetailApi(batch.id);
+      const resJson = await fetchBatchKapalDetailApi(batch.id);
       const batchData = resJson.data;
 
       if (!batchData || !batchData.packages || batchData.packages.length === 0) {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { fetchBatchesKapalApi, createBatchesKapalApi } from "../../utils/api";
-import UpdateStatusBatchModal from "../../components/modals/UpdateStatusBatchModal";
+import UpdateStatusBatchModal from "../../components/modals/batches/UpdateStatusBatchModal";
 
 export default function DisplayBatchesKapal() {
   const { user } = useAuth();

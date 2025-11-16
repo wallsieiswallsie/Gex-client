@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { usePackages } from "../hooks/usePackages";
-import { createInvoiceApi } from "../utils/api";
-import { usePackageStatus } from "../hooks/usePackageStatus";
-import { getStatusLabel } from "../utils/statusLabels";
+import { usePackages } from "../../hooks/usePackages";
+import { createInvoiceApi } from "../../utils/api";
+import { usePackageStatus } from "../../hooks/usePackageStatus";
+import { getStatusLabel } from "../../utils/statusLabels";
 
-import PackageControls from "../components/PackageControls";
-import ErrorBoundary from "../components/ErrorBoundary";
-import PackageCard from "../components/PackageCard";
-import InvoiceActions from "../components/InvoiceActions";
-import DetailPackageModal from "../components/modals/DetailPackageModal";
+import PackageControls from "../../components/PackageControls";
+import ErrorBoundary from "../../components/ErrorBoundary";
+import PackageCard from "../../components/PackageCard";
+import InvoiceActions from "../../pages/invoice/InvoiceActions";
+import DetailPackageModal from "../../components/modals/packages/DetailPackageModal";
 
 function DisplayDetailPackage() {
   const [filter, setFilter] = useState("");

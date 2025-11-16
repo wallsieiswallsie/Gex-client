@@ -139,6 +139,15 @@ export const fetchBatchKapalDetailApi = async (batchId) =>
 export const fetchBatchPesawatDetailApi = async (batchId) =>
   apiFetch(`/batches/pesawat/${batchId}`);
 
+export const failPackageXrayApi = async (resi) =>
+  apiFetch("/packages/failed_xray", {
+    method: "POST",
+    body: JSON.stringify({ resi }),
+  });
+
+export const fetchFailedXrayPackagesApi = async () =>
+  apiFetch("/packages/failed_xray");  
+
 export const addPackageToBatchKapalApi = async (batchId, resi) =>
   apiFetch(`/batches/kapal/${batchId}/packages`, { method: "POST", body: JSON.stringify({ resi }) });
 

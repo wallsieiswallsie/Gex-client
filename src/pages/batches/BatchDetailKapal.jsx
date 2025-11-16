@@ -6,7 +6,7 @@ import {
   addNoKarungToBatchKapalApi,
   addPackageToKarungApi,
 } from "../../utils/api";
-import PackingPackageToKarung from "../../components/modals/PackingPackageToKarung";
+import PackingPackageToKarung from "../../components/modals/batches/PackingPackageToKarung";
 
 export default function BatchDetailKapal() {
   const { batchId } = useParams();

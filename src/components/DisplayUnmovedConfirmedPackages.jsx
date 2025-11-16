@@ -6,7 +6,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 
 function DisplayUnmovedConfirmedPackages() {
-  const { user } = useAuth(); // <-- ambil role dari context
+  const { user } = useAuth();
   const userRole = user?.role || "";
 
   const [packages, setPackages] = useState([]);
@@ -15,7 +15,6 @@ function DisplayUnmovedConfirmedPackages() {
   const [resiInput, setResiInput] = useState("");
   const [processing, setProcessing] = useState(false);
 
-  // Fetch data function agar bisa dipanggil ulang
   const loadPackages = async () => {
     try {
       const result = await fetchUnmovedConfirmedPackagesApi();
@@ -42,7 +41,6 @@ function DisplayUnmovedConfirmedPackages() {
     }
   };
 
-  // Load awal
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -52,7 +50,6 @@ function DisplayUnmovedConfirmedPackages() {
     fetchData();
   }, []);
 
-  // Submit resi dipindahkan
   const handleSubmitMoved = async () => {
     if (!resiInput.trim()) return;
 
@@ -61,7 +58,6 @@ function DisplayUnmovedConfirmedPackages() {
       await markConfirmedPackageAsMovedApi(resiInput.trim());
       setResiInput("");
 
-      // Refresh list
       await loadPackages();
     } catch (err) {
       console.error("Gagal update:", err);
@@ -70,7 +66,6 @@ function DisplayUnmovedConfirmedPackages() {
     }
   };
 
-  // Filter pencarian
   const filteredPackages = useMemo(() => {
     const s = search.toLowerCase();
     return packages.filter(

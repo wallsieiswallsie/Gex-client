@@ -1,12 +1,12 @@
 import { Routes, Route, useLocation, Navigate, Outlet } from "react-router-dom";
 import React, { useState } from "react";
-import RegisterPage from "./pages/Register";
-import LoginPageCustomer from "./pages/LoginPageCustomer";
-import RegisterPageCustomer from "./pages/RegisterPageCustomer";
+import RegisterPage from "./pages/authentication/Register";
+import LoginPageCustomer from "./pages/authentication/LoginPageCustomer";
+import RegisterPageCustomer from "./pages/authentication/RegisterPageCustomer";
 
 import InputDetailPackage from "./pages/InputDetailPackage";
-import DisplayDetailPackage from "./pages/DisplayDetailPackage";
-import ConfirmPackageForm from "./components/ConfirmPackageForm";
+import DisplayDetailPackage from "./pages/display_package/DisplayDetailPackage";
+import ConfirmPackageForm from "./components/forms/ConfirmPackageForm";
 import DisplayUnmovedConfirmedPackages from "./components/DisplayUnmovedConfirmedPackages";
 import ConfirmPackagesSelectionPage from "./components/ConfirmPackagesSelectionPage";
 import ManageCustomerService from "./pages/customer_services/manage/ManageCustomerService";
@@ -20,18 +20,19 @@ import LokasiKontakPageDisplay from "./pages/customer_services/display/LokasiKon
 import SeringDitanyakanPage from "./pages/customer_services/manage/SeringDitanyakanPage";
 import SeringDitanyakanPageDisplay from "./pages/customer_services/display/SeringDitanyakanPageDisplay";
 
-import PackagesByKarungPage from "./pages/PackagesByKarungPage";
-import ArchivePackages from "./pages/ArchivePackages";
+import PackagesByKarungPage from "./pages/batches/PackagesByKarungPage";
+import ArchivePackages from "./pages/display_package/ArchivePackages";
 import BatchSelectionPage from "./pages/batches/BatchSelectionPage";
 import DisplayBatchesKapal from "./pages/batches/DisplayBatchesKapal";
 import DisplayBatchesPesawat from "./pages/batches/DisplayBatchesPesawat";
 import BatchDetailKapal from "./pages/batches/BatchDetailKapal";
 import DisplayPackageBatchKapal from "./pages/batches/DisplayPackageBatchKapal";
 import BatchDetailPesawat from "./pages/batches/BatchDetailPesawat";
+import FailedXrayPage from "./pages/batches/FailedXrayPage";
 
-import InvoicesPage from "./pages/ManageInvoice";
-import InvoiceDetailPage from "./pages/InvoiceDetail";
-import ArchivedInvoicesPage from "./pages/ArchivedInvoicesPage";
+import InvoicesPage from "./pages/invoice/ManageInvoice";
+import InvoiceDetailPage from "./pages/invoice/InvoiceDetail";
+import ArchivedInvoicesPage from "./pages/invoice/ArchivedInvoicesPage";
 import DeliverySelectionPage from "./pages/deliveries/DeliverySelectionPage";
 import ManageDelivery from "./pages/deliveries/ManageDelivery";
 import ActiveDeliveries from "./pages/deliveries/ActiveDeliveries";
@@ -263,6 +264,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
                   <DisplayBatchesPesawat />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/packages/failed_xray"
+              element={
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                  <FailedXrayPage />
                 </ProtectedRoute>
               }
             />

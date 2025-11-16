@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { removePackageFromInvoiceApi } from "../../utils/api";
+import { removePackageFromInvoiceApi } from "../../../utils/api";
 
 function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
   if (!pkg) return null;

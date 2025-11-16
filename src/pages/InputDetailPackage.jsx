@@ -1,5 +1,5 @@
 import { useInputDetailPackage } from "../hooks/useInputDetailPackage";
-import InputDetailPackageForm from "../components/InputDetailPackageForm";
+import InputDetailPackageForm from "../components/forms/InputDetailPackageForm";
 
 function InputDetailPackage() {
   const { formData, errors, handleChange, handleSave, handleCancel, handleFileChange } = useInputDetailPackage();

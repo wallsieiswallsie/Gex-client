@@ -1,89 +1,41 @@
 import { useState } from "react";
-import { 
-  addPackageToKarungApi,
-  movePackageToKarungApi,
-} from "../../utils/api";
+import { addPackageToBatchPesawatApi } from "../../../utils/api";
 
-export default function PackingPackageToKarung({
-  karung,
-  batchId,
-  onClose,
-  onSuccess,
-}) {
+export default function AddPackageToBatchPesawatModal({ batchId, onClose, onSuccess }) {
   const [resi, setResi] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleTambah = async (e) => {
     e.preventDefault();
+
     if (!resi.trim()) {
-      alert("Resi tidak boleh kosong");
+      alert("⚠️ Resi tidak boleh kosong");
       return;
     }
 
     setLoading(true);
     try {
-      // ✅ 1) Coba tambah paket ke karung ini
-      const res = await addPackageToKarungApi(
-        batchId,
-        resi,
-        karung.no_karung
-      );
+      const res = await addPackageToBatchPesawatApi(batchId, resi);
 
-      if (res.status === "success") {
-        alert("Paket berhasil ditambahkan ke karung!");
+      if (res.success || res.status === "success") {
+        alert("Paket berhasil ditambahkan ke batch pesawat!");
         setResi("");
         onSuccess?.();
-        onClose?.();
-        return;
+      } else if (res.message?.includes("sudah ada di batch")) {
+        alert(`Paket dengan resi ${resi} sudah ada di batch ini.`);
+      } else if (res.message?.includes("tidak ditemukan")) {
+        alert(`Paket dengan resi ${resi} tidak ditemukan.`);
+      } else {
+        alert("Gagal menambahkan paket: " + (res.message || "Unknown error"));
       }
-
-      // ✅ 2) Jika paket sudah ada di karung lain → langsung pindahkan tanpa confirm
-      if (res.message?.includes("karung lain")) {
-        const res2 = await movePackageToKarungApi(
-          batchId,
-          resi,
-          karung.no_karung
-        );
-
-        if (res2.status === "success") {
-          alert("Paket berhasil ditambahkan ke karung!");
-          setResi("");
-          onSuccess?.();
-          onClose?.();
-        } else {
-          alert("Gagal memindahkan paket: " + res2.message);
-        }
-
-        return;
-      }
-
-      alert("Gagal menambahkan paket: " + res.message);
-
     } catch (err) {
-      console.error(err);
-      const msg = err?.data?.message || err.message || "";
-
-      // ✅ Tangani error yang juga menyebutkan "karung lain"
-      if (msg.includes("karung lain")) {
-        const res2 = await movePackageToKarungApi(
-          batchId,
-          resi,
-          karung.no_karung
-        );
-
-        if (res2.status === "success") {
-          alert("Paket berhasil ditambahkan ke karung!");
-          setResi("");
-          onSuccess?.();
-          onClose?.();
-        } else {
-          alert("Gagal memindahkan paket: " + res2.message);
-        }
-
-        return;
+      if (err.response?.data?.message) {
+        alert(err.response.data.message);
+      } else if (err.message) {
+        alert(err.message);
+      } else {
+        alert("Terjadi kesalahan yang tidak diketahui.");
       }
-
-      alert("Terjadi kesalahan saat menambahkan paket");
     } finally {
       setLoading(false);
     }
@@ -99,7 +51,7 @@ export default function PackingPackageToKarung({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-lg font-bold mb-4">
-          Packing Paket ke Karung {karung.no_karung}
+          Tambah Paket ke Batch Pesawat
         </h2>
 
         <form onSubmit={handleTambah} className="flex gap-2 mb-4">

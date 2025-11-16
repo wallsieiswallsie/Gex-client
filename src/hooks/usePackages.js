@@ -25,7 +25,7 @@ export function usePackages(initialQuery = {}) {
       // Ambil token dari localStorage atau context
       const token = localStorage.getItem("accessToken");
 
-      const data = await fetchPackagesApi(finalQuery, token); // kirim token ke API
+      const data = await fetchPackagesApi(finalQuery, token);
 
       setPackages(data.data.packages || []);
       setTotal(data.data.total || 0);

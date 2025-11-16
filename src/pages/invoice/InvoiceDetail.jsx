@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import DetailPackageModal from "../components/modals/DetailPackageModal";
-import AddPackageToInvoiceModal from "../components/modals/AddPackageToInvoiceModal";
-import { useInvoiceDetail } from "../hooks/useInvoiceDetail";
+import DetailPackageModal from "../../components/modals/packages/DetailPackageModal";
+import AddPackageToInvoiceModal from "../../components/modals/invoice/AddPackageToInvoiceModal";
+import { useInvoiceDetail } from "../../hooks/useInvoiceDetail";
 import {
   removePackageFromInvoiceApi,
   addPackagesByResiToInvoiceApi,
-} from "../utils/api";
+} from "../../utils/api";
 
 function InvoiceDetailPage() {
   const { id } = useParams();
@@ -100,7 +100,7 @@ function InvoiceDetailPage() {
           const merged = [...(prev.packages || []), ...addedPackages];
           return { ...prev, packages: merged, total_price: totalPrice };
         });
-        alert(`✅ Berhasil menambahkan ${addedPackages.length} paket ke invoice.`);
+        alert(`Berhasil menambahkan ${addedPackages.length} paket ke invoice.`);
       }
 
       setResiList("");
@@ -122,7 +122,7 @@ function InvoiceDetailPage() {
         const resiSudahMasuk = match ? match[1].split(",").map(r => r.trim()) : [];
         alertMessage += "Nomor resi berikut sudah di-invoice:\n" + resiSudahMasuk.join(", ");
       } else if (message.includes("Remu") || message.includes("Aimas")) {
-        alertMessage = "❌ Paket dari cabang Remu (QA) dan Aimas (QB) tidak boleh digabung dalam satu invoice.";
+        alertMessage = "Paket dari cabang Remu (QA) dan Aimas (QB) tidak boleh digabung dalam satu invoice.";
       } else {
         alertMessage = message;
       }

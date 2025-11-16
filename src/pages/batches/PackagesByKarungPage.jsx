@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { getPackagesByKarungApi } from "../utils/api";
-import PackingPackageToKarung from "../components/modals/PackingPackageToKarung";
+import { useAuth } from "../../context/AuthContext";
+import { getPackagesByKarungApi } from "../../utils/api";
+import PackingPackageToKarung from "../../components/modals/batches/PackingPackageToKarung";
 
 export default function PackagesByKarungPage() {
   const { user } = useAuth();

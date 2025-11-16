@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { fetchBatchPesawatDetailApi } from "../../utils/api";
 import PackageCard from "../../components/PackageCard";
-import AddPackageToBatchPesawatModal from "../../components/modals/AddPackageToBatchPesawatModal";
+import AddPackageToBatchPesawatModal from "../../components/modals/batches/AddPackageToBatchPesawatModal";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 export default function BatchDetailPesawat() {
   const { batchId } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const userRole = user?.role;
   const userCabang = user?.cabang?.toLowerCase();
@@ -49,7 +50,7 @@ export default function BatchDetailPesawat() {
   if (!batch) return <p className="text-center mt-10 text-gray-500">Batch tidak ditemukan</p>;
 
   // ===================================================
-  // ✅ FILTER: ROLE & CABANG
+  // FILTER: ROLE & CABANG
   // ===================================================
   const allowedRoles = ["Manager Main Warehouse", "Manager Destination Warehouse", "Staff Main Warehouse"];
   const allowedCabangJPSOQA = ["main", "remu"];
@@ -71,14 +72,14 @@ export default function BatchDetailPesawat() {
   });
 
   // ===================================================
-  // ✅ FILTER: DROPDOWN (KODE)
+  // FILTER: DROPDOWN (KODE)
   // ===================================================
   if (kodeFilter !== "all") {
     filteredPackages = filteredPackages.filter((pkg) => pkg.kode?.startsWith(kodeFilter));
   }
 
   // ===================================================
-  // ✅ FILTER: DROPDOWN (INVOICE)
+  // FILTER: DROPDOWN (INVOICE)
   // ===================================================
   if (invoiceFilter === "invoiced") {
     filteredPackages = filteredPackages.filter((pkg) => pkg.invoiced === true);
@@ -87,7 +88,7 @@ export default function BatchDetailPesawat() {
   }
 
   // ===================================================
-  // ✅ FILTER: SEARCH (nama / resi)
+  // FILTER: SEARCH (nama / resi)
   // ===================================================
   if (searchQuery.trim() !== "") {
     const q = searchQuery.toLowerCase();
@@ -101,7 +102,7 @@ export default function BatchDetailPesawat() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 mb-10 flex flex-col gap-6">
       {/* ======================================
-          ✅ INFO BATCH
+          INFO BATCH
       ====================================== */}
       <div className="bg-white border border-purple-300 shadow-lg rounded-2xl p-6 flex flex-col gap-2">
         <h1 className="text-2xl font-bold text-[#3e146d]">Batch: {batch.id}</h1>
@@ -116,7 +117,7 @@ export default function BatchDetailPesawat() {
       </div>
 
       {/* ======================================
-          ✅ FILTER SECTION
+          FILTER SECTION
       ====================================== */}
       {/* Search Input */}
         <input
@@ -167,7 +168,7 @@ export default function BatchDetailPesawat() {
       </div>
 
       {/* ======================================
-          ✅ LIST PAKET
+          LIST PAKET
       ====================================== */}
       {filteredPackages.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -186,7 +187,7 @@ export default function BatchDetailPesawat() {
       )}
 
       {/* ======================================
-          ✅ MODAL TAMBAH PAKET
+          MODAL TAMBAH PAKET
       ====================================== */}
       {showAddModal && (
         <AddPackageToBatchPesawatModal

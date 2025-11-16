@@ -8,8 +8,8 @@ import {
   addPackageStatus,
   addPaymentMethodApi
 } from "../../utils/api";
-import UpdateActivePackageModal from "../../components/modals/UpdateActivePackageModal";
-import PaymentMethodModal from "../../components/modals/PaymentMethodModal";
+import UpdateActivePackageModal from "../../components/modals/packages/UpdateActivePackageModal";
+import PaymentMethodModal from "../../components/modals/invoice/PaymentMethodModal";
 
 export default function ManageDelivery() {
   const { user } = useAuth();

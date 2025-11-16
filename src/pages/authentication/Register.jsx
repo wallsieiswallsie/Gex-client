@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerApi } from "../utils/api";
+import { registerApi } from "../../utils/api";
 
 function RegisterPage() {
   const [formData, setFormData] = useState({

@@ -15,10 +15,8 @@ function UpdateActivePackageModal({ onClose, activePengantaranApi }) {
     setError(null);
 
     try {
-      // Jalankan aktivasi pengantaran (update resi)
       await activePengantaranApi(resi);
 
-      // Tutup modal setelah sukses
       onClose();
     } catch (err) {
       setError(err.message || "Terjadi kesalahan saat update status");

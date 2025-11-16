@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerApi } from "../utils/api";
+import { registerApi } from "../../utils/api";
 
 export default function RegisterPageCustomer() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    role: "Customer", // ✅ Default Customer
+    role: "Customer",
     cabang: "",
   });
 

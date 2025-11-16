@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { fetchBatchesPesawatApi, createBatchesPesawatApi } from "../../utils/api";
-import UpdateStatusBatchPesawatModal from "../../components/modals/UpdateStatusBatchPesawatModal";
+import UpdateStatusBatchPesawatModal from "../../components/modals/batches/UpdateStatusBatchPesawatModal";
 
 export default function DisplayBatchesPesawat() {
   const { user } = useAuth();
@@ -83,6 +83,16 @@ export default function DisplayBatchesPesawat() {
           </button>
         )}
       </div>
+
+      {/* ======================================
+          BUTTON LIHAT PAKET TIDAK LOLOS XRAY
+      ====================================== */}
+      <button
+        onClick={() => navigate("/packages/failed_xray")}
+        className="w-full bg-gray-400 text-white px-4 py-2 rounded-xl shadow-sm hover:bg-red-600 transition"
+      >
+        Lihat Daftar Paket Tidak Lolos Xray
+      </button>  
 
       {showForm && (
         <form

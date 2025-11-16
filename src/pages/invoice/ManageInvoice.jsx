@@ -1,15 +1,16 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useInvoices } from "../hooks/useInvoices";
+import { useInvoices } from "../../hooks/useInvoices";
+import { useAuth } from "../../context/AuthContext";
 import {
   archivePackagesByInvoicesApi,
-} from "../utils/api";
-import PaymentMethodModal from "../components/modals/PaymentMethodModal";
-import { useAuth } from "../context/AuthContext"; // import useAuth
+} from "../../utils/api";
+import PaymentMethodModal from "../../components/modals/invoice/PaymentMethodModal";
+
 
 function InvoicesPage() {
   const { invoices, loading } = useInvoices();
-  const { user } = useAuth(); // ambil user info
+  const { user } = useAuth();
   const userBranch = user?.cabang?.toLowerCase();
   const userRole = user?.role;
 
@@ -60,13 +61,11 @@ function InvoicesPage() {
 
       const branch = inv.cabang?.toLowerCase() || "";
 
-      // Filter dropdown hanya jika role bukan Manager Destination Warehouse
       const matchesBranchFilter =
         userRole === "Manager Destination Warehouse" ||
         branchFilter === "semua" ||
         branch === branchFilter.toLowerCase();
 
-      // Filter cabang user (main + cabang sendiri)
       const matchesUserBranch =
         userBranch === "main" || branch === userBranch;
 
@@ -97,7 +96,6 @@ function InvoicesPage() {
           className="flex-1 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
         />
 
-        {/* Hanya tampilkan dropdown filter jika bukan Manager Destination Warehouse */}
         {userRole !== "Manager Destination Warehouse" && (
           <select
             id="branchFilter"
