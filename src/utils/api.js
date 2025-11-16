@@ -59,6 +59,12 @@ export const fetchPackagesApi = async (query = {}) => {
   return apiFetch(`/packages?${params}`);
 };
 
+export const updatePackageApi = async (payload) =>
+  apiFetch("/packages/update", {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+
 export const createInvoiceApi = async (payload) =>
   apiFetch("/invoices", { method: "POST", body: JSON.stringify(payload) });
 

@@ -1,33 +1,84 @@
-import React, { useEffect } from "react";
-import { removePackageFromInvoiceApi } from "../../../utils/api";
+import React, { useEffect, useState } from "react";
+import {
+  removePackageFromInvoiceApi,
+  updatePackageApi,
+} from "../../../utils/api";
+import { useAuth } from "../../../context/AuthContext";
 
 function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
   if (!pkg) return null;
 
+  const [isEditing, setIsEditing] = useState(false);
+  const { user } = useAuth();
+
+  const [form, setForm] = useState({
+    nama: pkg.nama,
+    resi: pkg.resi,             
+    ekspedisi: pkg.ekspedisi,   
+    panjang: pkg.panjang,
+    lebar: pkg.lebar,
+    tinggi: pkg.tinggi,
+    berat: pkg.berat,
+    berat_dipakai: pkg.berat_dipakai,
+    harga: pkg.harga,
+    kode: pkg.kode,
+  });
 
   useEffect(() => {
-    if (pkg) {
-      console.log("Modal terbuka untuk paket ID:", pkg.id);
-    }
+    setForm({
+      nama: pkg.nama,
+      resi: pkg.resi,
+      ekspedisi: pkg.ekspedisi,
+      panjang: pkg.panjang,
+      lebar: pkg.lebar,
+      tinggi: pkg.tinggi,
+      berat: pkg.berat,
+      berat_dipakai: pkg.berat_dipakai,
+      harga: pkg.harga,
+      kode: pkg.kode,
+    });
   }, [pkg]);
 
-  const handleOverlayClick = (e) => {
-    if (e.target.classList.contains("modal-overlay")) {
+  const handleInput = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    try {
+      const payload = {
+        nama: form.nama,
+        resi: form.resi,              
+        ekspedisi: form.ekspedisi,      
+        panjang: Number(form.panjang),
+        lebar: Number(form.lebar),
+        tinggi: Number(form.tinggi),
+        berat: Number(form.berat),
+        kode: form.kode,
+      };
+
+      await updatePackageApi(payload);
+
+      alert("Data paket berhasil diperbarui.");
+      setIsEditing(false);
       onClose();
+    } catch (error) {
+      alert("Gagal update paket: " + error.message);
     }
   };
 
-  // Shortcut ESC untuk menutup modal
+  const handleOverlayClick = (e) => {
+    if (e.target.classList.contains("modal-overlay")) onClose();
+  };
+
   useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
+    const esc = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", esc);
+    return () => window.removeEventListener("keydown", esc);
   }, [onClose]);
 
   const handleRemoveFromInvoice = async () => {
     if (!window.confirm("Yakin hapus paket ini dari invoice?")) return;
+
     try {
       await removePackageFromInvoiceApi(invoiceId, Number(pkg.id));
       alert("Paket berhasil dihapus dari invoice");
@@ -44,10 +95,31 @@ function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
       onClick={handleOverlayClick}
     >
       <div className="modal-container bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
-        <h1 className="modal-title text-xl font-bold text-center mb-2">{pkg.nama.toUpperCase()}</h1>
-        <h2 className="modal-subtitle text-center text-gray-500 mb-4">{pkg.resi} | {pkg.ekspedisi} </h2>
 
-        {/* Foto paket */}
+        {/* Nama */}
+        {isEditing ? (
+          <input
+            name="nama"
+            value={form.nama}
+            onChange={handleInput}
+            className="w-full text-xl font-bold text-center mb-2 border rounded p-2"
+          />
+        ) : (
+          <h1 className="text-xl font-bold text-center mb-2">
+            {pkg.nama.toUpperCase()}
+          </h1>
+        )}
+
+        <div className="flex flex-col gap-2 mb-4">
+
+          {/* Resi - readonly */}
+          <div className="text-center text-gray-500">
+            {pkg.resi} | {pkg.ekspedisi}
+          </div>
+
+        </div>
+
+        {/* Foto */}
         {pkg.photo_url && (
           <div className="text-center mb-4">
             <img
@@ -58,49 +130,130 @@ function DetailPackageModal({ pkg, invoiceId, onClose, onRemoved }) {
           </div>
         )}
 
+        {/* Detail */}
         <div className="modal-details mb-4 rounded-xl overflow-hidden">
-  {[
-    { label: "Dimensi", value: `${pkg.panjang} × ${pkg.lebar} × ${pkg.tinggi}`, bg: "bg-green-100" },
-    { label: "Berat Asli", value: `${pkg.berat} kg`, bg: "bg-green-200" },
-    { label: "Berat Terpakai", value: `${pkg.berat_dipakai} kg`, bg: "bg-yellow-100" },
-    { label: "Via", value: pkg.via, bg: "bg-blue-100" },
-  ].map((item, idx) => (
-    <div key={idx} className={`${item.bg} px-4 py-2 flex justify-between`}>
-      <span className="font-medium">{item.label}</span>
-      <span>{item.value}</span>
-    </div>
-  ))}
-</div>
 
-      <div className="flex justify-center items-center gap-1">
-        <h3 className="text-center text-[#3e146d] font-bold text-lg mb-6">
-          {pkg.kode}
-        </h3>
+          {/* Dimensi */}
+          <div className="bg-green-100 px-4 py-2 flex justify-between">
+            <span className="font-medium">Dimensi</span>
 
-        <h3 className="text-center text-[#3e146d] font-bold text-lg mb-6">
-          Rp {Number(pkg.harga).toLocaleString("id-ID")}
-        </h3>
-      </div>
+            {!isEditing ? (
+              <span>{pkg.panjang} × {pkg.lebar} × {pkg.tinggi}</span>
+            ) : (
+              <div className="flex gap-1">
+                <input name="panjang" value={form.panjang} onChange={handleInput} className="w-14 border rounded p-1" />
+                <input name="lebar" value={form.lebar} onChange={handleInput} className="w-14 border rounded p-1" />
+                <input name="tinggi" value={form.tinggi} onChange={handleInput} className="w-14 border rounded p-1" />
+              </div>
+            )}
+          </div>
 
-        {/* Tombol aksi */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            className="modal-button bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-lg transition"
-            onClick={onClose}
-          >
-            Tutup
-          </button>
+          {/* Berat Asli */}
+          <div className="bg-green-200 px-4 py-2 flex justify-between">
+            <span className="font-medium">Berat Asli</span>
 
-          {invoiceId && !pkg.finished && (
-            <button
-              className="modal-button bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition"
-              onClick={handleRemoveFromInvoice}
+            {!isEditing ? (
+              <span>{pkg.berat} kg</span>
+            ) : (
+              <input
+                name="berat"
+                value={form.berat}
+                onChange={handleInput}
+                className="w-20 border rounded p-1"
+              />
+            )}
+          </div>
+
+          {/* Berat Terpakai (read-only) */}
+          <div className="bg-yellow-100 px-4 py-2 flex justify-between">
+            <span className="font-medium">Berat Terpakai</span>
+            <span className="font-semibold">{pkg.berat_dipakai} kg</span>
+          </div>
+
+          {/* VIA (read only selamanya) */}
+          <div className="bg-blue-100 px-4 py-2 flex justify-between">
+            <span className="font-medium">Via</span>
+            <span>{pkg.via}</span>
+          </div>
+        </div>
+
+        {/* Kode & Harga */}
+        <div className="flex flex-row justify-between gap-2 mb-4">
+
+          {isEditing ? (
+            <select
+              name="kode"
+              value={form.kode}
+              onChange={handleInput}
+              className="border rounded w-full p-2 bg-gray-400 text-white"
             >
-              Hapus dari Invoice
-            </button>
+              <option value="JKSOQA">JKSOQA</option>
+              <option value="JKSOQB">JKSOQB</option>
+              <option value="JPSOQA">JPSOQA</option>
+              <option value="JPSOQB">JPSOQB</option>
+            </select>
+          ) : (
+            <h3 className="text-center text-[#3e146d] font-bold text-lg">
+              {pkg.kode}
+            </h3>
+          )}
+
+          {/* Harga (READ ONLY) */}
+          <h3 className="text-center text-[#3e146d] font-bold text-lg">
+            Rp {Number(pkg.harga).toLocaleString("id-ID")}
+          </h3>
+        </div>
+
+        {/* Tombol */}
+        <div className="flex mt-7 flex-row gap-2 justify-center">
+
+          {!isEditing ? (
+            <>
+              <button
+                className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg"
+                onClick={onClose}
+              >
+                Tutup
+              </button>
+
+              {user?.role === "Manager Main Warehouse" && (
+              <button
+                className="w-full bg-[#3e146d] hover:bg-purple-700 text-white px-4 py-2 rounded-lg"
+                onClick={() => setIsEditing(true)}
+              >
+                Edit
+              </button>
+              )}
+
+              {invoiceId && !pkg.finished && (
+                <button
+                  className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+                  onClick={handleRemoveFromInvoice}
+                >
+                  Hapus dari Invoice
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <button
+                className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg"
+                onClick={() => setIsEditing(false)}
+              >
+                Batal
+              </button>
+
+              <button
+                className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+                onClick={handleSave}
+              >
+                Simpan
+              </button>
+            </>
           )}
 
         </div>
+
       </div>
     </div>
   );
