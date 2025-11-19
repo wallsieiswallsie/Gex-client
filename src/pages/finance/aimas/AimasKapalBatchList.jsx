@@ -42,6 +42,7 @@ const AimasKapalBatchList = () => {
             <h2 className="text-xl font-semibold text-[#3e146d]">{batch.id}</h2>
             <p className="text-gray-600 text-sm">
               <span className="font-medium">{batch.nama_kapal.toUpperCase()}</span>
+              <p className="font-medium">{batch.tanggal_closing.split("T")[0]}</p>
             </p>
           </div>
         ))}
