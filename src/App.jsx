@@ -130,7 +130,7 @@ function App() {
             <Route
               path="/packages"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"]}>
                   <DisplayDetailPackage />
                 </ProtectedRoute>
               }
@@ -242,7 +242,7 @@ function App() {
             <Route
               path="/batches"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <BatchSelectionPage />
                 </ProtectedRoute>
               }
@@ -252,7 +252,7 @@ function App() {
             <Route
               path="/batches/kapal"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <DisplayBatchesKapal />
                 </ProtectedRoute>
               }
@@ -262,7 +262,7 @@ function App() {
             <Route
               path="/batches/pesawat"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <DisplayBatchesPesawat />
                 </ProtectedRoute>
               }
@@ -271,7 +271,7 @@ function App() {
             <Route
               path="/packages/failed_xray"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <FailedXrayPage />
                 </ProtectedRoute>
               }
@@ -281,7 +281,7 @@ function App() {
             <Route
               path="/batches/kapal/:batchId"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <BatchDetailKapal />
                 </ProtectedRoute>
               }
@@ -290,7 +290,7 @@ function App() {
             <Route
               path="/batches/kapal/:batchId/all"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"]}>
                   <DisplayPackageBatchKapal />
                 </ProtectedRoute>
               }
@@ -299,7 +299,7 @@ function App() {
             <Route
               path="/batches/kapal/:batchId/karung/:noKarung"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <PackagesByKarungPage />
                 </ProtectedRoute>
               }
@@ -309,7 +309,7 @@ function App() {
             <Route
               path="/batches/pesawat/:batchId"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <BatchDetailPesawat />
                 </ProtectedRoute>
               }
@@ -320,7 +320,7 @@ function App() {
             <Route
               path="/invoices"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"]}>
                   <InvoicesPage />
                 </ProtectedRoute>
               }
@@ -328,7 +328,7 @@ function App() {
             <Route
               path="/archived_invoices"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"]}>
                   <ArchivedInvoicesPage />
                 </ProtectedRoute>
               }
@@ -336,7 +336,7 @@ function App() {
             <Route
               path="/invoices/:id"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"]}>
                   <InvoiceDetailPage />
                 </ProtectedRoute>
               }
@@ -345,7 +345,7 @@ function App() {
             <Route
               path="/selection_pengantaran"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse","Courier"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse","Courier"]}>
                   <DeliverySelectionPage />
                 </ProtectedRoute>
               }
@@ -354,7 +354,7 @@ function App() {
             <Route
               path="/pengantaran"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse","Courier"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse","Courier"]}>
                   <ManageDelivery />
                 </ProtectedRoute>
               }
@@ -363,7 +363,7 @@ function App() {
             <Route
               path="/pengantaran_active"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse","Courier"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse","Courier"]}>
                   <ActiveDeliveries />
                 </ProtectedRoute>
               }
@@ -372,7 +372,7 @@ function App() {
             <Route
               path="/pengantaran_archive"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse","Courier"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse","Courier"]}>
                   <ArchiveDeliveries />
                 </ProtectedRoute>
               }

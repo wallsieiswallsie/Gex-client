@@ -1,4 +1,3 @@
-// src/utils/api.js
 import { useCallback } from "react";
 import { useErrors } from "../context/ErrorsContext";
 import { API_URL, ACCESS_TOKEN_KEY } from "./constants";
@@ -31,7 +30,6 @@ export const loginApi = async (payload) =>
 export const registerApi = async (payload) =>
   apiFetch("/auth/register", { method: "POST", body: JSON.stringify(payload) });
 
-/** Membuat paket baru (dengan foto) */
 export const createPackageApi = async (formData) => {
   const token = localStorage.getItem(ACCESS_TOKEN_KEY);
 
@@ -39,7 +37,7 @@ export const createPackageApi = async (formData) => {
     method: "POST",
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      // ❗Jangan set Content-Type manual (biarkan browser buat boundary)
+      // Jangan set Content-Type manual (biarkan browser buat boundary)
     },
     body: formData,
   });

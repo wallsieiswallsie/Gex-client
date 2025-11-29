@@ -4,17 +4,17 @@ import { useAuth } from "../../context/AuthContext";
 import { HiX } from "react-icons/hi";
 
 const MENU_ITEMS = [
-  { path: "/lacak_paket", label: "Lacak Paket", roles: ["Customer", "Manager Main Warehouse", "Manager Destination Warehouse"] },
+  { path: "/lacak_paket", label: "Lacak Paket", roles: ["Customer", "Manager Main Warehouse", "Manager Destination Warehouse", "Staff Destination Warehouse"] },
   { path: "/manage-customer-services", label: "Manage Service", roles: ["Manager Main Warehouse"] },
   { path: "/register", label: "Manage User", roles: ["Manager Main Warehouse"] },
-  { path: "/packages", label: "Database Paket", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
-  { path: "/batches", label: "Batches Pengiriman", roles: ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"] },
+  { path: "/packages", label: "Database Paket", roles: ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"] },
+  { path: "/batches", label: "Batches Pengiriman", roles: ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"] },
   { path: "#", label: "Database Customer", roles: ["Manager Destination Warehouse"] },
-  { path: "/invoices", label: "Manage Invoice", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
-  { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse", "Manager Main Warehouse","Courier"] },
+  { path: "/invoices", label: "Manage Invoice", roles: ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"] },
+  { path: "/selection_pengantaran", label: "Request Pengantaran", roles: ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse", "Courier"] },
   { path: "/finance", label: "Keuangan", roles: ["Manager Destination Warehouse", "Manager Main Warehouse"] },
-  { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse", "Manager Destination Warehouse"] },
-  { path: "/packages/confirm-select", label: "Konfirmasi Paket Bermasalah", roles: ["Manager Main Warehouse", "Staff Main Warehouse", "Manager Destination Warehouse"] },
+  { path: "/input", label: "Input Data Paket", roles: ["Manager Main Warehouse", "Staff Main Warehouse", "Manager Destination Warehouse", "Staff Destination Warehouse"] },
+  { path: "/packages/confirm-select", label: "Konfirmasi Paket Bermasalah", roles: ["Manager Main Warehouse", "Staff Main Warehouse", "Manager Destination Warehouse", "Staff Destination Warehouse"] },
 ];
 
 export default function Sidebar({ open, setOpen }) {
