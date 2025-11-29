@@ -112,7 +112,7 @@ function App() {
             <Route
               path="/input"
               element={
-                <ProtectedRoute allowedRoles={["Staff Main Warehouse", "Manager Main Warehouse", "Manager Destination Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Staff Main Warehouse", "Manager Main Warehouse", "Manager Destination Warehouse", "Staff Destination Warehouse"]}>
                   <InputDetailPackage />
                 </ProtectedRoute>
               }
@@ -139,7 +139,7 @@ function App() {
             <Route
               path="/packages/confirm-select"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <ConfirmPackagesSelectionPage />
                 </ProtectedRoute>
               }
@@ -148,7 +148,7 @@ function App() {
             <Route
               path="/packages/confirm-form"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"]}>
                   <ConfirmPackageForm />
                 </ProtectedRoute>
               }
@@ -157,7 +157,7 @@ function App() {
             <Route
               path="/packages/confirm-get"
               element={
-                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse"]}>
+                <ProtectedRoute allowedRoles={["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"]}>
                   <DisplayUnmovedConfirmedPackages />
                 </ProtectedRoute>
               }

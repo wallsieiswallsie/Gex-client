@@ -172,7 +172,8 @@ export default function DisplayBatchesKapal() {
             <div className="flex flex-col gap-5 mt-2">
 
               {(user?.role === "Manager Destination Warehouse" ||
-                user?.role === "Manager Main Warehouse") && (
+                user?.role === "Manager Main Warehouse" ||
+                user?.role === "Staff Destination Warehouse") && (
                 <button
                   onClick={() => {navigate(`/batches/kapal/${batch.id}/all`);}}
                   className="bg-red-950 h-10 text-white px-3 py-1 rounded-lg hover:opacity-90"

@@ -10,6 +10,7 @@ export default function ConfirmPackagesSelectionPage() {
   const allowedRoles = [
     "Manager Destination Warehouse",
     "Manager Main Warehouse",
+    "Staff Destination Warehouse"
   ];
 
   return (

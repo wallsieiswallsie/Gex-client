@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { HiX } from "react-icons/hi";
 
 const MENU_ITEMS = [
-  { path: "/lacak_paket", label: "Lacak Paket", roles: ["Customer", "Manager Main Warehouse", "Manager Destination Warehouse", "Staff Destination Warehouse"] },
+  { path: "/lacak_paket", label: "Lacak Paket", roles: ["Customer", "Manager Main Warehouse", "Manager Destination Warehouse", "Staff Destination Warehouse", "Courier"] },
   { path: "/manage-customer-services", label: "Manage Service", roles: ["Manager Main Warehouse"] },
   { path: "/register", label: "Manage User", roles: ["Manager Main Warehouse"] },
   { path: "/packages", label: "Database Paket", roles: ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"] },

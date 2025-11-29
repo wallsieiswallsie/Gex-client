@@ -50,7 +50,7 @@ export default function DisplayPackageBatchKapal() {
   // ============================
   // ✅ FILTER: ROLE & CABANG
   // ============================
-  const allowedRoles = ["Manager Destination Warehouse", "Manager Main Warehouse"];
+  const allowedRoles = ["Manager Destination Warehouse", "Manager Main Warehouse", "Staff Destination Warehouse"];
   const allowedCabangJKSOQA = ["remu", "main"];
   const allowedCabangJKSOQB = ["aimas", "main"];
 

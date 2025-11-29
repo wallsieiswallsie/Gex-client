@@ -96,7 +96,7 @@ function InvoicesPage() {
           className="flex-1 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#3e146d]"
         />
 
-        {userRole !== "Manager Destination Warehouse" && (
+        {userRole === "Manager Main Warehouse" && (
           <select
             id="branchFilter"
             value={branchFilter}

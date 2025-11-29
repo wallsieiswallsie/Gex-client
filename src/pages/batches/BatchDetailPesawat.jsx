@@ -52,7 +52,7 @@ export default function BatchDetailPesawat() {
   // ===================================================
   // FILTER: ROLE & CABANG
   // ===================================================
-  const allowedRoles = ["Manager Main Warehouse", "Manager Destination Warehouse", "Staff Main Warehouse"];
+  const allowedRoles = ["Manager Main Warehouse", "Manager Destination Warehouse", "Staff Main Warehouse", "Staff Destination Warehouse"];
   const allowedCabangJPSOQA = ["main", "remu"];
   const allowedCabangJPSOQB = ["main", "aimas"];
 
@@ -144,7 +144,9 @@ export default function BatchDetailPesawat() {
         )}
 
         {/* Filter Invoice */}
-        {(userRole === "Manager Main Warehouse" || userRole === "Manager Destination Warehouse") && (
+        {(userRole === "Manager Main Warehouse" 
+        || userRole === "Manager Destination Warehouse" 
+        || userRole === "Staff Destination Warehouse") && (
           <select
             value={invoiceFilter}
             onChange={(e) => setInvoiceFilter(e.target.value)}
