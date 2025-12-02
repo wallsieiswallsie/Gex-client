@@ -32,6 +32,7 @@
 - **Database**: PostgreSQL
 - **ORM/Query Builder**: Knex.js
 - **Auth**: JWT (JSON Web Token)
+- **Cloud**: Google Cloud Storage
 
 ## Cara Menjalankan
 1. Clone repositori ini
