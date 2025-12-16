@@ -51,4 +51,3 @@
 ## Note
 - Pastikan PostgreSQL sudah terinstall dan dijalankan.
 - Buat database sesuai konfigurasi .env.
-- Fitur perhitungan berat volumetrik dan harga sudah otomatis tampil di modul DisplayDetailPackage.
